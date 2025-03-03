@@ -1,0 +1,91 @@
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, sans-serif;
+    color: rgb(0, 0, 0);
+}
+
+header {
+    position: relative;
+    height: 100vh;
+    background: url('kane\ pic.jpg') no-repeat center center/cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+
+    background-blend-mode: darken;
+    background-color: rgb(255, 255, 255);
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #61dafb;
+    color: #282c34;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #4cb2d4;
+}
+
+nav {
+    background: #222;
+    padding: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #61dafb;
+    transition: 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #4cb2d4;
+    font-weight: bold;
+}
+
+section {
+    padding: 50px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em;
+    }
+    .btn {
+        padding: 8px 16px;
+    }
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+}

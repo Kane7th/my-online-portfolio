@@ -1,28 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Kane Kabena - Online Portfolio</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kane Kabena's Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
   </head>
   <body>
-    <div class="container">
-      <div class="header">
-        <h1>Home</h1>
+    <header>
+      <img
+        src="Kane_Kabena_Clean.png"
+        alt="Kane Kabena - Software Developer Logo"
+        class="logo"
+      />
+      <p>Web Developer | FiveM Expert | Python Enthusiast</p>
+      <a href="#projects" class="btn">See My Work</a>
+    </header>
+
+    <nav id="navbar">
+      <ul>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </nav>
+
+    <section id="about">
+      <h2>About Me</h2>
+      <p>
+        Hey there! 👋 I'm a tech enthusiast and problem-solver currently
+        leveling up my skills at Moringa School. With
+        <strong>4 years</strong> of experience in <strong>FiveM server development</strong>, I've
+        mastered the art of scripting, optimizing, and bringing custom game
+        servers to life. 🚀
+      </p>
+      <p>
+        Whether I'm deep in <strong>Python</strong>, styling sleek websites with
+        <strong> HTML & CSS</strong>, or building the next immersive game
+        server, I'm always up for a challenge. 🎯
+      </p>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="project">
+        <h3>Zone 7 RP</h3>
+        <p>A custom FiveM roleplay server that enhances player experience.</p>
       </div>
-      <div class="menu">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
+      <div class="project">
+        <h3>Client's Website</h3>
+        <p>A web page developed for a automotive business entity.</p>
       </div>
-      <div class="content">
-        <h2>Welcome to my online portfolio</h2>
-        <p>This will contain my main content</p>
-      </div>
-      <div class="footer">
-        <p>&copy; 2021</p>
-      </div>
-    </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Email: onekaneldn@gmail.com</p>
+    </section>
+
+    <footer>
+      <p>&copy; 2025 Kane Kabena</p>
+    </footer>
   </body>
 </html>

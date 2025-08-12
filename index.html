@@ -3,64 +3,116 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kane Kabena's Portfolio</title>
+    <title>Kane Kabena | Full-Stack Developer</title>
     <link rel="stylesheet" href="style.css" />
     <script defer src="script.js"></script>
   </head>
   <body>
-    <header>
+    <!-- Header / Hero -->
+    <header class="hero">
       <img
         src="Kane_Kabena_Clean.png"
-        alt="Kane Kabena - Software Developer Logo"
+        alt="Kane Kabena - Full Stack Developer Logo"
         class="logo"
       />
-      <p>Web Developer | FiveM Expert | Python Enthusiast</p>
-      <a href="#projects" class="btn">See My Work</a>
+      <h1>Kane Kabena</h1>
+      <p>Full-Stack Developer | Python & Flask Specialist | React Enthusiast</p>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn">See My Work</a>
+        <a href="Kane_Kabena_CV.pdf" class="btn btn-outline" download>Download CV</a>
+      </div>
     </header>
 
+    <!-- Navigation -->
     <nav id="navbar">
       <ul>
         <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#skills" class="nav-link">Skills</a></li>
         <li><a href="#projects" class="nav-link">Projects</a></li>
         <li><a href="#contact" class="nav-link">Contact</a></li>
       </ul>
     </nav>
 
+    <!-- About Section -->
     <section id="about">
       <h2>About Me</h2>
       <p>
-        Hey there! 👋 I'm a tech enthusiast and problem-solver currently
-        leveling up my skills at Moringa School. With
-        <strong>4 years</strong> of experience in <strong>FiveM server development</strong>, I've
-        mastered the art of scripting, optimizing, and bringing custom game
-        servers to life. 🚀
+        Hi, I'm <strong>Kane Kabena</strong>, a results-driven software developer 
+        with a passion for building clean, scalable, and visually engaging 
+        applications. I specialise in <strong>Flask (Python)</strong> for backend 
+        development and <strong>React</strong> for the frontend, with a focus 
+        on delivering seamless user experiences.
       </p>
       <p>
-        Whether I'm deep in <strong>Python</strong>, styling sleek websites with
-        <strong> HTML & CSS</strong>, or building the next immersive game
-        server, I'm always up for a challenge. 🎯
+        From developing complex loan management platforms like <strong>SokoCredit</strong>
+        to crafting immersive <strong>FiveM roleplay servers</strong> and 
+        fully-functional hotel booking systems, I thrive in taking projects from 
+        idea to production.
       </p>
     </section>
 
+    <!-- Skills Section -->
+    <section id="skills">
+      <h2>Technical Skills</h2>
+      <ul class="skills-list">
+        <li>Flask (Python)</li>
+        <li>React & Redux Toolkit</li>
+        <li>PostgreSQL & SQLAlchemy</li>
+        <li>JWT Authentication</li>
+        <li>RESTful API Development</li>
+        <li>HTML5, CSS3, JavaScript</li>
+        <li>Tailwind CSS</li>
+        <li>Git & GitHub</li>
+        <li>FiveM Server Development</li>
+      </ul>
+    </section>
+
+    <!-- Projects Section -->
     <section id="projects">
-      <h2>Projects</h2>
-      <div class="project">
-        <h3>Zone 7 RP</h3>
-        <p>A custom FiveM roleplay server that enhances player experience.</p>
-      </div>
-      <div class="project">
-        <h3>Client's Website</h3>
-        <p>A web page developed for a automotive business entity.</p>
+      <h2>Highlighted Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <h3>SokoCredit</h3>
+          <p>
+            Full-stack loan management system for microfinance lenders with
+            M-Pesa & Twilio integrations. Features role-based access, 
+            analytics, and real-time notifications.
+          </p>
+          <a href="https://github.com/Kane7th/Phase-5-Project-SokoCredit" target="_blank" class="btn btn-small">View Code</a>
+        </div>
+        <div class="project-card">
+          <h3>Hotel Booking System</h3>
+          <p>
+            React + Flask web app with JWT authentication, admin & customer portals, 
+            and a polished UI with pagination, filters, and toast notifications.
+          </p>
+          <a href="https://youtu.be/WrYNyjDwBYI" class="btn btn-small">Live Demo</a>
+        </div>
+        <div class="project-card">
+          <h3>Zone 7 RP</h3>
+          <p>
+            Custom FiveM roleplay server with advanced player systems, economy 
+            balancing, and immersive scripts for enhanced gameplay.
+          </p>
+          <a href="#" class="btn btn-small">Join Server</a>
+        </div>
       </div>
     </section>
 
+    <!-- Contact Section -->
     <section id="contact">
       <h2>Contact</h2>
-      <p>Email: onekaneldn@gmail.com</p>
+      <p>Email: <a href="mailto:onekaneldn@gmail.com">onekaneldn@gmail.com</a></p>
+      <p>Phone: <a href="tel:+447565470169">+44 7565 470 169</a></p>
+      <div class="social-links">
+        <a href="https://github.com/Kane7th" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/kanekabena/" target="_blank">LinkedIn</a>
+      </div>
     </section>
 
+    <!-- Footer -->
     <footer>
-      <p>&copy; 2025 Kane Kabena</p>
+      <p>&copy; 2025 Kane Kabena. All rights reserved.</p>
     </footer>
   </body>
 </html>

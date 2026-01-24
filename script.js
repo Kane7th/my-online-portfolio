@@ -882,9 +882,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize EmailJS (replace with your actual keys after setting up EmailJS account)
   // Get your keys from https://www.emailjs.com/
   // Note: Make sure to use EmailJS service (not Gmail API) to avoid authentication scope issues
-  const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // Replace with your EmailJS public key
-  const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID"; // Replace with your EmailJS service ID
-  const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // Replace with your EmailJS template ID
+  const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // Replace with your EmailJS public key (found in Account > General)
+  const EMAILJS_SERVICE_ID = "service_iqsg9ne"; // Your EmailJS service ID
+  const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // Replace with your EmailJS template ID (create template first, see EMAILJS_TEMPLATE.md)
   
   if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
     emailjs.init(EMAILJS_PUBLIC_KEY);

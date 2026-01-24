@@ -53,7 +53,8 @@
             <input type="range" id="musicVolumeSlider" class="volume-slider" min="0" max="100" value="30" aria-label="Volume control">
             <span class="volume-value" id="volumeValue">30%</span>
           </div>
-          <audio id="backgroundMusic" loop preload="auto">
+          <audio id="backgroundMusic" loop preload="none">
+            <source src="./static/sounds/background-music.mp3" type="audio/mpeg">
             <source src="static/sounds/background-music.mp3" type="audio/mpeg">
             <source src="/my-online-portfolio/static/sounds/background-music.mp3" type="audio/mpeg">
             Your browser does not support the audio element.

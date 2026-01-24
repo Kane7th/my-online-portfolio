@@ -531,60 +531,29 @@ document.addEventListener("DOMContentLoaded", function () {
   let sitDownAudio = null;
   let sitUpAudio = null;
   
-  // Preload the audio file
-  function preloadLampSound() {
-    try {
-      // Get static URL - use relative path from current location
-      let staticUrl = 'static/';
+  // Get sound file path helper
+  function getSoundPath(filename) {
+    // Use relative path from current script location
+    // If script is at /my-online-portfolio/static/js/script.js, sounds are at /my-online-portfolio/static/sounds/
+    // If script is at /script.js, sounds are at /static/sounds/
+    const scriptPath = document.currentScript?.src || '';
+    if (scriptPath.includes('/static/js/')) {
+      // Script is in static/js/, so sounds are at ../sounds/
+      return `../sounds/${filename}`;
+    } else {
+      // Script is in root, so sounds are at static/sounds/
+      let staticUrl = 'static/sounds/';
       if (window.location.pathname.includes('/my-online-portfolio')) {
-        staticUrl = '/my-online-portfolio/static/';
-      } else if (window.STATIC_URL) {
-        staticUrl = window.STATIC_URL;
+        staticUrl = '/my-online-portfolio/static/sounds/';
       }
-      // Only try mp3 since that's what we have
-      const audioPath = `${staticUrl}sounds/lamp-click.mp3`;
-      
-      // First verify the file exists
-      fetch(audioPath, { method: 'HEAD' })
-        .then(response => {
-          if (response.ok) {
-            const audio = new Audio(audioPath);
-            audio.preload = 'auto';
-            audio.addEventListener('canplaythrough', function() {
-              if (!lampClickAudio) {
-                lampClickAudio = audio;
-                lampClickAudio.volume = 0.7; // Set volume (0.0 to 1.0)
-                console.log(`Lamp sound loaded: ${audioPath}`);
-              }
-            }, { once: true });
-            audio.addEventListener('error', function(e) {
-              console.error(`Failed to load lamp sound: ${audioPath}`, e, audio.error);
-            }, { once: true });
-            audio.load();
-          } else {
-            console.warn(`Lamp sound file not found: ${audioPath} (Status: ${response.status})`);
-          }
-        })
-        .catch(err => {
-          console.warn(`Could not verify lamp sound file: ${audioPath}`, err);
-          // Try loading anyway in case fetch fails but file exists
-          const audio = new Audio(audioPath);
-          audio.preload = 'auto';
-          audio.addEventListener('canplaythrough', function() {
-            if (!lampClickAudio) {
-              lampClickAudio = audio;
-              lampClickAudio.volume = 0.7;
-              console.log(`Lamp sound loaded (fallback): ${audioPath}`);
-            }
-          }, { once: true });
-          audio.addEventListener('error', function(e) {
-            console.error(`Failed to load lamp sound: ${audioPath}`, e);
-          }, { once: true });
-          audio.load();
-        });
-    } catch (e) {
-      console.error("Audio file preload error:", e);
+      return `${staticUrl}${filename}`;
     }
+  }
+  
+  // Preload the audio file (simplified - just try to load)
+  function preloadLampSound() {
+    // Skip preloading - load on demand instead
+    // This avoids browser blocking and path issues
   }
   
   function playLampSwitchSound() {
@@ -599,22 +568,22 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: create new audio instance
-        let staticUrl = 'static/';
-        if (window.location.pathname.includes('/my-online-portfolio')) {
-          staticUrl = '/my-online-portfolio/static/';
-        } else if (window.STATIC_URL) {
-          staticUrl = window.STATIC_URL;
-        }
-        const audioPath = `${staticUrl}sounds/lamp-click.mp3`;
+        // Load on demand - create new audio instance
+        const audioPath = getSoundPath('lamp-click.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
+        
+        // Store for reuse
+        if (!lampClickAudio) {
+          lampClickAudio = audio;
+        }
+        
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
             console.log(`Playing lamp sound: ${audioPath}`);
           }).catch(e => {
-            console.error(`Failed to play lamp sound:`, e);
+            console.error(`Failed to play lamp sound: ${audioPath}`, e);
           });
         }
       }
@@ -628,97 +597,9 @@ document.addEventListener("DOMContentLoaded", function () {
   preloadScreenSounds();
   preloadChairSounds();
   
-  // Preload screen switch sounds
+  // Preload screen switch sounds (simplified - load on demand)
   function preloadScreenSounds() {
-    try {
-      let staticUrl = 'static/';
-      if (window.location.pathname.includes('/my-online-portfolio')) {
-        staticUrl = '/my-online-portfolio/static/';
-      } else if (window.STATIC_URL) {
-        staticUrl = window.STATIC_URL;
-      }
-      
-      const audioOnPath = `${staticUrl}sounds/screen-switch-on.mp3`;
-      const audioOffPath = `${staticUrl}sounds/screen-switch-off.mp3`;
-      
-      // Load switch-on audio file
-      fetch(audioOnPath, { method: 'HEAD' })
-        .then(response => {
-          if (response.ok) {
-            const audioOn = new Audio(audioOnPath);
-            audioOn.preload = 'auto';
-            audioOn.addEventListener('canplaythrough', function() {
-              if (!screenSwitchOnAudio) {
-                screenSwitchOnAudio = audioOn;
-                screenSwitchOnAudio.volume = 0.7;
-                console.log(`Screen switch-on sound loaded: ${audioOnPath}`);
-              }
-            }, { once: true });
-            audioOn.addEventListener('error', function(e) {
-              console.error(`Failed to load screen switch-on sound:`, e);
-            }, { once: true });
-            audioOn.load();
-          } else {
-            console.warn(`Screen switch-on sound file not found: ${audioOnPath} (Status: ${response.status})`);
-          }
-        })
-        .catch(err => {
-          console.warn(`Could not verify screen switch-on sound: ${audioOnPath}`, err);
-          const audioOn = new Audio(audioOnPath);
-          audioOn.preload = 'auto';
-          audioOn.addEventListener('canplaythrough', function() {
-            if (!screenSwitchOnAudio) {
-              screenSwitchOnAudio = audioOn;
-              screenSwitchOnAudio.volume = 0.7;
-              console.log(`Screen switch-on sound loaded (fallback): ${audioOnPath}`);
-            }
-          }, { once: true });
-          audioOn.addEventListener('error', function(e) {
-            console.error(`Failed to load screen switch-on sound:`, e);
-          }, { once: true });
-          audioOn.load();
-        });
-      
-      // Load switch-off audio file
-      fetch(audioOffPath, { method: 'HEAD' })
-        .then(response => {
-          if (response.ok) {
-            const audioOff = new Audio(audioOffPath);
-            audioOff.preload = 'auto';
-            audioOff.addEventListener('canplaythrough', function() {
-              if (!screenSwitchOffAudio) {
-                screenSwitchOffAudio = audioOff;
-                screenSwitchOffAudio.volume = 0.7;
-                console.log(`Screen switch-off sound loaded: ${audioOffPath}`);
-              }
-            }, { once: true });
-            audioOff.addEventListener('error', function(e) {
-              console.error(`Failed to load screen switch-off sound:`, e);
-            }, { once: true });
-            audioOff.load();
-          } else {
-            console.warn(`Screen switch-off sound file not found: ${audioOffPath} (Status: ${response.status})`);
-          }
-        })
-        .catch(err => {
-          console.warn(`Could not verify screen switch-off sound: ${audioOffPath}`, err);
-          const audioOff = new Audio(audioOffPath);
-          audioOff.preload = 'auto';
-          audioOff.addEventListener('canplaythrough', function() {
-            if (!screenSwitchOffAudio) {
-              screenSwitchOffAudio = audioOff;
-              screenSwitchOffAudio.volume = 0.7;
-              console.log(`Screen switch-off sound loaded (fallback): ${audioOffPath}`);
-            }
-          }, { once: true });
-          audioOff.addEventListener('error', function(e) {
-            console.error(`Failed to load screen switch-off sound:`, e);
-          }, { once: true });
-          audioOff.load();
-        });
-    } catch (e) {
-      console.error("Screen sound files preload error:", e);
-    }
+    // Skip preloading - load on demand instead
   }
   
   function playScreenSwitchOnSound() {
@@ -732,22 +613,22 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: create new audio instance
-        let staticUrl = 'static/';
-        if (window.location.pathname.includes('/my-online-portfolio')) {
-          staticUrl = '/my-online-portfolio/static/';
-        } else if (window.STATIC_URL) {
-          staticUrl = window.STATIC_URL;
-        }
-        const audioPath = `${staticUrl}sounds/screen-switch-on.mp3`;
+        // Load on demand
+        const audioPath = getSoundPath('screen-switch-on.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
+        
+        // Store for reuse
+        if (!screenSwitchOnAudio) {
+          screenSwitchOnAudio = audio;
+        }
+        
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
             console.log(`Playing screen switch-on sound: ${audioPath}`);
           }).catch(e => {
-            console.error(`Failed to play screen switch-on sound:`, e);
+            console.error(`Failed to play screen switch-on sound: ${audioPath}`, e);
           });
         }
       }
@@ -767,22 +648,22 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: create new audio instance
-        let staticUrl = 'static/';
-        if (window.location.pathname.includes('/my-online-portfolio')) {
-          staticUrl = '/my-online-portfolio/static/';
-        } else if (window.STATIC_URL) {
-          staticUrl = window.STATIC_URL;
-        }
-        const audioPath = `${staticUrl}sounds/screen-switch-off.mp3`;
+        // Load on demand
+        const audioPath = getSoundPath('screen-switch-off.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
+        
+        // Store for reuse
+        if (!screenSwitchOffAudio) {
+          screenSwitchOffAudio = audio;
+        }
+        
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
             console.log(`Playing screen switch-off sound: ${audioPath}`);
           }).catch(e => {
-            console.error(`Failed to play screen switch-off sound:`, e);
+            console.error(`Failed to play screen switch-off sound: ${audioPath}`, e);
           });
         }
       }

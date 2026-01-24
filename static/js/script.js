@@ -74,16 +74,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Toggle music play/pause
-  if (musicToggleBtn && backgroundMusic) {
+  if (musicToggleBtn) {
     musicToggleBtn.addEventListener("click", function (e) {
       e.stopPropagation();
       e.preventDefault();
-      
-      // Don't allow actions if a play promise is in progress
-      if (isPlayingPromise) {
-        console.log("Play promise in progress, ignoring click");
-        return;
-      }
       
       const volume = volumeSlider ? parseInt(volumeSlider.value) : 30;
       
@@ -92,121 +86,25 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
       
-      if (backgroundMusic.paused) {
-        // User interaction - safe to play
-        // Set volume before playing
-        backgroundMusic.volume = volume / 100;
-        
-        // Set flag to prevent pause during play promise
-        isPlayingPromise = true;
-        
-        // Force load the audio on user interaction (this resumes suspended loads)
-        // Check if we need to set the src directly
-        if (!backgroundMusic.src && backgroundMusic.querySelector('source')) {
-          const source = backgroundMusic.querySelector('source');
-          if (source && source.src) {
-            backgroundMusic.src = source.src;
-          }
-        }
-        
-        backgroundMusic.load();
-        
-        // Wait for audio to be ready, with multiple retries
-        const tryPlay = (attempts = 0) => {
-          const maxAttempts = 15; // Try for up to 3 seconds (15 * 200ms)
-          
-          // Check for errors first
-          if (backgroundMusic.error) {
-            console.error("Audio error detected:", backgroundMusic.error.code, backgroundMusic.error.message);
-            isPlayingPromise = false;
-            isPlaying = false;
-            updateButtonIcons();
-            return;
-          }
-          
-          if (backgroundMusic.readyState >= 2) {
-            // Audio has enough data to play
-            const playPromise = backgroundMusic.play();
-            
-            if (playPromise !== undefined) {
-              playPromise
-                .then(() => {
-                  musicStarted = true;
-                  isPlaying = true;
-                  isPlayingPromise = false; // Clear flag after successful play
-                  updateButtonIcons();
-                  console.log("Music playing successfully");
-                })
-                .catch(err => {
-                  isPlayingPromise = false; // Clear flag on error
-                  // Log all errors for debugging
-                  console.error("Play failed:", err.name, err.message);
-                  if (err.name !== 'AbortError') {
-                    // Try to reload and play again
-                    console.log("Attempting to reload audio...");
-                    backgroundMusic.load();
-                    setTimeout(() => {
-                      if (backgroundMusic.readyState >= 2) {
-                        isPlayingPromise = true;
-                        backgroundMusic.play()
-                          .then(() => {
-                            musicStarted = true;
-                            isPlaying = true;
-                            isPlayingPromise = false;
-                            updateButtonIcons();
-                            console.log("Music playing after reload");
-                          })
-                          .catch(err2 => {
-                            isPlayingPromise = false;
-                            console.error("Play failed after reload:", err2);
-                            isPlaying = false;
-                            updateButtonIcons();
-                          });
-                      } else {
-                        console.error("Audio still not ready after reload");
-                        isPlayingPromise = false;
-                        isPlaying = false;
-                        updateButtonIcons();
-                      }
-                    }, 500);
-                  } else {
-                    isPlaying = false;
-                    updateButtonIcons();
-                  }
-                });
-            } else {
-              // Fallback if play() doesn't return a promise
-              isPlayingPromise = false;
-              musicStarted = true;
-              isPlaying = true;
-              updateButtonIcons();
-            }
-          } else if (attempts < maxAttempts) {
-            // Audio not ready yet, wait a bit and try again
-            setTimeout(() => {
-              tryPlay(attempts + 1);
-            }, 200);
-          } else {
-            // Max attempts reached, audio failed to load
-            console.error("Audio failed to load after", maxAttempts, "attempts. ReadyState:", backgroundMusic.readyState);
-            console.error("Audio networkState:", backgroundMusic.networkState);
-            console.error("Audio error:", backgroundMusic.error);
-            isPlayingPromise = false;
-            isPlaying = false;
-            updateButtonIcons();
-          }
-        };
-        
-        // Start trying to play
-        tryPlay();
+      if (!youtubePlayer) {
+        console.error("YouTube player not initialized");
+        return;
+      }
+      
+      if (!isPlaying) {
+        // Play music
+        youtubePlayer.setVolume(volume);
+        youtubePlayer.playVideo();
+        musicStarted = true;
+        isPlaying = true;
+        updateButtonIcons();
+        console.log("Music playing");
       } else {
-        // Only pause if not in the middle of a play promise
-        if (!isPlayingPromise) {
-          backgroundMusic.pause();
-          isPlaying = false;
-          updateButtonIcons();
-          console.log("Music paused");
-        }
+        // Pause music
+        youtubePlayer.pauseVideo();
+        isPlaying = false;
+        updateButtonIcons();
+        console.log("Music paused");
       }
     });
   }

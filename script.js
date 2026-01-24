@@ -736,6 +736,94 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // ===== Contact Form Modal =====
+  const emailCard = document.getElementById("emailCard");
+  const emailCardLink = document.getElementById("emailCardLink");
+  const contactFormModal = document.getElementById("contactFormModal");
+  const contactModalClose = document.querySelector(".contact-modal-close");
+  const cancelContactBtn = document.getElementById("cancelContactBtn");
+  const contactForm = document.getElementById("contactForm");
+
+  function showContactForm() {
+    if (contactFormModal) {
+      contactFormModal.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function hideContactForm() {
+    if (contactFormModal) {
+      contactFormModal.classList.remove("show");
+      document.body.style.overflow = "";
+      contactForm.reset();
+    }
+  }
+
+  // Open modal when email card or link is clicked
+  if (emailCard) {
+    emailCard.addEventListener("click", function (e) {
+      e.preventDefault();
+      showContactForm();
+    });
+  }
+
+  if (emailCardLink) {
+    emailCardLink.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      showContactForm();
+    });
+  }
+
+  // Close modal
+  if (contactModalClose) {
+    contactModalClose.addEventListener("click", hideContactForm);
+  }
+
+  if (cancelContactBtn) {
+    cancelContactBtn.addEventListener("click", hideContactForm);
+  }
+
+  // Close modal when clicking outside
+  if (contactFormModal) {
+    contactFormModal.addEventListener("click", function (e) {
+      if (e.target === contactFormModal) {
+        hideContactForm();
+      }
+    });
+  }
+
+  // Close modal with Escape key
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && contactFormModal && contactFormModal.classList.contains("show")) {
+      hideContactForm();
+    }
+  });
+
+  // Handle form submission
+  if (contactForm) {
+    contactForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      
+      const name = document.getElementById("contactName").value;
+      const email = document.getElementById("contactEmail").value;
+      const subject = document.getElementById("contactSubject").value;
+      const message = document.getElementById("contactMessage").value;
+
+      // Create mailto link with form data
+      const mailtoLink = `mailto:kanekabena@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+      
+      // Open email client
+      window.location.href = mailtoLink;
+      
+      // Show success message (optional)
+      setTimeout(function() {
+        hideContactForm();
+        alert("Thank you for your message! Your email client should open shortly.");
+      }, 100);
+    });
+  }
+
   // ===== Parallax Effect for Background =====
   window.addEventListener("scroll", function () {
     const scrolled = window.pageYOffset;

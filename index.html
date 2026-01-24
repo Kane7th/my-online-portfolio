@@ -526,7 +526,7 @@
         
         <div class="contact-grid">
           <!-- Email Card -->
-          <div class="contact-card">
+          <div class="contact-card" id="emailCard">
             <div class="contact-icon">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -535,7 +535,7 @@
             </div>
             <h3 class="contact-card-title">Email</h3>
             <p class="contact-card-text">Drop me a line anytime</p>
-            <a href="mailto:kanekabena@gmail.com" class="contact-card-link">kanekabena@gmail.com</a>
+            <a href="#" class="contact-card-link" id="emailCardLink">Send me a message</a>
           </div>
 
           <!-- Phone Card -->
@@ -602,6 +602,45 @@
         </div>
       </div>
     </section>
+
+    <!-- Contact Form Modal -->
+    <div id="contactFormModal" class="contact-modal">
+      <div class="contact-modal-content">
+        <span class="contact-modal-close">&times;</span>
+        <div class="contact-modal-header">
+          <div class="contact-modal-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="contact-modal-title">Send me a message</h3>
+          <p class="contact-modal-subtitle">Fill out the form below and I'll get back to you as soon as possible.</p>
+        </div>
+        <form id="contactForm" class="contact-form">
+          <div class="form-group">
+            <label for="contactName">Name *</label>
+            <input type="text" id="contactName" name="name" required placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">Email *</label>
+            <input type="email" id="contactEmail" name="email" required placeholder="your.email@example.com">
+          </div>
+          <div class="form-group">
+            <label for="contactSubject">Subject *</label>
+            <input type="text" id="contactSubject" name="subject" required placeholder="What's this about?">
+          </div>
+          <div class="form-group">
+            <label for="contactMessage">Message *</label>
+            <textarea id="contactMessage" name="message" rows="6" required placeholder="Tell me about your project, question, or opportunity..."></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="cancelContactBtn">Cancel</button>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <!-- Server Offline Error Modal -->
     <div id="serverOfflineModal" class="error-modal">

@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kane Kabena | Full-Stack Developer</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" />
-    <link rel="stylesheet" href="style.css" />
-    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <script defer src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+      // Pass Flask static URL to JavaScript
+      window.STATIC_URL = "{{ url_for('static', filename='') }}";
+    </script>
   </head>
   <body>
     <!-- Navigation -->
@@ -18,7 +22,7 @@
           <li><a href="#projects" class="nav-link">WORK</a></li>
           <li><a href="#contact" class="nav-link">CONTACT</a></li>
         </ul>
-        <a href="Kane - 2025 Resume.pdf" class="resume-link" download>RESUME</a>
+        <a href="{{ url_for('download_resume') }}" class="resume-link" download>RESUME</a>
       </div>
     </nav>
 
@@ -73,7 +77,7 @@
           </div>
           <h1 class="hero-title">
             Hi! I'm <span class="highlight">K</span>ane,<br />
-            <span class="subtitle">Software developer</span>
+            <span class="subtitle">Software Developer</span>
           </h1>
           <div class="html-tags">
             <span class="html-tag">&lt;P&gt;</span>

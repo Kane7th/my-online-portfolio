@@ -16,19 +16,11 @@ app.config['DEBUG'] = os.getenv('DEBUG', 'False').lower() == 'true'
 # Routes
 @app.route('/')
 def index():
-    """Main portfolio page"""
-    # Serve the root index.html for GitHub Pages compatibility
+    """Main portfolio page - serves root index.html for GitHub Pages compatibility"""
     import os
+    from flask import send_from_directory
     root_dir = os.path.dirname(os.path.abspath(__file__))
-    index_path = os.path.join(root_dir, 'index.html')
-    with open(index_path, 'r', encoding='utf-8') as f:
-        content = f.read()
-    # Replace static paths with Flask url_for for local development
-    content = content.replace('href="style.css"', 'href="{{ url_for(\'static\', filename=\'css/style.css\') }}"')
-    content = content.replace('src="script.js"', 'src="{{ url_for(\'static\', filename=\'js/script.js\') }}"')
-    content = content.replace('href="Kane - 2025 Resume.pdf"', 'href="{{ url_for(\'download_resume\') }}"')
-    from flask import render_template_string
-    return render_template_string(content)
+    return send_from_directory(root_dir, 'index.html')
 
 @app.route('/api/health')
 def health_check():

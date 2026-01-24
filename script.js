@@ -735,7 +735,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: try common formats
+        // Fallback: try common formats - wait for load
         const isGitHubPages = window.location.hostname.includes('github.io');
         const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
         const staticUrl = window.STATIC_URL || `${basePath}static/`;
@@ -743,14 +743,37 @@ document.addEventListener("DOMContentLoaded", function () {
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/screen-switch-on.${format}`);
           audio.volume = 0.7;
-          const playPromise = audio.play();
-          if (playPromise !== undefined) {
-            playPromise.then(() => {
-              console.log(`Playing screen switch-on sound: ${format}`);
-            }).catch(e => {
-              console.error(`Failed to play screen switch-on sound: ${format}`, e);
-            });
-          }
+          audio.preload = 'auto';
+          
+          // Wait for audio to be ready before playing
+          const tryPlay = () => {
+            if (audio.readyState >= 2) {
+              const playPromise = audio.play();
+              if (playPromise !== undefined) {
+                playPromise.then(() => {
+                  console.log(`Playing screen switch-on sound: ${format}`);
+                }).catch(e => {
+                  console.error(`Failed to play screen switch-on sound: ${format}`, e);
+                });
+              }
+            } else {
+              // Wait a bit and try again
+              setTimeout(() => {
+                if (audio.readyState >= 2) {
+                  tryPlay();
+                } else {
+                  console.error(`Screen switch-on sound not ready: ${format}`);
+                }
+              }, 100);
+            }
+          };
+          
+          audio.addEventListener('canplaythrough', tryPlay, { once: true });
+          audio.addEventListener('error', function(e) {
+            console.error(`Failed to load screen switch-on sound: ${format}`, e);
+          }, { once: true });
+          audio.load();
+          tryPlay(); // Try immediately if already loaded
           break;
         }
       }
@@ -770,7 +793,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: try common formats
+        // Fallback: try common formats - wait for load
         const isGitHubPages = window.location.hostname.includes('github.io');
         const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
         const staticUrl = window.STATIC_URL || `${basePath}static/`;
@@ -778,14 +801,37 @@ document.addEventListener("DOMContentLoaded", function () {
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/screen-switch-off.${format}`);
           audio.volume = 0.7;
-          const playPromise = audio.play();
-          if (playPromise !== undefined) {
-            playPromise.then(() => {
-              console.log(`Playing screen switch-off sound: ${format}`);
-            }).catch(e => {
-              console.error(`Failed to play screen switch-off sound: ${format}`, e);
-            });
-          }
+          audio.preload = 'auto';
+          
+          // Wait for audio to be ready before playing
+          const tryPlay = () => {
+            if (audio.readyState >= 2) {
+              const playPromise = audio.play();
+              if (playPromise !== undefined) {
+                playPromise.then(() => {
+                  console.log(`Playing screen switch-off sound: ${format}`);
+                }).catch(e => {
+                  console.error(`Failed to play screen switch-off sound: ${format}`, e);
+                });
+              }
+            } else {
+              // Wait a bit and try again
+              setTimeout(() => {
+                if (audio.readyState >= 2) {
+                  tryPlay();
+                } else {
+                  console.error(`Screen switch-off sound not ready: ${format}`);
+                }
+              }, 100);
+            }
+          };
+          
+          audio.addEventListener('canplaythrough', tryPlay, { once: true });
+          audio.addEventListener('error', function(e) {
+            console.error(`Failed to load screen switch-off sound: ${format}`, e);
+          }, { once: true });
+          audio.load();
+          tryPlay(); // Try immediately if already loaded
           break;
         }
       }
@@ -851,7 +897,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: try common formats
+        // Fallback: try common formats - wait for load
         const isGitHubPages = window.location.hostname.includes('github.io');
         const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
         const staticUrl = window.STATIC_URL || `${basePath}static/`;
@@ -859,14 +905,37 @@ document.addEventListener("DOMContentLoaded", function () {
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/sit-down.${format}`);
           audio.volume = 0.7;
-          const playPromise = audio.play();
-          if (playPromise !== undefined) {
-            playPromise.then(() => {
-              console.log(`Playing sit-down sound: ${format}`);
-            }).catch(e => {
-              console.error(`Failed to play sit-down sound: ${format}`, e);
-            });
-          }
+          audio.preload = 'auto';
+          
+          // Wait for audio to be ready before playing
+          const tryPlay = () => {
+            if (audio.readyState >= 2) {
+              const playPromise = audio.play();
+              if (playPromise !== undefined) {
+                playPromise.then(() => {
+                  console.log(`Playing sit-down sound: ${format}`);
+                }).catch(e => {
+                  console.error(`Failed to play sit-down sound: ${format}`, e);
+                });
+              }
+            } else {
+              // Wait a bit and try again
+              setTimeout(() => {
+                if (audio.readyState >= 2) {
+                  tryPlay();
+                } else {
+                  console.error(`Sit-down sound not ready: ${format}`);
+                }
+              }, 100);
+            }
+          };
+          
+          audio.addEventListener('canplaythrough', tryPlay, { once: true });
+          audio.addEventListener('error', function(e) {
+            console.error(`Failed to load sit-down sound: ${format}`, e);
+          }, { once: true });
+          audio.load();
+          tryPlay(); // Try immediately if already loaded
           break;
         }
       }
@@ -886,7 +955,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: try common formats
+        // Fallback: try common formats - wait for load
         const isGitHubPages = window.location.hostname.includes('github.io');
         const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
         const staticUrl = window.STATIC_URL || `${basePath}static/`;
@@ -894,14 +963,37 @@ document.addEventListener("DOMContentLoaded", function () {
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/sit-up.${format}`);
           audio.volume = 0.7;
-          const playPromise = audio.play();
-          if (playPromise !== undefined) {
-            playPromise.then(() => {
-              console.log(`Playing sit-up sound: ${format}`);
-            }).catch(e => {
-              console.error(`Failed to play sit-up sound: ${format}`, e);
-            });
-          }
+          audio.preload = 'auto';
+          
+          // Wait for audio to be ready before playing
+          const tryPlay = () => {
+            if (audio.readyState >= 2) {
+              const playPromise = audio.play();
+              if (playPromise !== undefined) {
+                playPromise.then(() => {
+                  console.log(`Playing sit-up sound: ${format}`);
+                }).catch(e => {
+                  console.error(`Failed to play sit-up sound: ${format}`, e);
+                });
+              }
+            } else {
+              // Wait a bit and try again
+              setTimeout(() => {
+                if (audio.readyState >= 2) {
+                  tryPlay();
+                } else {
+                  console.error(`Sit-up sound not ready: ${format}`);
+                }
+              }, 100);
+            }
+          };
+          
+          audio.addEventListener('canplaythrough', tryPlay, { once: true });
+          audio.addEventListener('error', function(e) {
+            console.error(`Failed to load sit-up sound: ${format}`, e);
+          }, { once: true });
+          audio.load();
+          tryPlay(); // Try immediately if already loaded
           break;
         }
       }

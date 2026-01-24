@@ -1206,6 +1206,31 @@ nav.scrolled {
 }
 
 /* Skills */
+#skills {
+  background-image: url('../images/workspace-6.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+}
+
+#skills::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 14, 39, 0.7);
+  z-index: 0;
+}
+
+#skills .section-container {
+  position: relative;
+  z-index: 1;
+}
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));

@@ -700,48 +700,9 @@ document.addEventListener("DOMContentLoaded", function () {
   preloadScreenSounds();
   preloadChairSounds();
   
-  // Preload screen switch sounds
+  // Preload screen switch sounds (simplified - load on demand)
   function preloadScreenSounds() {
-    try {
-      let staticUrl = 'static/';
-      if (window.location.pathname.includes('/my-online-portfolio')) {
-        staticUrl = '/my-online-portfolio/static/';
-      } else if (window.STATIC_URL) {
-        staticUrl = window.STATIC_URL;
-      }
-      
-      // Load switch-on audio file
-      const audioOn = new Audio(`${staticUrl}sounds/screen-switch-on.mp3`);
-      audioOn.preload = 'auto';
-      audioOn.addEventListener('canplaythrough', function() {
-        if (!screenSwitchOnAudio) {
-          screenSwitchOnAudio = audioOn;
-          screenSwitchOnAudio.volume = 0.7;
-          console.log(`Screen switch-on sound loaded: ${staticUrl}sounds/screen-switch-on.mp3`);
-        }
-      }, { once: true });
-      audioOn.addEventListener('error', function(e) {
-        console.error(`Failed to load screen switch-on sound:`, e);
-      }, { once: true });
-      audioOn.load();
-      
-      // Load switch-off audio file
-      const audioOff = new Audio(`${staticUrl}sounds/screen-switch-off.mp3`);
-      audioOff.preload = 'auto';
-      audioOff.addEventListener('canplaythrough', function() {
-        if (!screenSwitchOffAudio) {
-          screenSwitchOffAudio = audioOff;
-          screenSwitchOffAudio.volume = 0.7;
-          console.log(`Screen switch-off sound loaded: ${staticUrl}sounds/screen-switch-off.mp3`);
-        }
-      }, { once: true });
-      audioOff.addEventListener('error', function(e) {
-        console.error(`Failed to load screen switch-off sound:`, e);
-      }, { once: true });
-      audioOff.load();
-    } catch (e) {
-      console.error("Screen sound files preload error:", e);
-    }
+    // Skip preloading - load on demand instead
   }
   
   function playScreenSwitchOnSound() {
@@ -755,19 +716,22 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: create new audio instance
-        const isGitHubPages = window.location.hostname.includes('github.io');
-        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-        const staticUrl = window.STATIC_URL || `${basePath}static/`;
-        const audioPath = `${staticUrl}sounds/screen-switch-on.mp3`;
+        // Load on demand
+        const audioPath = getSoundPath('screen-switch-on.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
+        
+        // Store for reuse
+        if (!screenSwitchOnAudio) {
+          screenSwitchOnAudio = audio;
+        }
+        
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
             console.log(`Playing screen switch-on sound: ${audioPath}`);
           }).catch(e => {
-            console.error(`Failed to play screen switch-on sound:`, e);
+            console.error(`Failed to play screen switch-on sound: ${audioPath}`, e);
           });
         }
       }
@@ -787,19 +751,22 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: create new audio instance
-        const isGitHubPages = window.location.hostname.includes('github.io');
-        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-        const staticUrl = window.STATIC_URL || `${basePath}static/`;
-        const audioPath = `${staticUrl}sounds/screen-switch-off.mp3`;
+        // Load on demand
+        const audioPath = getSoundPath('screen-switch-off.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
+        
+        // Store for reuse
+        if (!screenSwitchOffAudio) {
+          screenSwitchOffAudio = audio;
+        }
+        
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
             console.log(`Playing screen switch-off sound: ${audioPath}`);
           }).catch(e => {
-            console.error(`Failed to play screen switch-off sound:`, e);
+            console.error(`Failed to play screen switch-off sound: ${audioPath}`, e);
           });
         }
       }

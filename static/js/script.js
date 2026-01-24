@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Track if music has been started by user interaction
   let musicStarted = false;
   let isPlaying = false;
+  let isPlayingPromise = false; // Flag to prevent pause during play promise
 
   // Function to update button icons based on state
   function updateButtonIcons() {
@@ -79,6 +80,12 @@ document.addEventListener("DOMContentLoaded", function () {
       e.stopPropagation();
       e.preventDefault();
       
+      // Don't allow actions if a play promise is in progress
+      if (isPlayingPromise) {
+        console.log("Play promise in progress, ignoring click");
+        return;
+      }
+      
       const volume = volumeSlider ? parseInt(volumeSlider.value) : 30;
       
       // Don't allow play if volume is 0
@@ -96,6 +103,9 @@ document.addEventListener("DOMContentLoaded", function () {
           backgroundMusic.load();
         }
         
+        // Set flag to prevent pause during play promise
+        isPlayingPromise = true;
+        
         const playPromise = backgroundMusic.play();
         
         if (playPromise !== undefined) {
@@ -103,10 +113,12 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(() => {
               musicStarted = true;
               isPlaying = true;
+              isPlayingPromise = false; // Clear flag after successful play
               updateButtonIcons();
               console.log("Music playing successfully");
             })
             .catch(err => {
+              isPlayingPromise = false; // Clear flag on error
               // Log all errors for debugging
               console.error("Play failed:", err.name, err.message);
               if (err.name !== 'AbortError') {
@@ -114,14 +126,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("Attempting to reload audio...");
                 backgroundMusic.load();
                 setTimeout(() => {
+                  isPlayingPromise = true;
                   backgroundMusic.play()
                     .then(() => {
                       musicStarted = true;
                       isPlaying = true;
+                      isPlayingPromise = false;
                       updateButtonIcons();
                       console.log("Music playing after reload");
                     })
                     .catch(err2 => {
+                      isPlayingPromise = false;
                       console.error("Play failed after reload:", err2);
                       isPlaying = false;
                       updateButtonIcons();
@@ -134,16 +149,19 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         } else {
           // Fallback if play() doesn't return a promise
+          isPlayingPromise = false;
           musicStarted = true;
           isPlaying = true;
           updateButtonIcons();
         }
       } else {
-        // Pause the music
-        backgroundMusic.pause();
-        isPlaying = false;
-        updateButtonIcons();
-        console.log("Music paused");
+        // Only pause if not in the middle of a play promise
+        if (!isPlayingPromise) {
+          backgroundMusic.pause();
+          isPlaying = false;
+          updateButtonIcons();
+          console.log("Music paused");
+        }
       }
     });
   }
@@ -165,14 +183,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // Listen for play/pause events to keep state in sync
     backgroundMusic.addEventListener("play", function () {
       isPlaying = true;
+      isPlayingPromise = false; // Clear flag when play event fires
       updateButtonIcons();
       console.log("Audio play event fired");
     });
 
     backgroundMusic.addEventListener("pause", function () {
-      isPlaying = false;
-      updateButtonIcons();
-      console.log("Audio pause event fired");
+      // Only update if not in the middle of a play promise
+      if (!isPlayingPromise) {
+        isPlaying = false;
+        updateButtonIcons();
+        console.log("Audio pause event fired");
+      } else {
+        console.log("Pause event ignored - play promise in progress");
+      }
     });
 
     backgroundMusic.addEventListener("loadeddata", function () {

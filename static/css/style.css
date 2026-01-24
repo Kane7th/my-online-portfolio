@@ -592,17 +592,85 @@ nav.scrolled {
 }
 
 .logo-circle {
-  width: 60px;
-  height: 60px;
-  border: 2px solid #ffffff;
-  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  border: 2px solid #5dade2;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: #5dade2;
+  margin-bottom: 30px;
+  position: relative;
+  background: rgba(93, 173, 226, 0.05);
+  box-shadow: 0 0 15px rgba(93, 173, 226, 0.3), 
+              inset 0 0 15px rgba(93, 173, 226, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.logo-circle::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(93, 173, 226, 0.15), transparent);
+  transform: rotate(45deg);
+  transition: transform 0.6s ease;
+  animation: logoShimmer 3s ease-in-out infinite;
+}
+
+@keyframes logoShimmer {
+  0%, 100% {
+    transform: rotate(45deg) translate(-100%, -100%);
+  }
+  50% {
+    transform: rotate(45deg) translate(100%, 100%);
+  }
+}
+
+.logo-bracket {
+  font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+  font-size: 22px;
+  font-weight: 400;
+  color: rgba(93, 173, 226, 0.7);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.logo-letter {
+  font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
   font-size: 32px;
   font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 30px;
+  color: #5dade2;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 0 15px rgba(93, 173, 226, 0.6);
+}
+
+.logo-container:hover .logo-circle {
+  border-color: #7dd3fc;
+  box-shadow: 0 0 25px rgba(93, 173, 226, 0.6), 
+              inset 0 0 20px rgba(93, 173, 226, 0.2),
+              0 0 40px rgba(125, 211, 252, 0.4);
+  transform: scale(1.05);
+}
+
+.logo-container:hover .logo-bracket {
+  color: rgba(125, 211, 252, 0.9);
+}
+
+.logo-container:hover .logo-letter {
+  color: #7dd3fc;
+  text-shadow: 0 0 20px rgba(125, 211, 252, 0.9), 
+               0 0 35px rgba(125, 211, 252, 0.6);
 }
 
 .html-tags {

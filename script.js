@@ -316,14 +316,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // ===== Person Zone Click (Screen) - Cycles: 1 → 4 → 3 → 1 =====
   const personZone = document.getElementById("personZone");
   
-  console.log("Person Zone found:", personZone); // Debug
-  console.log("Workspace images found:", {
-    img1: workspaceImage1,
-    img2: workspaceImage2,
-    img3: workspaceImage3,
-    img4: workspaceImage4
-  }); // Debug
-  
   if (personZone) {
     personZone.addEventListener("click", function (e) {
       e.preventDefault();
@@ -390,8 +382,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ===== Workspace4 Zone Click (Chair) - Toggle workspace-3.jpg =====
   const workspace4Zone = document.getElementById("workspace4Zone");
-  
-  console.log("Workspace4 Zone found:", workspace4Zone); // Debug
   
   if (workspace4Zone) {
     workspace4Zone.addEventListener("click", function (e) {

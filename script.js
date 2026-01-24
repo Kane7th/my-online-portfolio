@@ -881,8 +881,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize EmailJS (replace with your actual keys after setting up EmailJS account)
   // Get your keys from https://www.emailjs.com/
-  if (typeof emailjs !== 'undefined') {
-    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+  // Note: Make sure to use EmailJS service (not Gmail API) to avoid authentication scope issues
+  const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // Replace with your EmailJS public key
+  const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID"; // Replace with your EmailJS service ID
+  const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // Replace with your EmailJS template ID
+  
+  if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
   }
 
   // Handle form submission
@@ -937,8 +942,10 @@ document.addEventListener("DOMContentLoaded", function () {
         to_email: "kanekabena@gmail.com"
       };
 
-      // Check if EmailJS is available
-      if (typeof emailjs === 'undefined' || !emailjs.send) {
+      // Check if EmailJS is available and properly configured
+      if (typeof emailjs === 'undefined' || !emailjs.send || 
+          EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID" || 
+          EMAILJS_TEMPLATE_ID === "YOUR_TEMPLATE_ID") {
         // Fallback to mailto if EmailJS is not configured
         const subject = encodeURIComponent(`Portfolio Contact: ${name}`);
         const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
@@ -957,8 +964,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Send email using EmailJS
-      // Replace "YOUR_SERVICE_ID" and "YOUR_TEMPLATE_ID" with your actual EmailJS service and template IDs
-      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", templateParams)
+      // Make sure your EmailJS service is set up with a compatible email service (not Gmail API)
+      // Recommended: Use EmailJS's own email service or SMTP service
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
         .then(function(response) {
           console.log("Email sent successfully!", response.status, response.text);
           

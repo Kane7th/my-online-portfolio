@@ -102,11 +102,28 @@ document.addEventListener("DOMContentLoaded", function () {
         isPlayingPromise = true;
         
         // Force load the audio on user interaction (this resumes suspended loads)
+        // Check if we need to set the src directly
+        if (!backgroundMusic.src && backgroundMusic.querySelector('source')) {
+          const source = backgroundMusic.querySelector('source');
+          if (source && source.src) {
+            backgroundMusic.src = source.src;
+          }
+        }
+        
         backgroundMusic.load();
         
         // Wait for audio to be ready, with multiple retries
         const tryPlay = (attempts = 0) => {
-          const maxAttempts = 10; // Try for up to 2 seconds (10 * 200ms)
+          const maxAttempts = 15; // Try for up to 3 seconds (15 * 200ms)
+          
+          // Check for errors first
+          if (backgroundMusic.error) {
+            console.error("Audio error detected:", backgroundMusic.error.code, backgroundMusic.error.message);
+            isPlayingPromise = false;
+            isPlaying = false;
+            updateButtonIcons();
+            return;
+          }
           
           if (backgroundMusic.readyState >= 2) {
             // Audio has enough data to play

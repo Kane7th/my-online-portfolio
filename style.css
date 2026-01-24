@@ -13,6 +13,13 @@ body, html {
   color: #ffffff;
   background: #0a0e27;
   overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  flex: 1;
 }
 
 /* Navigation */
@@ -2035,6 +2042,8 @@ footer {
   text-align: center;
   color: #5dade2;
   border-top: 1px solid rgba(93, 173, 226, 0.2);
+  margin-top: auto;
+  width: 100%;
 }
 
 /* Responsive Design */

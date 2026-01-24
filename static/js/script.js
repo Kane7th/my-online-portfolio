@@ -98,22 +98,16 @@ document.addEventListener("DOMContentLoaded", function () {
         // Set volume before playing
         backgroundMusic.volume = volume / 100;
         
-        // Ensure audio is loaded - check readyState
-        console.log("Audio readyState before play:", backgroundMusic.readyState);
-        if (backgroundMusic.readyState < 2) {
-          console.log("Audio not ready, calling load()...");
-          backgroundMusic.load();
-          // Wait a bit for load to start
-          setTimeout(() => {
-            console.log("Audio readyState after load:", backgroundMusic.readyState);
-          }, 100);
-        }
-        
         // Set flag to prevent pause during play promise
         isPlayingPromise = true;
         
-        // Wait for audio to be ready if it's still loading
-        const tryPlay = () => {
+        // Force load the audio on user interaction (this resumes suspended loads)
+        backgroundMusic.load();
+        
+        // Wait for audio to be ready, with multiple retries
+        const tryPlay = (attempts = 0) => {
+          const maxAttempts = 10; // Try for up to 2 seconds (10 * 200ms)
+          
           if (backgroundMusic.readyState >= 2) {
             // Audio has enough data to play
             const playPromise = backgroundMusic.play();
@@ -171,22 +165,23 @@ document.addEventListener("DOMContentLoaded", function () {
               isPlaying = true;
               updateButtonIcons();
             }
-          } else {
+          } else if (attempts < maxAttempts) {
             // Audio not ready yet, wait a bit and try again
-            console.log("Audio not ready, waiting... readyState:", backgroundMusic.readyState);
             setTimeout(() => {
-              if (backgroundMusic.readyState >= 2) {
-                tryPlay();
-              } else {
-                console.error("Audio failed to load after waiting");
-                isPlayingPromise = false;
-                isPlaying = false;
-                updateButtonIcons();
-              }
+              tryPlay(attempts + 1);
             }, 200);
+          } else {
+            // Max attempts reached, audio failed to load
+            console.error("Audio failed to load after", maxAttempts, "attempts. ReadyState:", backgroundMusic.readyState);
+            console.error("Audio networkState:", backgroundMusic.networkState);
+            console.error("Audio error:", backgroundMusic.error);
+            isPlayingPromise = false;
+            isPlaying = false;
+            updateButtonIcons();
           }
         };
         
+        // Start trying to play
         tryPlay();
       } else {
         // Only pause if not in the middle of a play promise

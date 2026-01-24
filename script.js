@@ -754,19 +754,22 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: create new audio instance
-        const isGitHubPages = window.location.hostname.includes('github.io');
-        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-        const staticUrl = window.STATIC_URL || `${basePath}static/`;
-        const audioPath = `${staticUrl}sounds/sit-down.mp3`;
+        // Load on demand
+        const audioPath = getSoundPath('sit-down.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
+        
+        // Store for reuse
+        if (!sitDownAudio) {
+          sitDownAudio = audio;
+        }
+        
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
             console.log(`Playing sit-down sound: ${audioPath}`);
           }).catch(e => {
-            console.error(`Failed to play sit-down sound:`, e);
+            console.error(`Failed to play sit-down sound: ${audioPath}`, e);
           });
         }
       }
@@ -786,19 +789,22 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: create new audio instance
-        const isGitHubPages = window.location.hostname.includes('github.io');
-        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-        const staticUrl = window.STATIC_URL || `${basePath}static/`;
-        const audioPath = `${staticUrl}sounds/sit-up.mp3`;
+        // Load on demand
+        const audioPath = getSoundPath('sit-up.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
+        
+        // Store for reuse
+        if (!sitUpAudio) {
+          sitUpAudio = audio;
+        }
+        
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
             console.log(`Playing sit-up sound: ${audioPath}`);
           }).catch(e => {
-            console.error(`Failed to play sit-up sound:`, e);
+            console.error(`Failed to play sit-up sound: ${audioPath}`, e);
           });
         }
       }

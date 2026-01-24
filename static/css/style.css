@@ -2763,10 +2763,32 @@ footer {
     padding: 0 15px;
   }
 
-  .person-zone,
-  .workspace4-zone,
-  .lamp-zone {
-    display: none;
+  /* Keep interactive zones visible but adjust for tablet */
+  .person-zone {
+    bottom: 38%;
+    left: 38%;
+    width: 26vw;
+    height: 26vh;
+    min-width: 180px;
+    min-height: 140px;
+  }
+
+  .workspace4-zone {
+    bottom: 4%;
+    right: 38%;
+    width: 22vw;
+    height: 26vh;
+    min-width: 140px;
+    min-height: 180px;
+  }
+
+  .lamp-zone-right {
+    bottom: 51%;
+    right: 22%;
+    width: 4vw;
+    height: 5vw;
+    min-width: 80px;
+    min-height: 80px;
   }
 
   .workspace-overlay {
@@ -3273,5 +3295,66 @@ footer {
   /* Scroll indicator - Hide on mobile */
   .scroll-indicator {
     display: none;
+  }
+
+  /* Interactive Zones - Mobile responsive positioning */
+  .person-zone {
+    bottom: 35%;
+    left: 30%;
+    width: 40vw;
+    height: 30vh;
+    min-width: 140px;
+    min-height: 120px;
+    max-width: 280px;
+    max-height: 220px;
+  }
+
+  .person-hint {
+    font-size: clamp(0.75rem, 3vw, 0.9rem);
+    padding: 8px 12px;
+  }
+
+  .workspace4-zone {
+    bottom: 3%;
+    right: 25%;
+    width: 50vw;
+    height: 28vh;
+    min-width: 120px;
+    min-height: 160px;
+    max-width: 280px;
+    max-height: 300px;
+  }
+
+  .workspace4-hint {
+    font-size: clamp(0.75rem, 3vw, 0.9rem);
+    padding: 8px 12px;
+  }
+
+  .lamp-zone-right {
+    bottom: 48%;
+    right: 15%;
+    width: 12vw;
+    height: 12vw;
+    min-width: 60px;
+    min-height: 60px;
+    max-width: 70px;
+    max-height: 70px;
+  }
+
+  .lamp-hint {
+    font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+    padding: 6px 10px;
+  }
+
+  .lamp-hint .hint-arrow {
+    font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+  }
+
+  /* Ensure zones are always clickable on mobile */
+  .clickable-zone {
+    min-height: 44px;
+    min-width: 44px;
+    -webkit-tap-highlight-color: rgba(93, 173, 226, 0.3);
+    touch-action: manipulation;
   }
 }

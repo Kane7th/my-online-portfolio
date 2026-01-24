@@ -3118,15 +3118,36 @@ footer {
     display: none;
   }
 
-  /* Music control on mobile */
-  .nav-music-control {
-    order: 2;
-    margin-left: 10px;
-    gap: 8px;
+  /* Music control on mobile - hide in navbar, show in expanded menu */
+  .nav-container .nav-music-control {
+    display: none;
+  }
+
+  /* Show music control as fixed element when mobile menu is active */
+  .nav-list.active ~ .nav-music-control {
+    display: flex;
+    position: fixed;
+    top: auto;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(10, 14, 39, 0.98);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 15px 20px;
+    margin: 0;
+    border-top: 1px solid rgba(93, 173, 226, 0.1);
+    z-index: 999;
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
   }
 
   .music-volume-control {
-    min-width: 80px;
+    min-width: 100%;
+    width: 100%;
   }
 
   .volume-value {

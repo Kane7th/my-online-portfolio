@@ -826,10 +826,11 @@ document.addEventListener("DOMContentLoaded", function () {
   
   window.addEventListener("scroll", function () {
     const currentScrollY = window.scrollY;
+    const isMobile = window.innerWidth <= 768;
     
     if (interactiveZones) {
-      // Fade out when scrolling down past 50px, fade in when back at top
-      if (currentScrollY > 50) {
+      // Only fade on desktop (>768px), always visible on mobile/tablet
+      if (!isMobile && currentScrollY > 50) {
         interactiveZones.classList.add("fade-out");
       } else {
         interactiveZones.classList.remove("fade-out");
@@ -838,6 +839,11 @@ document.addEventListener("DOMContentLoaded", function () {
     
     lastScrollY = currentScrollY;
   });
+
+  // Ensure zones are visible on mobile on page load
+  if (interactiveZones && window.innerWidth <= 768) {
+    interactiveZones.classList.remove("fade-out");
+  }
 
   // ===== Fade in animation on scroll =====
   const observerOptions = {

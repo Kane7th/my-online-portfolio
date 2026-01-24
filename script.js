@@ -98,16 +98,33 @@ document.addEventListener("DOMContentLoaded", function () {
         // Set volume before playing
         backgroundMusic.volume = volume / 100;
         
-        // Ensure audio is loaded
-        if (backgroundMusic.readyState < 2) {
-          backgroundMusic.load();
-        }
-        
         // Set flag to prevent pause during play promise
         isPlayingPromise = true;
         
-        // Wait for audio to be ready if it's still loading
-        const tryPlay = () => {
+        // Force load the audio on user interaction (this resumes suspended loads)
+        // Check if we need to set the src directly
+        if (!backgroundMusic.src && backgroundMusic.querySelector('source')) {
+          const source = backgroundMusic.querySelector('source');
+          if (source && source.src) {
+            backgroundMusic.src = source.src;
+          }
+        }
+        
+        backgroundMusic.load();
+        
+        // Wait for audio to be ready, with multiple retries
+        const tryPlay = (attempts = 0) => {
+          const maxAttempts = 15; // Try for up to 3 seconds (15 * 200ms)
+          
+          // Check for errors first
+          if (backgroundMusic.error) {
+            console.error("Audio error detected:", backgroundMusic.error.code, backgroundMusic.error.message);
+            isPlayingPromise = false;
+            isPlaying = false;
+            updateButtonIcons();
+            return;
+          }
+          
           if (backgroundMusic.readyState >= 2) {
             // Audio has enough data to play
             const playPromise = backgroundMusic.play();
@@ -165,22 +182,65 @@ document.addEventListener("DOMContentLoaded", function () {
               isPlaying = true;
               updateButtonIcons();
             }
-          } else {
+          } else if (attempts < maxAttempts) {
             // Audio not ready yet, wait a bit and try again
-            console.log("Audio not ready, waiting... readyState:", backgroundMusic.readyState);
+            // If still at readyState 0 after a few attempts, try reloading
+            if (attempts === 3 && backgroundMusic.readyState === 0) {
+              console.log("Audio still at readyState 0, attempting to reload...");
+              backgroundMusic.load();
+            }
             setTimeout(() => {
-              if (backgroundMusic.readyState >= 2) {
-                tryPlay();
-              } else {
-                console.error("Audio failed to load after waiting");
-                isPlayingPromise = false;
-                isPlaying = false;
-                updateButtonIcons();
-              }
+              tryPlay(attempts + 1);
             }, 200);
+          } else {
+            // Max attempts reached, audio failed to load
+            console.error("Audio failed to load after", maxAttempts, "attempts");
+            console.error("ReadyState:", backgroundMusic.readyState);
+            console.error("NetworkState:", backgroundMusic.networkState);
+            console.error("Error:", backgroundMusic.error);
+            console.error("Current src:", backgroundMusic.currentSrc || backgroundMusic.src);
+            
+            // Try one more time with a direct src set
+            if (!backgroundMusic.error && backgroundMusic.querySelector('source')) {
+              const source = backgroundMusic.querySelector('source');
+              if (source && source.src) {
+                console.log("Attempting direct src assignment:", source.src);
+                backgroundMusic.src = source.src;
+                backgroundMusic.load();
+                setTimeout(() => {
+                  if (backgroundMusic.readyState >= 2) {
+                    backgroundMusic.play()
+                      .then(() => {
+                        musicStarted = true;
+                        isPlaying = true;
+                        isPlayingPromise = false;
+                        updateButtonIcons();
+                        console.log("Music playing after direct src assignment");
+                      })
+                      .catch(err => {
+                        console.error("Play failed after direct src:", err);
+                        isPlayingPromise = false;
+                        isPlaying = false;
+                        updateButtonIcons();
+                      });
+                  } else {
+                    console.error("Audio still not ready after direct src assignment");
+                    isPlayingPromise = false;
+                    isPlaying = false;
+                    updateButtonIcons();
+                  }
+                }, 500);
+                return;
+              }
+            }
+            
+            isPlayingPromise = false;
+            isPlaying = false;
+            updateButtonIcons();
           }
         };
         
+        // Start trying to play
         tryPlay();
       } else {
         // Only pause if not in the middle of a play promise

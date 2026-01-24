@@ -737,11 +737,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ===== Contact Form Modal =====
-  const emailCard = document.getElementById("emailCard");
-  const emailCardLink = document.getElementById("emailCardLink");
+  const openContactFormBtn = document.getElementById("openContactForm");
   const contactFormModal = document.getElementById("contactFormModal");
   const contactModalClose = document.querySelector(".contact-modal-close");
-  const cancelContactBtn = document.getElementById("cancelContactBtn");
   const contactForm = document.getElementById("contactForm");
 
   function showContactForm() {
@@ -755,36 +753,25 @@ document.addEventListener("DOMContentLoaded", function () {
     if (contactFormModal) {
       contactFormModal.classList.remove("show");
       document.body.style.overflow = "";
-      contactForm.reset();
+      // Reset form
+      if (contactForm) {
+        contactForm.reset();
+      }
     }
   }
 
-  // Open modal when email card or link is clicked
-  if (emailCard) {
-    emailCard.addEventListener("click", function (e) {
-      e.preventDefault();
-      showContactForm();
-    });
-  }
-
-  if (emailCardLink) {
-    emailCardLink.addEventListener("click", function (e) {
+  if (openContactFormBtn) {
+    openContactFormBtn.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
       showContactForm();
     });
   }
 
-  // Close modal
   if (contactModalClose) {
     contactModalClose.addEventListener("click", hideContactForm);
   }
 
-  if (cancelContactBtn) {
-    cancelContactBtn.addEventListener("click", hideContactForm);
-  }
-
-  // Close modal when clicking outside
   if (contactFormModal) {
     contactFormModal.addEventListener("click", function (e) {
       if (e.target === contactFormModal) {
@@ -793,7 +780,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Close modal with Escape key
+  // Close contact modal with Escape key
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && contactFormModal && contactFormModal.classList.contains("show")) {
       hideContactForm();
@@ -807,19 +794,19 @@ document.addEventListener("DOMContentLoaded", function () {
       
       const name = document.getElementById("contactName").value;
       const email = document.getElementById("contactEmail").value;
-      const subject = document.getElementById("contactSubject").value;
       const message = document.getElementById("contactMessage").value;
 
       // Create mailto link with form data
-      const mailtoLink = `mailto:kanekabena@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
-      
+      const subject = encodeURIComponent(`Portfolio Contact: ${name}`);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+      const mailtoLink = `mailto:kanekabena@gmail.com?subject=${subject}&body=${body}`;
+
       // Open email client
       window.location.href = mailtoLink;
-      
-      // Show success message (optional)
-      setTimeout(function() {
+
+      // Close modal after a short delay
+      setTimeout(() => {
         hideContactForm();
-        alert("Thank you for your message! Your email client should open shortly.");
       }, 100);
     });
   }

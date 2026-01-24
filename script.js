@@ -606,60 +606,20 @@ document.addEventListener("DOMContentLoaded", function () {
   let sitDownAudio = null;
   let sitUpAudio = null;
   
-  // Preload the audio file
-  function preloadLampSound() {
-    try {
-      // Get static URL - use relative path from current location
-      let staticUrl = 'static/';
-      if (window.location.pathname.includes('/my-online-portfolio')) {
-        staticUrl = '/my-online-portfolio/static/';
-      } else if (window.STATIC_URL) {
-        staticUrl = window.STATIC_URL;
-      }
-      // Only try mp3 since that's what we have
-      const audioPath = `${staticUrl}sounds/lamp-click.mp3`;
-      
-      // First verify the file exists
-      fetch(audioPath, { method: 'HEAD' })
-        .then(response => {
-          if (response.ok) {
-            const audio = new Audio(audioPath);
-            audio.preload = 'auto';
-            audio.addEventListener('canplaythrough', function() {
-              if (!lampClickAudio) {
-                lampClickAudio = audio;
-                lampClickAudio.volume = 0.7; // Set volume (0.0 to 1.0)
-                console.log(`Lamp sound loaded: ${audioPath}`);
-              }
-            }, { once: true });
-            audio.addEventListener('error', function(e) {
-              console.error(`Failed to load lamp sound: ${audioPath}`, e, audio.error);
-            }, { once: true });
-            audio.load();
-          } else {
-            console.warn(`Lamp sound file not found: ${audioPath} (Status: ${response.status})`);
-          }
-        })
-        .catch(err => {
-          console.warn(`Could not verify lamp sound file: ${audioPath}`, err);
-          // Try loading anyway in case fetch fails but file exists
-          const audio = new Audio(audioPath);
-          audio.preload = 'auto';
-          audio.addEventListener('canplaythrough', function() {
-            if (!lampClickAudio) {
-              lampClickAudio = audio;
-              lampClickAudio.volume = 0.7;
-              console.log(`Lamp sound loaded (fallback): ${audioPath}`);
-            }
-          }, { once: true });
-          audio.addEventListener('error', function(e) {
-            console.error(`Failed to load lamp sound: ${audioPath}`, e);
-          }, { once: true });
-          audio.load();
-        });
-    } catch (e) {
-      console.error("Audio file preload error:", e);
+  // Get sound file path helper
+  function getSoundPath(filename) {
+    // Script is in root, so sounds are at static/sounds/
+    let staticUrl = 'static/sounds/';
+    if (window.location.pathname.includes('/my-online-portfolio')) {
+      staticUrl = '/my-online-portfolio/static/sounds/';
     }
+    return `${staticUrl}${filename}`;
+  }
+  
+  // Preload the audio file (simplified - just try to load)
+  function preloadLampSound() {
+    // Skip preloading - load on demand instead
+    // This avoids browser blocking and path issues
   }
   
   function playLampSwitchSound() {
@@ -674,19 +634,22 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: create new audio instance
-        const isGitHubPages = window.location.hostname.includes('github.io');
-        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-        const staticUrl = window.STATIC_URL || `${basePath}static/`;
-        const audioPath = `${staticUrl}sounds/lamp-click.mp3`;
+        // Load on demand - create new audio instance
+        const audioPath = getSoundPath('lamp-click.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
+        
+        // Store for reuse
+        if (!lampClickAudio) {
+          lampClickAudio = audio;
+        }
+        
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
             console.log(`Playing lamp sound: ${audioPath}`);
           }).catch(e => {
-            console.error(`Failed to play lamp sound:`, e);
+            console.error(`Failed to play lamp sound: ${audioPath}`, e);
           });
         }
       }
@@ -775,48 +738,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
   
-  // Preload chair (sit down/up) sounds
+  // Preload chair (sit down/up) sounds (simplified - load on demand)
   function preloadChairSounds() {
-    try {
-      let staticUrl = 'static/';
-      if (window.location.pathname.includes('/my-online-portfolio')) {
-        staticUrl = '/my-online-portfolio/static/';
-      } else if (window.STATIC_URL) {
-        staticUrl = window.STATIC_URL;
-      }
-      
-      // Load sit-down audio file
-      const audioDown = new Audio(`${staticUrl}sounds/sit-down.mp3`);
-      audioDown.preload = 'auto';
-      audioDown.addEventListener('canplaythrough', function() {
-        if (!sitDownAudio) {
-          sitDownAudio = audioDown;
-          sitDownAudio.volume = 0.7;
-          console.log(`Sit-down sound loaded: ${staticUrl}sounds/sit-down.mp3`);
-        }
-      }, { once: true });
-      audioDown.addEventListener('error', function(e) {
-        console.error(`Failed to load sit-down sound:`, e);
-      }, { once: true });
-      audioDown.load();
-      
-      // Load sit-up audio file
-      const audioUp = new Audio(`${staticUrl}sounds/sit-up.mp3`);
-      audioUp.preload = 'auto';
-      audioUp.addEventListener('canplaythrough', function() {
-        if (!sitUpAudio) {
-          sitUpAudio = audioUp;
-          sitUpAudio.volume = 0.7;
-          console.log(`Sit-up sound loaded: ${staticUrl}sounds/sit-up.mp3`);
-        }
-      }, { once: true });
-      audioUp.addEventListener('error', function(e) {
-        console.error(`Failed to load sit-up sound:`, e);
-      }, { once: true });
-      audioUp.load();
-    } catch (e) {
-      console.error("Chair sound files preload error:", e);
-    }
+    // Skip preloading - load on demand instead
   }
   
   function playSitDownSound() {

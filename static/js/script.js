@@ -942,8 +942,10 @@ document.addEventListener("DOMContentLoaded", function () {
         to_email: "kanekabena@gmail.com"
       };
 
-      // Check if EmailJS is available
-      if (typeof emailjs === 'undefined' || !emailjs.send) {
+      // Check if EmailJS is available and properly configured
+      if (typeof emailjs === 'undefined' || !emailjs.send || 
+          EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID" || 
+          EMAILJS_TEMPLATE_ID === "YOUR_TEMPLATE_ID") {
         // Fallback to mailto if EmailJS is not configured
         const subject = encodeURIComponent(`Portfolio Contact: ${name}`);
         const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
@@ -962,8 +964,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Send email using EmailJS
-      // Replace "YOUR_SERVICE_ID" and "YOUR_TEMPLATE_ID" with your actual EmailJS service and template IDs
-      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", templateParams)
+      // IMPORTANT: If you're getting Gmail API scope errors, use EmailJS's own email service instead
+      // Go to EmailJS Dashboard > Email Services > Add New Service > Choose "EmailJS" (not Gmail)
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
         .then(function(response) {
           console.log("Email sent successfully!", response.status, response.text);
           
@@ -982,9 +985,15 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(function(error) {
           console.error("Email sending failed:", error);
           
+          // Check for Gmail API scope errors
+          let errorMessage = "Failed to send message. Please try again or contact me directly at kanekabena@gmail.com";
+          if (error.text && error.text.includes("Gmail_API") && error.text.includes("insufficient authentication scopes")) {
+            errorMessage = "Email service configuration error. Please use EmailJS service (not Gmail API) or contact me directly at kanekabena@gmail.com";
+          }
+          
           // Show error message
           if (errorDiv) {
-            errorDiv.textContent = "Failed to send message. Please try again or contact me directly at kanekabena@gmail.com";
+            errorDiv.textContent = errorMessage;
             errorDiv.style.display = "block";
           }
           

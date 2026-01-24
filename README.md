@@ -124,15 +124,6 @@ The root `index.html`, `style.css`, and `script.js` files are used by GitHub Pag
 
 This site is deployed on **GitHub Pages**, which automatically serves static files from the repository.
 
-### GitHub Pages Setup
-
-1. Go to your repository settings on GitHub
-2. Navigate to "Pages" in the left sidebar
-3. Select the branch (usually `main`) and folder (`/root`)
-4. Save - GitHub Pages will automatically deploy your site
-
-The site will be available at: `https://[username].github.io/[repository-name]/`
-
 ## 📧 Contact
 
 - **Email**: kanekabena@gmail.com

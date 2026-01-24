@@ -3084,7 +3084,7 @@ footer {
   .nav-list.active ~ .nav-music-control {
     display: flex;
     position: fixed;
-    top: auto;
+    top: 70px;
     left: 0;
     right: 0;
     width: 100%;
@@ -3096,10 +3096,12 @@ footer {
     padding: 15px 20px;
     margin: 0;
     border-top: 1px solid rgba(93, 173, 226, 0.1);
+    border-bottom: 2px solid rgba(93, 173, 226, 0.3);
     z-index: 999;
     transform: translateY(0);
     opacity: 1;
     visibility: visible;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   }
 
   .music-volume-control {

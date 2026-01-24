@@ -618,6 +618,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // ===== Fade out interactive zones (chair, PC, lamp) when scrolling down =====
+  const interactiveZones = document.querySelector(".interactive-zones");
+  let lastScrollY = window.scrollY;
+  
+  window.addEventListener("scroll", function () {
+    const currentScrollY = window.scrollY;
+    
+    if (interactiveZones) {
+      // Fade out when scrolling down past 50px, fade in when back at top
+      if (currentScrollY > 50) {
+        interactiveZones.classList.add("fade-out");
+      } else {
+        interactiveZones.classList.remove("fade-out");
+      }
+    }
+    
+    lastScrollY = currentScrollY;
+  });
+
   // ===== Fade in animation on scroll =====
   const observerOptions = {
     threshold: 0.1,

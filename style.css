@@ -189,6 +189,13 @@ nav.scrolled {
   height: 100vh;
   z-index: 5;
   pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.interactive-zones.fade-out {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .clickable-zone {

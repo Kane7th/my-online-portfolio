@@ -91,6 +91,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Set volume before playing
         backgroundMusic.volume = volume / 100;
         
+        // Ensure audio is loaded
+        if (backgroundMusic.readyState < 2) {
+          backgroundMusic.load();
+        }
+        
         const playPromise = backgroundMusic.play();
         
         if (playPromise !== undefined) {
@@ -102,12 +107,30 @@ document.addEventListener("DOMContentLoaded", function () {
               console.log("Music playing successfully");
             })
             .catch(err => {
-              // Only log if it's not an AbortError (which is expected when paused quickly)
+              // Log all errors for debugging
+              console.error("Play failed:", err.name, err.message);
               if (err.name !== 'AbortError') {
-                console.error("Play failed:", err);
+                // Try to reload and play again
+                console.log("Attempting to reload audio...");
+                backgroundMusic.load();
+                setTimeout(() => {
+                  backgroundMusic.play()
+                    .then(() => {
+                      musicStarted = true;
+                      isPlaying = true;
+                      updateButtonIcons();
+                      console.log("Music playing after reload");
+                    })
+                    .catch(err2 => {
+                      console.error("Play failed after reload:", err2);
+                      isPlaying = false;
+                      updateButtonIcons();
+                    });
+                }, 100);
+              } else {
+                isPlaying = false;
+                updateButtonIcons();
               }
-              isPlaying = false;
-              updateButtonIcons();
             });
         } else {
           // Fallback if play() doesn't return a promise

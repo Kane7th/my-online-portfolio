@@ -591,7 +591,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // ===== Mobile Menu Toggle =====
   const mobileMenuToggle = document.getElementById("mobileMenuToggle");
   const navList = document.getElementById("navList");
-  const navLinks = document.querySelectorAll(".nav-link");
+  // navLinks already declared above, reusing it
 
   function toggleMobileMenu() {
     if (mobileMenuToggle && navList) {

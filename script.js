@@ -1,13 +1,162 @@
+// ===== Music Player (YouTube) - Global Variables =====
+let youtubePlayer = null;
+let musicStarted = false;
+let isPlaying = false;
+const YOUTUBE_VIDEO_ID = "AzV77KFsLn4"; // Extract ID from https://www.youtube.com/watch?v=AzV77KFsLn4
+
+// Global references (will be set in DOMContentLoaded)
+let musicToggleBtn = null;
+let volumeSlider = null;
+let volumeValue = null;
+let playIcon = null;
+let pauseIcon = null;
+let muteIcon = null;
+
+// Function to update button icons based on state
+function updateButtonIcons() {
+  if (!musicToggleBtn) return;
+  
+  const volume = volumeSlider ? parseInt(volumeSlider.value) : 30;
+  
+  // Show mute icon only when volume is 0%
+  if (volume === 0) {
+    if (playIcon) playIcon.style.display = "none";
+    if (pauseIcon) pauseIcon.style.display = "none";
+    if (muteIcon) muteIcon.style.display = "block";
+    musicToggleBtn.classList.remove("active");
+  } else {
+    // Show play or pause icon based on playing state
+    if (muteIcon) muteIcon.style.display = "none";
+    if (isPlaying) {
+      if (playIcon) playIcon.style.display = "none";
+      if (pauseIcon) pauseIcon.style.display = "block";
+      musicToggleBtn.classList.add("active");
+    } else {
+      if (playIcon) playIcon.style.display = "block";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      musicToggleBtn.classList.remove("active");
+    }
+  }
+}
+
+// Initialize YouTube IFrame Player - Must be global for YouTube API
+function onYouTubeIframeAPIReady() {
+  console.log("YouTube IFrame API ready, initializing player...");
+  
+  const playerContainer = document.getElementById("youtube-player");
+  if (!playerContainer) {
+    console.error("YouTube player container not found");
+    // Try again after a short delay
+    setTimeout(() => {
+      const retryContainer = document.getElementById("youtube-player");
+      if (retryContainer) {
+        console.log("Retrying YouTube player initialization...");
+        initializeYouTubePlayer();
+      } else {
+        console.error("YouTube player container still not found after retry");
+      }
+    }, 500);
+    return;
+  }
+  
+  initializeYouTubePlayer();
+}
+
+function initializeYouTubePlayer() {
+  const playerContainer = document.getElementById("youtube-player");
+  if (!playerContainer) {
+    console.error("Cannot initialize: YouTube player container not found");
+    return;
+  }
+  
+  if (youtubePlayer) {
+    console.log("YouTube player already initialized");
+    return;
+  }
+  
+  try {
+    youtubePlayer = new YT.Player("youtube-player", {
+      height: "0",
+      width: "0",
+      videoId: YOUTUBE_VIDEO_ID,
+      playerVars: {
+        autoplay: 0,
+        controls: 0,
+        disablekb: 1,
+        enablejsapi: 1,
+        fs: 0,
+        iv_load_policy: 3,
+        loop: 1,
+        playlist: YOUTUBE_VIDEO_ID, // Required for looping
+        modestbranding: 1,
+        playsinline: 1,
+        rel: 0,
+        showinfo: 0
+      },
+      events: {
+        onReady: function(event) {
+          console.log("YouTube player ready!");
+          // Set initial volume to 30%
+          event.target.setVolume(30);
+          if (volumeSlider) {
+            volumeSlider.value = 30;
+          }
+          if (volumeValue) {
+            volumeValue.textContent = "30%";
+          }
+          updateButtonIcons();
+        },
+        onStateChange: function(event) {
+          // YT.PlayerState.PLAYING = 1
+          // YT.PlayerState.PAUSED = 2
+          // YT.PlayerState.ENDED = 0
+          if (event.data === YT.PlayerState.PLAYING) {
+            isPlaying = true;
+            musicStarted = true;
+            updateButtonIcons();
+            console.log("YouTube player playing");
+          } else if (event.data === YT.PlayerState.PAUSED) {
+            isPlaying = false;
+            updateButtonIcons();
+            console.log("YouTube player paused");
+          } else if (event.data === YT.PlayerState.ENDED) {
+            // Video ended, but with loop: 1 it should restart automatically
+            isPlaying = true;
+            updateButtonIcons();
+            console.log("YouTube player ended (will loop)");
+          }
+        },
+        onError: function(event) {
+          console.error("YouTube player error:", event.data);
+          // Hide music controls if player fails
+          if (musicToggleBtn) {
+            musicToggleBtn.style.display = "none";
+          }
+          if (volumeSlider && volumeSlider.parentElement) {
+            volumeSlider.parentElement.style.display = "none";
+          }
+        }
+      }
+    });
+    console.log("YouTube player initialization started");
+  } catch (error) {
+    console.error("Error creating YouTube player:", error);
+  }
+}
+
+// Make onYouTubeIframeAPIReady available globally
+window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Script loaded and DOM ready!"); // Debug
 
-  // ===== Music Player (YouTube) =====
-  const musicToggleBtn = document.getElementById("musicToggleBtn");
-  const volumeSlider = document.getElementById("musicVolumeSlider");
-  const volumeValue = document.getElementById("volumeValue");
-  const playIcon = musicToggleBtn?.querySelector(".music-icon-play");
-  const pauseIcon = musicToggleBtn?.querySelector(".music-icon-pause");
-  const muteIcon = musicToggleBtn?.querySelector(".music-icon-muted");
+  // ===== Music Player (YouTube) - Get DOM References =====
+  musicToggleBtn = document.getElementById("musicToggleBtn");
+  volumeSlider = document.getElementById("musicVolumeSlider");
+  volumeValue = document.getElementById("volumeValue");
+  playIcon = musicToggleBtn?.querySelector(".music-icon-play");
+  pauseIcon = musicToggleBtn?.querySelector(".music-icon-pause");
+  muteIcon = musicToggleBtn?.querySelector(".music-icon-muted");
 
   // Set default volume to 30%
   if (volumeSlider) {
@@ -16,12 +165,14 @@ document.addEventListener("DOMContentLoaded", function () {
   if (volumeValue) {
     volumeValue.textContent = "30%";
   }
-
-  // Track if music has been started by user interaction
-  let youtubePlayer = null;
-  let musicStarted = false;
-  let isPlaying = false;
-  const YOUTUBE_VIDEO_ID = "AzV77KFsLn4"; // Extract ID from https://www.youtube.com/watch?v=AzV77KFsLn4
+  
+  // Check if YouTube API is already loaded
+  if (typeof YT !== 'undefined' && YT.Player) {
+    console.log("YouTube API already loaded, initializing player...");
+    initializeYouTubePlayer();
+  } else {
+    console.log("Waiting for YouTube API to load...");
+  }
 
   // Function to update button icons based on state
   function updateButtonIcons() {

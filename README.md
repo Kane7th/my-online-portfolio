@@ -165,7 +165,7 @@ gunicorn -w 4 -b 0.0.0.0:5000 app:app
 
 ## 📧 Contact
 
-- **Email**: onekaneldn@gmail.com
+- **Email**: kanekabena@gmail.com
 - **Phone**: +44 7565 470 169
 - **GitHub**: [Kane7th](https://github.com/Kane7th)
 - **LinkedIn**: [kanekabena](https://www.linkedin.com/in/kanekabena/)

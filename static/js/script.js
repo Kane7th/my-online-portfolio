@@ -1,10 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
+  console.log("Script loaded and DOM ready!"); // Debug
+  
   // ===== Workspace Images - Get references once =====
   const workspaceImage1 = document.querySelector(".workspace-image-1");
   const workspaceImage2 = document.querySelector(".workspace-image-2");
   const workspaceImage3 = document.querySelector(".workspace-image-3");
   const workspaceImage4 = document.querySelector(".workspace-image-4");
   const workspaceOverlay = document.querySelector(".workspace-overlay");
+  
+  // Ensure images are initialized with opacity
+  if (workspaceImage1) workspaceImage1.style.opacity = "1";
+  if (workspaceImage2) workspaceImage2.style.opacity = "0";
+  if (workspaceImage3) workspaceImage3.style.opacity = "0";
+  if (workspaceImage4) workspaceImage4.style.opacity = "0";
   
   // Track person zone (screen) state - cycles: 1 → 4 → 3 → 4 → 3 → 4...
   let screenClickState = 0; // 0 = image1, 1 = image4, 2 = image3, then toggles between 3 and 4

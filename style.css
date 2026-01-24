@@ -1361,6 +1361,112 @@ nav.scrolled {
   }
 }
 
+/* Skill Modal */
+.skill-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
+}
+
+.skill-modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skill-modal-content {
+  background: rgba(10, 14, 39, 0.98);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(93, 173, 226, 0.3);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(93, 173, 226, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.skill-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  line-height: 1;
+  z-index: 10;
+}
+
+.skill-modal-close:hover {
+  color: #5dade2;
+  transform: rotate(90deg);
+}
+
+.skill-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgba(93, 173, 226, 0.2);
+}
+
+.skill-modal-icon {
+  font-size: 3.5rem;
+  color: #5dade2;
+  filter: drop-shadow(0 0 15px rgba(93, 173, 226, 0.5));
+}
+
+.skill-modal-title {
+  font-size: 2rem;
+  color: #ffffff;
+  margin: 0;
+  font-weight: 600;
+}
+
+.skill-modal-description {
+  color: #e0e0e0;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.skill-item {
+  cursor: pointer;
+}
+
 /* Projects */
 #projects {
   background-image: url('static/images/workspace-7.jpg');

@@ -609,6 +609,59 @@ document.addEventListener("DOMContentLoaded", function () {
   updateActiveLink();
   handleNavbarScroll();
 
+  // ===== Skill Modal Functionality =====
+  const skillModal = document.getElementById("skillModal");
+  const skillModalTitle = document.getElementById("skillModalTitle");
+  const skillModalDescription = document.getElementById("skillModalDescription");
+  const skillModalIcon = document.getElementById("skillModalIcon");
+  const skillModalClose = document.querySelector(".skill-modal-close");
+  const skillItems = document.querySelectorAll(".skill-item");
+
+  // Open modal when skill item is clicked
+  skillItems.forEach((item) => {
+    item.addEventListener("click", function () {
+      const skillName = this.getAttribute("data-skill");
+      const skillDescription = this.getAttribute("data-description");
+      const skillIcon = this.querySelector("i");
+
+      if (skillName && skillDescription) {
+        skillModalTitle.textContent = skillName;
+        skillModalDescription.textContent = skillDescription;
+        
+        // Copy icon classes
+        skillModalIcon.className = skillIcon.className;
+        skillModalIcon.classList.add("skill-modal-icon");
+        
+        skillModal.classList.add("show");
+        document.body.style.overflow = "hidden"; // Prevent background scrolling
+      }
+    });
+  });
+
+  // Close modal when close button is clicked
+  if (skillModalClose) {
+    skillModalClose.addEventListener("click", function () {
+      skillModal.classList.remove("show");
+      document.body.style.overflow = ""; // Restore scrolling
+    });
+  }
+
+  // Close modal when clicking outside the modal content
+  skillModal.addEventListener("click", function (e) {
+    if (e.target === skillModal) {
+      skillModal.classList.remove("show");
+      document.body.style.overflow = ""; // Restore scrolling
+    }
+  });
+
+  // Close modal with Escape key
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && skillModal.classList.contains("show")) {
+      skillModal.classList.remove("show");
+      document.body.style.overflow = ""; // Restore scrolling
+    }
+  });
+
   // ===== Parallax Effect for Background =====
   window.addEventListener("scroll", function () {
     const scrolled = window.pageYOffset;

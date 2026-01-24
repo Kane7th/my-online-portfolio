@@ -98,9 +98,15 @@ document.addEventListener("DOMContentLoaded", function () {
         // Set volume before playing
         backgroundMusic.volume = volume / 100;
         
-        // Ensure audio is loaded
+        // Ensure audio is loaded - check readyState
+        console.log("Audio readyState before play:", backgroundMusic.readyState);
         if (backgroundMusic.readyState < 2) {
+          console.log("Audio not ready, calling load()...");
           backgroundMusic.load();
+          // Wait a bit for load to start
+          setTimeout(() => {
+            console.log("Audio readyState after load:", backgroundMusic.readyState);
+          }, 100);
         }
         
         // Set flag to prevent pause during play promise

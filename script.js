@@ -223,7 +223,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     backgroundMusic.addEventListener("suspend", function () {
-      console.warn("Audio loading suspended");
+      console.warn("Audio loading suspended - will resume on user interaction");
+      // Try to resume loading when user interacts
+      const resumeLoad = function() {
+        if (backgroundMusic.readyState < 2) {
+          console.log("Resuming audio load...");
+          backgroundMusic.load();
+        }
+        document.removeEventListener("click", resumeLoad);
+        document.removeEventListener("touchstart", resumeLoad);
+      };
+      document.addEventListener("click", resumeLoad, { once: true });
+      document.addEventListener("touchstart", resumeLoad, { once: true });
     });
 
     // Don't attempt autoplay - wait for user interaction

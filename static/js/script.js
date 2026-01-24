@@ -534,53 +534,67 @@ document.addEventListener("DOMContentLoaded", function () {
   // Preload the audio file
   function preloadLampSound() {
     try {
-      // Get static URL (from Flask or use default)
-      const staticUrl = window.STATIC_URL || '/static/';
+      // Get static URL - check for GitHub Pages path
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
+      const staticUrl = window.STATIC_URL || `${basePath}static/`;
       const audioPath = `${staticUrl}sounds/lamp-click`;
       const extensions = ['mp3', 'wav', 'ogg'];
       
       // Try to find the audio file
       for (const ext of extensions) {
         const audio = new Audio(`${audioPath}.${ext}`);
+        audio.preload = 'auto';
         audio.addEventListener('canplaythrough', function() {
           if (!lampClickAudio) {
             lampClickAudio = audio;
             lampClickAudio.volume = 0.7; // Set volume (0.0 to 1.0)
+            console.log(`Lamp sound loaded: ${audioPath}.${ext}`);
           }
         }, { once: true });
-        audio.addEventListener('error', function() {
-          // Try next format
+        audio.addEventListener('error', function(e) {
+          console.log(`Failed to load lamp sound: ${audioPath}.${ext}`);
         }, { once: true });
         audio.load();
       }
     } catch (e) {
-      console.log("Audio file not found or not supported");
+      console.error("Audio file preload error:", e);
     }
   }
   
   function playLampSwitchSound() {
     try {
-      if (lampClickAudio) {
+      if (lampClickAudio && lampClickAudio.readyState >= 2) {
         // Reset to beginning and play
         lampClickAudio.currentTime = 0;
-        lampClickAudio.play().catch(e => {
-          console.log("Could not play audio:", e);
-        });
+        const playPromise = lampClickAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(e => {
+            console.error("Could not play lamp audio:", e);
+          });
+        }
       } else {
         // Fallback: try common formats
-        const staticUrl = window.STATIC_URL || '/static/';
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
+        const staticUrl = window.STATIC_URL || `${basePath}static/`;
         const formats = ['mp3', 'wav', 'ogg'];
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/lamp-click.${format}`);
           audio.volume = 0.7;
-          audio.play().catch(e => {
-            // Try next format
-          });
-          break; // Stop after first successful attempt
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              console.log(`Playing lamp sound: ${staticUrl}sounds/lamp-click.${format}`);
+            }).catch(e => {
+              console.error(`Failed to play lamp sound: ${format}`, e);
+            });
+          }
+          break; // Stop after first attempt
         }
       }
     } catch (e) {
-      console.log("Audio playback error:", e);
+      console.error("Lamp audio playback error:", e);
     }
   }
   
@@ -592,20 +606,24 @@ document.addEventListener("DOMContentLoaded", function () {
   // Preload screen switch sounds
   function preloadScreenSounds() {
     try {
-      const staticUrl = window.STATIC_URL || '/static/';
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
+      const staticUrl = window.STATIC_URL || `${basePath}static/`;
       const extensions = ['mp3', 'wav', 'ogg'];
       
       // Try to find the switch-on audio file
       for (const ext of extensions) {
         const audioOn = new Audio(`${staticUrl}sounds/screen-switch-on.${ext}`);
+        audioOn.preload = 'auto';
         audioOn.addEventListener('canplaythrough', function() {
           if (!screenSwitchOnAudio) {
             screenSwitchOnAudio = audioOn;
             screenSwitchOnAudio.volume = 0.7;
+            console.log(`Screen switch-on sound loaded: ${staticUrl}sounds/screen-switch-on.${ext}`);
           }
         }, { once: true });
-        audioOn.addEventListener('error', function() {
-          // Try next format
+        audioOn.addEventListener('error', function(e) {
+          console.log(`Failed to load screen switch-on sound: ${ext}`);
         }, { once: true });
         audioOn.load();
       }
@@ -613,89 +631,115 @@ document.addEventListener("DOMContentLoaded", function () {
       // Try to find the switch-off audio file
       for (const ext of extensions) {
         const audioOff = new Audio(`${staticUrl}sounds/screen-switch-off.${ext}`);
+        audioOff.preload = 'auto';
         audioOff.addEventListener('canplaythrough', function() {
           if (!screenSwitchOffAudio) {
             screenSwitchOffAudio = audioOff;
             screenSwitchOffAudio.volume = 0.7;
+            console.log(`Screen switch-off sound loaded: ${staticUrl}sounds/screen-switch-off.${ext}`);
           }
         }, { once: true });
-        audioOff.addEventListener('error', function() {
-          // Try next format
+        audioOff.addEventListener('error', function(e) {
+          console.log(`Failed to load screen switch-off sound: ${ext}`);
         }, { once: true });
         audioOff.load();
       }
     } catch (e) {
-      console.log("Screen sound files not found or not supported");
+      console.error("Screen sound files preload error:", e);
     }
   }
   
   function playScreenSwitchOnSound() {
     try {
-      if (screenSwitchOnAudio) {
+      if (screenSwitchOnAudio && screenSwitchOnAudio.readyState >= 2) {
         screenSwitchOnAudio.currentTime = 0;
-        screenSwitchOnAudio.play().catch(e => {
-          console.log("Could not play switch-on audio:", e);
-        });
+        const playPromise = screenSwitchOnAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(e => {
+            console.error("Could not play switch-on audio:", e);
+          });
+        }
       } else {
         // Fallback: try common formats
-        const staticUrl = window.STATIC_URL || '/static/';
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
+        const staticUrl = window.STATIC_URL || `${basePath}static/`;
         const formats = ['mp3', 'wav', 'ogg'];
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/screen-switch-on.${format}`);
           audio.volume = 0.7;
-          audio.play().catch(e => {
-            // Try next format
-          });
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              console.log(`Playing screen switch-on sound: ${format}`);
+            }).catch(e => {
+              console.error(`Failed to play screen switch-on sound: ${format}`, e);
+            });
+          }
           break;
         }
       }
     } catch (e) {
-      console.log("Screen switch-on audio playback error:", e);
+      console.error("Screen switch-on audio playback error:", e);
     }
   }
   
   function playScreenSwitchOffSound() {
     try {
-      if (screenSwitchOffAudio) {
+      if (screenSwitchOffAudio && screenSwitchOffAudio.readyState >= 2) {
         screenSwitchOffAudio.currentTime = 0;
-        screenSwitchOffAudio.play().catch(e => {
-          console.log("Could not play switch-off audio:", e);
-        });
+        const playPromise = screenSwitchOffAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(e => {
+            console.error("Could not play switch-off audio:", e);
+          });
+        }
       } else {
         // Fallback: try common formats
-        const staticUrl = window.STATIC_URL || '/static/';
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
+        const staticUrl = window.STATIC_URL || `${basePath}static/`;
         const formats = ['mp3', 'wav', 'ogg'];
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/screen-switch-off.${format}`);
           audio.volume = 0.7;
-          audio.play().catch(e => {
-            // Try next format
-          });
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              console.log(`Playing screen switch-off sound: ${format}`);
+            }).catch(e => {
+              console.error(`Failed to play screen switch-off sound: ${format}`, e);
+            });
+          }
           break;
         }
       }
     } catch (e) {
-      console.log("Screen switch-off audio playback error:", e);
+      console.error("Screen switch-off audio playback error:", e);
     }
   }
   
   // Preload chair (sit down/up) sounds
   function preloadChairSounds() {
     try {
-      const staticUrl = window.STATIC_URL || '/static/';
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
+      const staticUrl = window.STATIC_URL || `${basePath}static/`;
       const extensions = ['mp3', 'wav', 'ogg'];
       
       // Try to find the sit-down audio file
       for (const ext of extensions) {
         const audioDown = new Audio(`${staticUrl}sounds/sit-down.${ext}`);
+        audioDown.preload = 'auto';
         audioDown.addEventListener('canplaythrough', function() {
           if (!sitDownAudio) {
             sitDownAudio = audioDown;
             sitDownAudio.volume = 0.7;
+            console.log(`Sit-down sound loaded: ${staticUrl}sounds/sit-down.${ext}`);
           }
         }, { once: true });
-        audioDown.addEventListener('error', function() {
-          // Try next format
+        audioDown.addEventListener('error', function(e) {
+          console.log(`Failed to load sit-down sound: ${ext}`);
         }, { once: true });
         audioDown.load();
       }
@@ -703,69 +747,91 @@ document.addEventListener("DOMContentLoaded", function () {
       // Try to find the sit-up audio file
       for (const ext of extensions) {
         const audioUp = new Audio(`${staticUrl}sounds/sit-up.${ext}`);
+        audioUp.preload = 'auto';
         audioUp.addEventListener('canplaythrough', function() {
           if (!sitUpAudio) {
             sitUpAudio = audioUp;
             sitUpAudio.volume = 0.7;
+            console.log(`Sit-up sound loaded: ${staticUrl}sounds/sit-up.${ext}`);
           }
         }, { once: true });
-        audioUp.addEventListener('error', function() {
-          // Try next format
+        audioUp.addEventListener('error', function(e) {
+          console.log(`Failed to load sit-up sound: ${ext}`);
         }, { once: true });
         audioUp.load();
       }
     } catch (e) {
-      console.log("Chair sound files not found or not supported");
+      console.error("Chair sound files preload error:", e);
     }
   }
   
   function playSitDownSound() {
     try {
-      if (sitDownAudio) {
+      if (sitDownAudio && sitDownAudio.readyState >= 2) {
         sitDownAudio.currentTime = 0;
-        sitDownAudio.play().catch(e => {
-          console.log("Could not play sit-down audio:", e);
-        });
+        const playPromise = sitDownAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(e => {
+            console.error("Could not play sit-down audio:", e);
+          });
+        }
       } else {
         // Fallback: try common formats
-        const staticUrl = window.STATIC_URL || '/static/';
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
+        const staticUrl = window.STATIC_URL || `${basePath}static/`;
         const formats = ['mp3', 'wav', 'ogg'];
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/sit-down.${format}`);
           audio.volume = 0.7;
-          audio.play().catch(e => {
-            // Try next format
-          });
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              console.log(`Playing sit-down sound: ${format}`);
+            }).catch(e => {
+              console.error(`Failed to play sit-down sound: ${format}`, e);
+            });
+          }
           break;
         }
       }
     } catch (e) {
-      console.log("Sit-down audio playback error:", e);
+      console.error("Sit-down audio playback error:", e);
     }
   }
   
   function playSitUpSound() {
     try {
-      if (sitUpAudio) {
+      if (sitUpAudio && sitUpAudio.readyState >= 2) {
         sitUpAudio.currentTime = 0;
-        sitUpAudio.play().catch(e => {
-          console.log("Could not play sit-up audio:", e);
-        });
+        const playPromise = sitUpAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(e => {
+            console.error("Could not play sit-up audio:", e);
+          });
+        }
       } else {
         // Fallback: try common formats
-        const staticUrl = window.STATIC_URL || '/static/';
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
+        const staticUrl = window.STATIC_URL || `${basePath}static/`;
         const formats = ['mp3', 'wav', 'ogg'];
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/sit-up.${format}`);
           audio.volume = 0.7;
-          audio.play().catch(e => {
-            // Try next format
-          });
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              console.log(`Playing sit-up sound: ${format}`);
+            }).catch(e => {
+              console.error(`Failed to play sit-up sound: ${format}`, e);
+            });
+          }
           break;
         }
       }
     } catch (e) {
-      console.log("Sit-up audio playback error:", e);
+      console.error("Sit-up audio playback error:", e);
     }
   }
 

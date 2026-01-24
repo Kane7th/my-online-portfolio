@@ -22,12 +22,9 @@ nav {
   left: 0;
   right: 0;
   z-index: 1000;
-  padding: 20px 50px;
+  padding: 15px 50px;
   background: rgba(10, 14, 39, 0.8);
   backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   transition: background 0.3s ease;
 }
 
@@ -39,8 +36,58 @@ nav.scrolled {
 .nav-container {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto;
   gap: 40px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.nav-logo:hover {
+  transform: scale(1.05);
+}
+
+.nav-logo-circle {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #5dade2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #5dade2;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.nav-logo:hover .nav-logo-circle {
+  border-color: #7dd3fc;
+  color: #7dd3fc;
+  box-shadow: 0 0 15px rgba(93, 173, 226, 0.5);
+}
+
+.nav-logo-text {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.nav-logo:hover .nav-logo-text {
+  color: #5dade2;
 }
 
 .nav-list {
@@ -1880,21 +1927,39 @@ footer {
 
 @media (max-width: 768px) {
   nav {
-    padding: 15px 20px;
+    padding: 12px 20px;
   }
 
   .nav-container {
-    gap: 20px;
+    gap: 15px;
     flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .nav-logo-text {
+    font-size: 0.85rem;
+  }
+
+  .nav-logo-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
   }
 
   .nav-list {
-    gap: 20px;
+    gap: 15px;
+    order: 3;
+    width: 100%;
+    justify-content: center;
   }
 
   .nav-link,
   .resume-link {
     font-size: 12px;
+  }
+
+  .resume-link {
+    order: 2;
   }
 
   .hero-title {

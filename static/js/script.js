@@ -793,4 +793,48 @@ document.addEventListener("DOMContentLoaded", function () {
     hero.style.opacity = "1";
     hero.style.transform = "translateY(0)";
   }
+
+  // ===== GitHub Stats Animated Counter =====
+  function animateCounter(element, target, duration = 2000) {
+    const start = 0;
+    const increment = target / (duration / 16); // 60fps
+    let current = start;
+
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        element.textContent = target.toLocaleString();
+        clearInterval(timer);
+      } else {
+        element.textContent = Math.floor(current).toLocaleString();
+      }
+    }, 16);
+  }
+
+  // Intersection Observer for GitHub Stats
+  const githubStatsSection = document.getElementById("github-stats");
+  if (githubStatsSection) {
+    const observerOptions = {
+      threshold: 0.3,
+      rootMargin: "0px"
+    };
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const statNumbers = document.querySelectorAll(".github-stat-number");
+          statNumbers.forEach((stat) => {
+            const target = parseInt(stat.getAttribute("data-target"));
+            if (target && !stat.classList.contains("animated")) {
+              stat.classList.add("animated");
+              animateCounter(stat, target);
+            }
+          });
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    statsObserver.observe(githubStatsSection);
+  }
 });

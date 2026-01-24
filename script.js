@@ -662,6 +662,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // ===== Project Tree Click Functionality =====
+  const projectNodes = document.querySelectorAll(".project-node");
+  
+  projectNodes.forEach((node) => {
+    node.addEventListener("click", function () {
+      // Toggle active state
+      const isActive = this.classList.contains("active");
+      
+      // Close all nodes first
+      projectNodes.forEach((n) => n.classList.remove("active"));
+      
+      // If this node wasn't active, open it
+      if (!isActive) {
+        this.classList.add("active");
+      }
+    });
+  });
+
   // ===== Parallax Effect for Background =====
   window.addEventListener("scroll", function () {
     const scrolled = window.pageYOffset;

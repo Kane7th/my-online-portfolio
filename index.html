@@ -4,109 +4,291 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kane Kabena | Full-Stack Developer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" />
     <link rel="stylesheet" href="style.css" />
     <script defer src="script.js"></script>
   </head>
   <body>
-    <!-- Header / Hero -->
-    <header class="hero">
-      <img
-        src="Kane_Kabena_Clean.png"
-        alt="Kane Kabena - Full Stack Developer Logo"
-        class="logo"
-      />
-      <h1>Kane Kabena</h1>
-      <p>Full-Stack Developer | Python & Flask Specialist | React Enthusiast</p>
-      <div class="hero-buttons">
-        <a href="#projects" class="btn">See My Work</a>
-        <a href="Kane - 2025 Resume.pdf" class="btn btn-outline" download>Download CV</a>
+    <!-- Navigation -->
+    <nav id="navbar">
+      <div class="nav-container">
+        <ul class="nav-list">
+          <li><a href="#home" class="nav-link">HOME</a></li>
+          <li><a href="#about" class="nav-link">WHO</a></li>
+          <li><a href="#projects" class="nav-link">WORK</a></li>
+          <li><a href="#contact" class="nav-link">CONTACT</a></li>
+        </ul>
+        <a href="Kane - 2025 Resume.pdf" class="resume-link" download>RESUME</a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="home">
+      <div class="workspace-background">
+        <div class="workspace-image workspace-image-1"></div>
+        <div class="workspace-image workspace-image-2"></div>
+        <div class="workspace-image workspace-image-3"></div>
+        <div class="workspace-image workspace-image-4"></div>
+        <div class="workspace-overlay"></div>
+      </div>
+      
+      <!-- Clickable Interactive Zones -->
+      <div class="interactive-zones">
+        <!-- Clickable Person Zone -->
+        <div class="clickable-zone person-zone" id="personZone" title="Click to learn more about me">
+          <div class="zone-hint person-hint">
+            <span>switch on the PC</span>
+          </div>
+        </div>
+        
+        <!-- Clickable Zone for workspace-4 -->
+        <div class="clickable-zone workspace4-zone" id="workspace4Zone" title="Click me!">
+          <div class="zone-hint workspace4-hint">
+            <span>sit down</span>
+          </div>
+        </div>
+        
+        <!-- Clickable Lamp Zone (right lamp only) -->
+        <div class="clickable-zone lamp-zone lamp-zone-right" id="lampRight" title="Click to toggle lamp">
+          <div class="lamp-hint" id="lampHintRight">
+            <span>turn on the lamp!</span>
+            <div class="hint-arrow">→</div>
+          </div>
+          <div class="lamp-light-effect lamp-light-right"></div>
+        </div>
+      </div>
+
+      <div class="hero-container">
+        <div class="hero-left">
+          <div class="logo-container">
+            <div class="logo-circle">K</div>
+          </div>
+          <div class="html-tags">
+            <span class="html-tag">&lt;HTML&gt;</span>
+            <span class="html-tag">&lt;BODY&gt;</span>
+            <span class="html-tag">&lt;H1&gt;</span>
+          </div>
+          <h1 class="hero-title">
+            Hi! I'm <span class="highlight">K</span>ane,<br />
+            <span class="subtitle">Software developer</span>
+          </h1>
+          <div class="html-tags">
+            <span class="html-tag">&lt;P&gt;</span>
+          </div>
+          <p class="hero-subtitle">Full-Stack Developer</p>
+          <div class="html-tags">
+            <span class="html-tag">&lt;/P&gt;</span>
+            <span class="html-tag">&lt;/H1&gt;</span>
+          </div>
+          <a href="#contact" class="btn-contact">CONTACT ME</a>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span>scroll</span>
+        <div class="scroll-arrow">↓</div>
       </div>
     </header>
 
-    <!-- Navigation -->
-    <nav id="navbar">
-      <ul>
-        <li><a href="#about" class="nav-link">About</a></li>
-        <li><a href="#skills" class="nav-link">Skills</a></li>
-        <li><a href="#projects" class="nav-link">Projects</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
-      </ul>
-    </nav>
-
     <!-- About Section -->
-    <section id="about">
-      <h2>About Me</h2>
-      <p>
-        Hi, I'm <strong>Kane Kabena</strong>, a results-driven software developer 
-        with a passion for building clean, scalable, and visually engaging 
-        applications. I specialise in <strong>Flask (Python)</strong> for backend 
-        development and <strong>React</strong> for the frontend, with a focus 
-        on delivering seamless user experiences.
-      </p>
-      <p>
-        From developing complex loan management platforms like <strong>SokoCredit</strong>
-        to crafting immersive <strong>FiveM roleplay servers</strong> and 
-        fully-functional hotel booking systems, I thrive in taking projects from 
-        idea to production.
-      </p>
+    <section id="about" class="section">
+      <div class="section-container">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+          <div class="about-card about-intro">
+            <div class="card-icon">👋</div>
+            <h3>Who I Am</h3>
+            <p>
+              Hey there! I'm <strong>Kane Kabena</strong>, a full-stack developer who gets genuinely excited 
+              about architecting robust systems and crafting elegant solutions. My journey in software 
+              development has led me to specialize in <strong>Python</strong> and <strong>Flask</strong> for 
+              building RESTful APIs with <strong>SQLAlchemy ORM</strong> and <strong>PostgreSQL</strong>, 
+              while leveraging <strong>React</strong> with <strong>Redux Toolkit</strong> for state management 
+              on the frontend. I'm passionate about writing clean, maintainable code that follows 
+              <strong>SOLID principles</strong> and implementing <strong>JWT-based authentication</strong> 
+              for secure, scalable applications.
+            </p>
+          </div>
+
+          <div class="about-card about-projects">
+            <div class="card-icon">🚀</div>
+            <h3>What I Build</h3>
+            <p>
+              What really gets me going is solving complex problems like when I built 
+              <strong>SokoCredit</strong>, a full-stack loan management platform where I integrated 
+              <strong>M-Pesa payment gateways</strong> and <strong>Twilio SMS services</strong>, implemented 
+              role-based access control (RBAC), and designed real-time notification systems. Or when I 
+              developed a hotel booking system with <strong>JWT authentication</strong>, pagination, 
+              filtering algorithms, and a polished UI with toast notifications, all while ensuring 
+              the backend API remained performant and the frontend stayed responsive.
+            </p>
+          </div>
+
+          <div class="about-card about-unique">
+            <div class="card-icon">🎮</div>
+            <h3>Beyond Web Dev</h3>
+            <p>
+              Beyond traditional web development, I've also dived deep into <strong>FiveM server 
+              development</strong>, where I've created custom Lua scripts, balanced in-game economies, 
+              and built immersive roleplay experiences. This unique blend of web development and game 
+              server architecture has taught me to think about systems holistically, from database 
+              optimization to user experience design.
+            </p>
+          </div>
+
+          <div class="about-card about-philosophy">
+            <div class="card-icon">💡</div>
+            <h3>My Approach</h3>
+            <p>
+              I believe in continuous learning and staying current with industry best practices. Whether 
+              it's implementing <strong>RESTful API design patterns</strong>, optimizing database queries, 
+              or ensuring my code is well-tested and documented, I approach every project with both 
+              technical rigor and creative problem-solving. When I'm not coding, you'll find me 
+              experimenting with new frameworks or contributing to open-source projects.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Skills Section -->
-    <section id="skills">
-      <h2>Technical Skills</h2>
-      <ul class="skills-list">
-        <li>Flask (Python)</li>
-        <li>React & Redux Toolkit</li>
-        <li>PostgreSQL & SQLAlchemy</li>
-        <li>JWT Authentication</li>
-        <li>RESTful API Development</li>
-        <li>HTML5, CSS3, JavaScript</li>
-        <li>Tailwind CSS</li>
-        <li>Git & GitHub</li>
-        <li>FiveM Server Development</li>
-      </ul>
+    <section id="skills" class="section section-dark">
+      <div class="section-container">
+        <h2 class="section-title">Technical Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-item">
+            <i class="devicon-python-plain colored"></i>
+            <span>Python</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-flask-original colored"></i>
+            <span>Flask</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-react-original colored"></i>
+            <span>React</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-redux-original colored"></i>
+            <span>Redux Toolkit</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-typescript-plain colored"></i>
+            <span>TypeScript</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-javascript-plain colored"></i>
+            <span>JavaScript</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-postgresql-plain colored"></i>
+            <span>PostgreSQL</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-mongodb-plain colored"></i>
+            <span>MongoDB</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-nodejs-plain colored"></i>
+            <span>Node.js</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-express-original colored"></i>
+            <span>Express.js</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-html5-plain colored"></i>
+            <span>HTML5</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-css3-plain colored"></i>
+            <span>CSS3</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-tailwindcss-plain colored"></i>
+            <span>Tailwind CSS</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-docker-plain colored"></i>
+            <span>Docker</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-amazonwebservices-original colored"></i>
+            <span>AWS</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-microsoftsqlserver-plain colored"></i>
+            <span>SQL Server</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-csharp-plain colored"></i>
+            <span>C#</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-dotnetcore-plain colored"></i>
+            <span>.NET Core</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-azure-plain colored"></i>
+            <span>Azure</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-git-plain colored"></i>
+            <span>Git</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-github-original colored"></i>
+            <span>GitHub</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects">
-      <h2>Highlighted Projects</h2>
-      <div class="projects-grid">
-        <div class="project-card">
-          <h3>SokoCredit</h3>
-          <p>
-            Full-stack loan management system for microfinance lenders with
-            M-Pesa & Twilio integrations. Features role-based access, 
-            analytics, and real-time notifications.
-          </p>
-          <a href="https://github.com/Kane7th/Phase-5-Project-SokoCredit" target="_blank" class="btn btn-small">View Code</a>
-        </div>
-        <div class="project-card">
-          <h3>Hotel Booking System</h3>
-          <p>
-            React + Flask web app with JWT authentication, admin & customer portals, 
-            and a polished UI with pagination, filters, and toast notifications.
-          </p>
-          <a href="https://youtu.be/WrYNyjDwBYI" class="btn btn-small">Live Demo</a>
-        </div>
-        <div class="project-card">
-          <h3>Zone 7 RP</h3>
-          <p>
-            Custom FiveM roleplay server with advanced player systems, economy 
-            balancing, and immersive scripts for enhanced gameplay.
-          </p>
-          <a href="#" class="btn btn-small">Join Server</a>
+    <section id="projects" class="section">
+      <div class="section-container">
+        <h2 class="section-title">Highlighted Projects</h2>
+        <div class="projects-grid">
+          <div class="project-card">
+            <h3>SokoCredit</h3>
+            <p>
+              Full-stack loan management system for microfinance lenders with
+              M-Pesa & Twilio integrations. Features role-based access, 
+              analytics, and real-time notifications.
+            </p>
+            <a href="https://github.com/Kane7th/Phase-5-Project-SokoCredit" target="_blank" class="btn btn-small">View Code</a>
+          </div>
+          <div class="project-card">
+            <h3>Hotel Booking System</h3>
+            <p>
+              React + Flask web app with JWT authentication, admin & customer portals, 
+              and a polished UI with pagination, filters, and toast notifications.
+            </p>
+            <a href="https://youtu.be/WrYNyjDwBYI" target="_blank" class="btn btn-small">Live Demo</a>
+          </div>
+          <div class="project-card">
+            <h3>Zone 7 RP</h3>
+            <p>
+              Custom FiveM roleplay server with advanced player systems, economy 
+              balancing, and immersive scripts for enhanced gameplay.
+            </p>
+            <a href="#" class="btn btn-small">Join Server</a>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Email: <a href="mailto:onekaneldn@gmail.com">onekaneldn@gmail.com</a></p>
-      <p>Phone: <a href="tel:+447565470169">+44 7565 470 169</a></p>
-      <div class="social-links">
-        <a href="https://github.com/Kane7th" target="_blank">GitHub</a>
-        <a href="https://www.linkedin.com/in/kanekabena/" target="_blank">LinkedIn</a>
+    <section id="contact" class="section section-dark">
+      <div class="section-container">
+        <h2 class="section-title">Contact</h2>
+        <div class="contact-content">
+          <p>Email: <a href="mailto:onekaneldn@gmail.com">onekaneldn@gmail.com</a></p>
+          <p>Phone: <a href="tel:+447565470169">+44 7565 470 169</a></p>
+          <div class="social-links">
+            <a href="https://github.com/Kane7th" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/kanekabena/" target="_blank">LinkedIn</a>
+          </div>
+        </div>
       </div>
     </section>
 

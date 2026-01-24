@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (musicToggleBtn && backgroundMusic) {
     musicToggleBtn.addEventListener("click", function (e) {
       e.stopPropagation();
+      e.preventDefault();
       
       const volume = volumeSlider ? parseInt(volumeSlider.value) : 30;
       
@@ -87,6 +88,9 @@ document.addEventListener("DOMContentLoaded", function () {
       
       if (backgroundMusic.paused) {
         // User interaction - safe to play
+        // Set volume before playing
+        backgroundMusic.volume = volume / 100;
+        
         const playPromise = backgroundMusic.play();
         
         if (playPromise !== undefined) {
@@ -95,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
               musicStarted = true;
               isPlaying = true;
               updateButtonIcons();
+              console.log("Music playing successfully");
             })
             .catch(err => {
               // Only log if it's not an AbortError (which is expected when paused quickly)
@@ -104,12 +109,18 @@ document.addEventListener("DOMContentLoaded", function () {
               isPlaying = false;
               updateButtonIcons();
             });
+        } else {
+          // Fallback if play() doesn't return a promise
+          musicStarted = true;
+          isPlaying = true;
+          updateButtonIcons();
         }
       } else {
         // Pause the music
         backgroundMusic.pause();
         isPlaying = false;
         updateButtonIcons();
+        console.log("Music paused");
       }
     });
   }

@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (musicToggleBtn && backgroundMusic) {
     musicToggleBtn.addEventListener("click", function (e) {
       e.stopPropagation();
+      e.preventDefault();
       
       const volume = volumeSlider ? parseInt(volumeSlider.value) : 30;
       
@@ -87,6 +88,9 @@ document.addEventListener("DOMContentLoaded", function () {
       
       if (backgroundMusic.paused) {
         // User interaction - safe to play
+        // Set volume before playing
+        backgroundMusic.volume = volume / 100;
+        
         const playPromise = backgroundMusic.play();
         
         if (playPromise !== undefined) {
@@ -95,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
               musicStarted = true;
               isPlaying = true;
               updateButtonIcons();
+              console.log("Music playing successfully");
             })
             .catch(err => {
               // Only log if it's not an AbortError (which is expected when paused quickly)
@@ -104,12 +109,18 @@ document.addEventListener("DOMContentLoaded", function () {
               isPlaying = false;
               updateButtonIcons();
             });
+        } else {
+          // Fallback if play() doesn't return a promise
+          musicStarted = true;
+          isPlaying = true;
+          updateButtonIcons();
         }
       } else {
         // Pause the music
         backgroundMusic.pause();
         isPlaying = false;
         updateButtonIcons();
+        console.log("Music paused");
       }
     });
   }
@@ -118,6 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (backgroundMusic) {
     backgroundMusic.addEventListener("error", function (e) {
       console.error("Audio loading error:", e);
+      console.error("Audio error details:", backgroundMusic.error);
       // Hide music controls if audio file doesn't exist
       if (musicToggleBtn) {
         musicToggleBtn.style.display = "none";
@@ -131,17 +143,37 @@ document.addEventListener("DOMContentLoaded", function () {
     backgroundMusic.addEventListener("play", function () {
       isPlaying = true;
       updateButtonIcons();
+      console.log("Audio play event fired");
     });
 
     backgroundMusic.addEventListener("pause", function () {
       isPlaying = false;
       updateButtonIcons();
+      console.log("Audio pause event fired");
+    });
+
+    backgroundMusic.addEventListener("loadeddata", function () {
+      console.log("Audio loaded, ready state:", backgroundMusic.readyState);
+      // Set initial volume
+      backgroundMusic.volume = 0.3;
+    });
+
+    backgroundMusic.addEventListener("canplay", function () {
+      console.log("Audio can play");
+    });
+
+    backgroundMusic.addEventListener("canplaythrough", function () {
+      console.log("Audio can play through");
     });
 
     // Don't attempt autoplay - wait for user interaction
     // Set initial state to paused (play icon visible)
     isPlaying = false;
     updateButtonIcons();
+    
+    // Log initial state
+    console.log("Music player initialized. Audio element:", backgroundMusic);
+    console.log("Audio src:", backgroundMusic.src || backgroundMusic.querySelector("source")?.src);
   }
   
   // ===== Workspace Images - Get references once =====

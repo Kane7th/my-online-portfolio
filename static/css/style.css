@@ -2682,4 +2682,30 @@ footer {
   .availability-notice p {
     font-size: 0.9rem;
   }
+
+  .github-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .github-stat-card {
+    padding: 25px 15px;
+  }
+
+  .github-stat-number {
+    font-size: 2rem;
+  }
+
+  .github-languages {
+    padding: 25px 20px;
+  }
+
+  .language-item {
+    grid-template-columns: 100px 1fr 50px;
+    gap: 10px;
+  }
+
+  .language-name {
+    font-size: 0.9rem;
+  }
 }

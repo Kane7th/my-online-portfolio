@@ -302,6 +302,16 @@ nav.scrolled {
   color: #888;
 }
 
+.music-icon-play,
+.music-icon-pause {
+  color: #5dade2;
+}
+
+.music-toggle-btn:hover .music-icon-play,
+.music-toggle-btn:hover .music-icon-pause {
+  color: #7dd3fc;
+}
+
 .music-volume-control {
   display: flex;
   align-items: center;

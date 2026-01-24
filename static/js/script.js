@@ -6,8 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const musicToggleBtn = document.getElementById("musicToggleBtn");
   const volumeSlider = document.getElementById("musicVolumeSlider");
   const volumeValue = document.getElementById("volumeValue");
-  const musicIcon = musicToggleBtn?.querySelector(".music-icon:not(.music-icon-muted)");
-  const musicIconMuted = musicToggleBtn?.querySelector(".music-icon-muted");
+  const playIcon = musicToggleBtn?.querySelector(".music-icon-play");
+  const pauseIcon = musicToggleBtn?.querySelector(".music-icon-pause");
+  const muteIcon = musicToggleBtn?.querySelector(".music-icon-muted");
 
   // Set default volume to 30%
   if (backgroundMusic) {
@@ -22,20 +23,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Track if music has been started by user interaction
   let musicStarted = false;
+  let isPlaying = false;
 
-  // Function to start music (only works after user interaction)
-  function startMusic() {
-    if (!backgroundMusic || musicStarted) return;
+  // Function to update button icons based on state
+  function updateButtonIcons() {
+    if (!musicToggleBtn) return;
     
-    backgroundMusic.play().then(() => {
-      musicStarted = true;
-      if (musicToggleBtn) musicToggleBtn.classList.add("active");
-      if (musicIcon) musicIcon.style.display = "block";
-      if (musicIconMuted) musicIconMuted.style.display = "none";
-    }).catch(err => {
-      // Silently handle autoplay errors - user will need to click the button
-      console.log("Music start requires user interaction");
-    });
+    const volume = volumeSlider ? parseInt(volumeSlider.value) : 30;
+    
+    // Show mute icon only when volume is 0%
+    if (volume === 0) {
+      if (playIcon) playIcon.style.display = "none";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      if (muteIcon) muteIcon.style.display = "block";
+      musicToggleBtn.classList.remove("active");
+    } else {
+      // Show play or pause icon based on playing state
+      if (muteIcon) muteIcon.style.display = "none";
+      if (isPlaying) {
+        if (playIcon) playIcon.style.display = "none";
+        if (pauseIcon) pauseIcon.style.display = "block";
+        musicToggleBtn.classList.add("active");
+      } else {
+        if (playIcon) playIcon.style.display = "block";
+        if (pauseIcon) pauseIcon.style.display = "none";
+        musicToggleBtn.classList.remove("active");
+      }
+    }
   }
 
   // Update volume when slider changes
@@ -47,9 +61,14 @@ document.addEventListener("DOMContentLoaded", function () {
         volumeValue.textContent = `${e.target.value}%`;
       }
       
-      // Try to start music if volume is increased from 0 and user has interacted
-      if (volume > 0 && backgroundMusic.paused && !musicStarted) {
-        startMusic();
+      // Update icons based on volume
+      updateButtonIcons();
+      
+      // If volume is set to 0, pause the music
+      if (volume === 0 && !backgroundMusic.paused) {
+        backgroundMusic.pause();
+        isPlaying = false;
+        updateButtonIcons();
       }
     });
   }
@@ -59,24 +78,38 @@ document.addEventListener("DOMContentLoaded", function () {
     musicToggleBtn.addEventListener("click", function (e) {
       e.stopPropagation();
       
+      const volume = volumeSlider ? parseInt(volumeSlider.value) : 30;
+      
+      // Don't allow play if volume is 0
+      if (volume === 0) {
+        return;
+      }
+      
       if (backgroundMusic.paused) {
         // User interaction - safe to play
-        backgroundMusic.play().then(() => {
-          musicStarted = true;
-          musicToggleBtn.classList.add("active");
-          if (musicIcon) musicIcon.style.display = "block";
-          if (musicIconMuted) musicIconMuted.style.display = "none";
-        }).catch(err => {
-          console.error("Play failed:", err);
-          // Show muted icon if play fails
-          if (musicIcon) musicIcon.style.display = "none";
-          if (musicIconMuted) musicIconMuted.style.display = "block";
-        });
+        const playPromise = backgroundMusic.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              musicStarted = true;
+              isPlaying = true;
+              updateButtonIcons();
+            })
+            .catch(err => {
+              // Only log if it's not an AbortError (which is expected when paused quickly)
+              if (err.name !== 'AbortError') {
+                console.error("Play failed:", err);
+              }
+              isPlaying = false;
+              updateButtonIcons();
+            });
+        }
       } else {
+        // Pause the music
         backgroundMusic.pause();
-        musicToggleBtn.classList.remove("active");
-        if (musicIcon) musicIcon.style.display = "none";
-        if (musicIconMuted) musicIconMuted.style.display = "block";
+        isPlaying = false;
+        updateButtonIcons();
       }
     });
   }
@@ -94,13 +127,21 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+    // Listen for play/pause events to keep state in sync
+    backgroundMusic.addEventListener("play", function () {
+      isPlaying = true;
+      updateButtonIcons();
+    });
+
+    backgroundMusic.addEventListener("pause", function () {
+      isPlaying = false;
+      updateButtonIcons();
+    });
+
     // Don't attempt autoplay - wait for user interaction
-    // Set initial state to paused (muted icon visible)
-    if (musicToggleBtn) {
-      musicToggleBtn.classList.remove("active");
-      if (musicIcon) musicIcon.style.display = "none";
-      if (musicIconMuted) musicIconMuted.style.display = "block";
-    }
+    // Set initial state to paused (play icon visible)
+    isPlaying = false;
+    updateButtonIcons();
   }
   
   // ===== Workspace Images - Get references once =====

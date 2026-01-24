@@ -283,8 +283,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const lampHintRight = document.getElementById("lampHintRight");
   let lampRightLit = false;
   
-  console.log("Lamp Right found:", lampRight); // Debug
-  console.log("Lamp Hint Right found:", lampHintRight); // Debug
+ // Debug
+ // Debug
   
   // ===== Person Zone Click (Screen) - Cycles: 1 → 4 → 3 → 1 =====
   const personZone = document.getElementById("personZone");
@@ -364,7 +364,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // ===== Workspace4 Zone Click (Chair) - Toggle workspace-3.jpg =====
   const workspace4Zone = document.getElementById("workspace4Zone");
   
-  console.log("Workspace4 Zone found:", workspace4Zone); // Debug
+ // Debug
   
   if (workspace4Zone) {
     workspace4Zone.addEventListener("click", function (e) {

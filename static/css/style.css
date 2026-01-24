@@ -347,6 +347,8 @@ nav.scrolled {
   pointer-events: none;
   opacity: 1;
   transition: opacity 0.5s ease-out;
+  display: block !important;
+  visibility: visible !important;
 }
 
 .interactive-zones.fade-out {

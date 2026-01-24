@@ -264,7 +264,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function preloadLampSound() {
     try {
       // Get static URL (from Flask or use default)
-      const staticUrl = window.STATIC_URL || '/static/';
+      const staticUrl = window.STATIC_URL || 'static/';
       const audioPath = `${staticUrl}sounds/lamp-click`;
       const extensions = ['mp3', 'wav', 'ogg'];
 
@@ -320,7 +320,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Preload screen switch sounds
   function preloadScreenSounds() {
     try {
-      const staticUrl = window.STATIC_URL || '/static/';
+      const staticUrl = window.STATIC_URL || 'static/';
       const extensions = ['mp3', 'wav', 'ogg'];
       
       // Try to find the switch-on audio file
@@ -366,7 +366,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       } else {
         // Fallback: try common formats
-        const staticUrl = window.STATIC_URL || '/static/';
+        const staticUrl = window.STATIC_URL || 'static/';
         const formats = ['mp3', 'wav', 'ogg'];
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/screen-switch-on.${format}`);
@@ -391,7 +391,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       } else {
         // Fallback: try common formats
-        const staticUrl = window.STATIC_URL || '/static/';
+        const staticUrl = window.STATIC_URL || 'static/';
         const formats = ['mp3', 'wav', 'ogg'];
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/screen-switch-off.${format}`);
@@ -410,7 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Preload chair (sit down/up) sounds
   function preloadChairSounds() {
     try {
-      const staticUrl = window.STATIC_URL || '/static/';
+      const staticUrl = window.STATIC_URL || 'static/';
       const extensions = ['mp3', 'wav', 'ogg'];
       
       // Try to find the sit-down audio file
@@ -456,7 +456,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       } else {
         // Fallback: try common formats
-        const staticUrl = window.STATIC_URL || '/static/';
+        const staticUrl = window.STATIC_URL || 'static/';
         const formats = ['mp3', 'wav', 'ogg'];
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/sit-down.${format}`);
@@ -481,7 +481,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       } else {
         // Fallback: try common formats
-        const staticUrl = window.STATIC_URL || '/static/';
+        const staticUrl = window.STATIC_URL || 'static/';
         const formats = ['mp3', 'wav', 'ogg'];
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/sit-up.${format}`);

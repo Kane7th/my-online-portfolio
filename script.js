@@ -666,7 +666,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const projectNodes = document.querySelectorAll(".project-node");
   
   projectNodes.forEach((node) => {
-    node.addEventListener("click", function () {
+    node.addEventListener("click", function (e) {
+      // Don't trigger if clicking on a link inside the card
+      if (e.target.tagName === 'A' || e.target.closest('a')) {
+        return;
+      }
+      
       // Toggle active state
       const isActive = this.classList.contains("active");
       
@@ -678,6 +683,57 @@ document.addEventListener("DOMContentLoaded", function () {
         this.classList.add("active");
       }
     });
+  });
+
+  // ===== Server Offline Error Modal =====
+  const joinServerBtn = document.getElementById("joinServerBtn");
+  const serverOfflineModal = document.getElementById("serverOfflineModal");
+  const errorModalClose = document.querySelector(".error-modal-close");
+  const errorModalBtn = document.querySelector(".error-modal-btn");
+
+  function showServerOfflineError() {
+    if (serverOfflineModal) {
+      serverOfflineModal.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function hideServerOfflineError() {
+    if (serverOfflineModal) {
+      serverOfflineModal.classList.remove("show");
+      document.body.style.overflow = "";
+    }
+  }
+
+  if (joinServerBtn) {
+    joinServerBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      showServerOfflineError();
+    });
+  }
+
+  if (errorModalClose) {
+    errorModalClose.addEventListener("click", hideServerOfflineError);
+  }
+
+  if (errorModalBtn) {
+    errorModalBtn.addEventListener("click", hideServerOfflineError);
+  }
+
+  if (serverOfflineModal) {
+    serverOfflineModal.addEventListener("click", function (e) {
+      if (e.target === serverOfflineModal) {
+        hideServerOfflineError();
+      }
+    });
+  }
+
+  // Close error modal with Escape key
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && serverOfflineModal && serverOfflineModal.classList.contains("show")) {
+      hideServerOfflineError();
+    }
   });
 
   // ===== Parallax Effect for Background =====

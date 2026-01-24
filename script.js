@@ -1096,13 +1096,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const contactFormModal = document.getElementById("contactFormModal");
   const contactModalClose = document.querySelector(".contact-modal-close");
   const contactForm = document.getElementById("contactForm");
-  
-  console.log("Contact form elements:", {
-    openBtn: openContactFormBtn,
-    modal: contactFormModal,
-    closeBtn: contactModalClose,
-    form: contactForm
-  }); // Debug
 
   function showContactForm() {
     if (contactFormModal) {

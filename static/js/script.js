@@ -283,9 +283,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const lampHintRight = document.getElementById("lampHintRight");
   let lampRightLit = false;
   
- // Debug
- // Debug
-  
   // ===== Person Zone Click (Screen) - Cycles: 1 → 4 → 3 → 1 =====
   const personZone = document.getElementById("personZone");
   
@@ -355,8 +352,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ===== Workspace4 Zone Click (Chair) - Toggle workspace-3.jpg =====
   const workspace4Zone = document.getElementById("workspace4Zone");
-  
- // Debug
   
   if (workspace4Zone) {
     workspace4Zone.addEventListener("click", function (e) {

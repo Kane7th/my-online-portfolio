@@ -310,9 +310,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const lampHintRight = document.getElementById("lampHintRight");
   let lampRightLit = false;
   
- // Debug
-  console.log("Lamp Hint Right found:", lampHintRight); // Debug
-  
   // ===== Person Zone Click (Screen) - Cycles: 1 → 4 → 3 → 1 =====
   const personZone = document.getElementById("personZone");
   

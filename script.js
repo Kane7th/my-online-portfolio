@@ -19,8 +19,19 @@ document.addEventListener("DOMContentLoaded", function () {
   const lampHintRight = document.getElementById("lampHintRight");
   let lampRightLit = false;
   
+  console.log("Lamp Right found:", lampRight); // Debug
+  console.log("Lamp Hint Right found:", lampHintRight); // Debug
+  
   // ===== Person Zone Click (Screen) - Cycles: 1 → 4 → 3 → 1 =====
   const personZone = document.getElementById("personZone");
+  
+  console.log("Person Zone found:", personZone); // Debug
+  console.log("Workspace images found:", {
+    img1: workspaceImage1,
+    img2: workspaceImage2,
+    img3: workspaceImage3,
+    img4: workspaceImage4
+  }); // Debug
   
   if (personZone) {
     personZone.addEventListener("click", function (e) {
@@ -88,6 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ===== Workspace4 Zone Click (Chair) - Toggle workspace-3.jpg =====
   const workspace4Zone = document.getElementById("workspace4Zone");
+  
+  console.log("Workspace4 Zone found:", workspace4Zone); // Debug
   
   if (workspace4Zone) {
     workspace4Zone.addEventListener("click", function (e) {
@@ -805,6 +818,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const contactFormModal = document.getElementById("contactFormModal");
   const contactModalClose = document.querySelector(".contact-modal-close");
   const contactForm = document.getElementById("contactForm");
+  
+  console.log("Contact form elements:", {
+    openBtn: openContactFormBtn,
+    modal: contactFormModal,
+    closeBtn: contactModalClose,
+    form: contactForm
+  }); // Debug
 
   function showContactForm() {
     if (contactFormModal) {

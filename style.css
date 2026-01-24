@@ -2828,92 +2828,426 @@ footer {
 }
 
 @media (max-width: 480px) {
+  /* Base mobile improvements */
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* Navigation - Touch-friendly */
+  nav {
+    padding: 10px 15px;
+  }
+
   .nav-list {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .nav-link,
+  .resume-link {
+    font-size: 14px;
+    padding: 12px 20px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-logo-text {
+    font-size: 0.75rem;
+  }
+
+  /* Hero Section - Better spacing */
+  .hero {
+    padding: 80px 15px 40px;
+  }
+
+  .hero-container {
+    padding: 0 15px;
   }
 
   .hero-title {
-    font-size: 2rem;
+    font-size: clamp(1.8rem, 8vw, 2.2rem);
+    line-height: 1.2;
+    margin-bottom: 20px;
   }
 
   .hero-title .subtitle {
-    font-size: 1.5rem;
+    font-size: clamp(1.3rem, 6vw, 1.6rem);
+    display: block;
+    margin-top: 10px;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(0.95rem, 4vw, 1.1rem);
+    line-height: 1.7;
+    margin: 20px 0;
+    padding: 0 10px;
   }
 
   .html-tags {
-    font-size: 12px;
+    font-size: 11px;
+    gap: 5px;
+    margin: 10px 0;
   }
 
-  .whatsapp-button {
-    width: 55px;
-    height: 55px;
-    bottom: 20px;
-    right: 20px;
+  .btn-contact {
+    padding: 14px 28px;
+    font-size: 0.95rem;
+    min-height: 48px;
+    margin-top: 25px;
   }
 
-  .whatsapp-button svg {
-    width: 28px;
-    height: 28px;
+  /* Sections - Better spacing */
+  .section {
+    padding: 60px 15px 40px;
   }
 
+  .section-title {
+    font-size: clamp(1.8rem, 8vw, 2.2rem);
+    margin-bottom: 30px;
+  }
+
+  /* About Cards - Touch-friendly */
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 10px;
+  }
+
+  .about-card {
+    padding: 25px 20px;
+    min-height: auto;
+  }
+
+  .card-icon {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+  }
+
+  .about-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+
+  .about-card p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  /* Skills Grid - Better mobile layout */
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 0 10px;
+  }
+
+  .skill-item {
+    padding: 20px 12px;
+    min-height: 100px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(93, 173, 226, 0.2);
+  }
+
+  .skill-item i {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  .skill-item span {
+    font-size: 0.85rem;
+  }
+
+  /* GitHub Stats - Mobile optimized */
+  .github-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 0 10px;
+  }
+
+  .github-stat-card {
+    padding: 20px 15px;
+    min-height: 140px;
+  }
+
+  .github-stat-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 15px;
+  }
+
+  .github-stat-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .github-stat-number {
+    font-size: 1.8rem;
+  }
+
+  .github-stat-label {
+    font-size: 0.8rem;
+  }
+
+  .github-languages {
+    padding: 20px 15px;
+    margin: 0 10px 30px;
+  }
+
+  .github-languages-title {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+
+  .language-item {
+    grid-template-columns: 80px 1fr 45px;
+    gap: 8px;
+  }
+
+  .language-name {
+    font-size: 0.85rem;
+  }
+
+  .language-percent {
+    font-size: 0.8rem;
+  }
+
+  .btn-github {
+    padding: 14px 24px;
+    font-size: 0.9rem;
+    min-height: 48px;
+  }
+
+  /* Projects - Mobile optimized */
+  .projects-tree {
+    padding: 0 5px;
+  }
+
+  .project-node {
+    padding-left: 30px;
+  }
+
+  .project-card {
+    padding: 20px 15px;
+  }
+
+  .project-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .project-card-header h3 {
+    font-size: 1.3rem;
+  }
+
+  .project-year {
+    font-size: 0.85rem;
+  }
+
+  .project-card-content {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .project-card-content p {
+    margin-bottom: 15px;
+  }
+
+  .btn,
+  .btn-small {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Contact Section - Touch-friendly */
   .contact-grid {
     grid-template-columns: 1fr;
     gap: 20px;
+    padding: 0 10px;
   }
 
   .contact-card {
     padding: 25px 20px;
+    min-height: 180px;
+  }
+
+  .contact-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+  }
+
+  .contact-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .contact-card-title {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+
+  .contact-card-text {
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+  }
+
+  .contact-card-link {
+    font-size: 0.95rem;
+    padding: 10px 0;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: rgba(93, 173, 226, 0.2);
   }
 
   .contact-subtitle {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     margin-bottom: 30px;
+    padding: 0 15px;
+    line-height: 1.6;
+  }
+
+  .social-section {
+    margin-top: 40px;
+    padding: 0 15px;
+  }
+
+  .social-section-title {
+    font-size: 1.3rem;
+    margin-bottom: 25px;
   }
 
   .social-links {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    gap: 15px;
   }
 
   .social-link {
     width: 100%;
-    max-width: 250px;
+    max-width: 100%;
+    padding: 16px 24px;
+    min-height: 52px;
     justify-content: center;
+    font-size: 0.95rem;
+    -webkit-tap-highlight-color: rgba(93, 173, 226, 0.2);
   }
 
   .availability-notice {
-    padding: 20px;
-    margin-top: 30px;
+    padding: 20px 15px;
+    margin: 30px 10px 0;
   }
 
   .availability-notice p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 8px 0;
+  }
+
+  /* WhatsApp Button - Touch-friendly */
+  .whatsapp-button {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+    min-height: 60px;
+    bottom: 20px;
+    right: 20px;
+    -webkit-tap-highlight-color: rgba(37, 211, 102, 0.3);
+  }
+
+  .whatsapp-button svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Contact Form Modal - Mobile optimized */
+  .contact-modal-content {
+    padding: 30px 20px;
+    margin: 20px;
+    max-width: calc(100% - 40px);
+  }
+
+  .contact-modal-title {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+  }
+
+  .contact-form {
+    gap: 18px;
+  }
+
+  .form-group label {
     font-size: 0.9rem;
   }
 
-  .github-stats-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  .form-group input,
+  .form-group textarea {
+    padding: 14px 15px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    min-height: 48px;
   }
 
-  .github-stat-card {
+  .contact-form-btn {
+    padding: 16px 28px;
+    font-size: 1rem;
+    min-height: 52px;
+    margin-top: 10px;
+  }
+
+  /* Skill Modal - Mobile optimized */
+  .skill-modal-content {
+    padding: 30px 20px;
+    margin: 20px;
+    max-width: calc(100% - 40px);
+  }
+
+  .skill-modal-title {
+    font-size: 1.5rem;
+  }
+
+  .skill-modal-description {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  /* Error Modal - Mobile optimized */
+  .error-modal-content {
+    padding: 30px 20px;
+    margin: 20px;
+    max-width: calc(100% - 40px);
+  }
+
+  .error-modal-title {
+    font-size: 1.4rem;
+  }
+
+  .error-modal-message {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .error-modal-btn {
+    padding: 14px 28px;
+    min-height: 48px;
+  }
+
+  /* Footer - Mobile spacing */
+  footer {
     padding: 25px 15px;
+    font-size: 0.85rem;
   }
 
-  .github-stat-number {
-    font-size: 2rem;
-  }
-
-  .github-languages {
-    padding: 25px 20px;
-  }
-
-  .language-item {
-    grid-template-columns: 100px 1fr 50px;
-    gap: 10px;
-  }
-
-  .language-name {
-    font-size: 0.9rem;
+  /* Scroll indicator - Hide on mobile */
+  .scroll-indicator {
+    display: none;
   }
 }

@@ -265,12 +265,20 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Audio src:", backgroundMusic.src || backgroundMusic.querySelector("source")?.src);
     console.log("Audio readyState:", backgroundMusic.readyState);
     
-    // Try to load the audio explicitly
-    try {
-      backgroundMusic.load();
-      console.log("Audio load() called");
-    } catch (e) {
-      console.error("Error calling load():", e);
+    // Verify file accessibility
+    const audioSrc = backgroundMusic.src || backgroundMusic.querySelector("source")?.src;
+    if (audioSrc) {
+      fetch(audioSrc, { method: 'HEAD' })
+        .then(response => {
+          if (response.ok) {
+            console.log("Audio file is accessible, size:", response.headers.get('content-length'), "bytes");
+          } else {
+            console.error("Audio file not accessible, status:", response.status);
+          }
+        })
+        .catch(err => {
+          console.error("Error checking audio file accessibility:", err);
+        });
     }
   }
   

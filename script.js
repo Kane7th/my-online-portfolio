@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const staticUrl = window.STATIC_URL || 'static/';
       const audioPath = `${staticUrl}sounds/lamp-click`;
       const extensions = ['mp3', 'wav', 'ogg'];
-
+      
       // Try to find the audio file
       for (const ext of extensions) {
         const audio = new Audio(`${audioPath}.${ext}`);
@@ -286,7 +286,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Audio file not found or not supported");
     }
   }
-
+  
   function playLampSwitchSound() {
     try {
       if (lampClickAudio) {
@@ -297,9 +297,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       } else {
         // Fallback: try common formats
+        const staticUrl = window.STATIC_URL || 'static/';
         const formats = ['mp3', 'wav', 'ogg'];
         for (const format of formats) {
-          const audio = new Audio(`/static/sounds/lamp-click.${format}`);
+          const audio = new Audio(`${staticUrl}sounds/lamp-click.${format}`);
           audio.volume = 0.7;
           audio.play().catch(e => {
             // Try next format
@@ -311,8 +312,8 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Audio playback error:", e);
     }
   }
-
-  // Call preload function on DOMContentLoaded
+  
+  // Preload sound on page load
   preloadLampSound();
   preloadScreenSounds();
   preloadChairSounds();
@@ -504,7 +505,7 @@ document.addEventListener("DOMContentLoaded", function () {
     link.addEventListener("click", function (event) {
       event.preventDefault();
       const targetId = this.getAttribute("href");
-
+      
       if (targetId === "#home") {
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {

@@ -1010,6 +1010,13 @@ nav.scrolled {
   background: #0f1419;
 }
 
+/* About Section - Light transparent background to dim workspace image */
+#about {
+  background: rgba(10, 14, 39, 0.4);
+  backdrop-filter: blur(5px);
+  position: relative;
+}
+
 .section-container {
   max-width: 1200px;
   margin: 0 auto;

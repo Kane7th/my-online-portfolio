@@ -574,7 +574,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Fallback: try common formats
+        // Fallback: try common formats - wait for load
         const isGitHubPages = window.location.hostname.includes('github.io');
         const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
         const staticUrl = window.STATIC_URL || `${basePath}static/`;
@@ -582,14 +582,37 @@ document.addEventListener("DOMContentLoaded", function () {
         for (const format of formats) {
           const audio = new Audio(`${staticUrl}sounds/lamp-click.${format}`);
           audio.volume = 0.7;
-          const playPromise = audio.play();
-          if (playPromise !== undefined) {
-            playPromise.then(() => {
-              console.log(`Playing lamp sound: ${staticUrl}sounds/lamp-click.${format}`);
-            }).catch(e => {
-              console.error(`Failed to play lamp sound: ${format}`, e);
-            });
-          }
+          audio.preload = 'auto';
+          
+          // Wait for audio to be ready before playing
+          const tryPlay = () => {
+            if (audio.readyState >= 2) {
+              const playPromise = audio.play();
+              if (playPromise !== undefined) {
+                playPromise.then(() => {
+                  console.log(`Playing lamp sound: ${staticUrl}sounds/lamp-click.${format}`);
+                }).catch(e => {
+                  console.error(`Failed to play lamp sound: ${format}`, e);
+                });
+              }
+            } else {
+              // Wait a bit and try again
+              setTimeout(() => {
+                if (audio.readyState >= 2) {
+                  tryPlay();
+                } else {
+                  console.error(`Lamp sound not ready: ${format}`);
+                }
+              }, 100);
+            }
+          };
+          
+          audio.addEventListener('canplaythrough', tryPlay, { once: true });
+          audio.addEventListener('error', function(e) {
+            console.error(`Failed to load lamp sound: ${format}`, e);
+          }, { once: true });
+          audio.load();
+          tryPlay(); // Try immediately if already loaded
           break; // Stop after first attempt
         }
       }

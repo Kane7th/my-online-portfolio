@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmailJS Configuration Test</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0a0e27;
+            color: #fff;
+        }
+        .test-container {
+            background: rgba(10, 14, 39, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid #5dade2;
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success {
+            background: rgba(93, 173, 226, 0.2);
+            border: 2px solid #5dade2;
+            color: #5dade2;
+        }
+        .error {
+            background: rgba(255, 87, 87, 0.2);
+            border: 2px solid #ff5757;
+            color: #ff5757;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #888;
+            color: #e0e0e0;
+        }
+        button {
+            background: #5dade2;
+            color: #0a0e27;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #7dd3fc;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #5dade2;
+            border-radius: 5px;
+            background: rgba(10, 14, 39, 0.6);
+            color: #fff;
+        }
+        pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>EmailJS Configuration Test</h1>
+        
+        <div id="configStatus"></div>
+        <div id="testResults"></div>
+        
+        <h2>Test Email Form</h2>
+        <form id="testForm">
+            <input type="text" id="testName" placeholder="Your Name" required>
+            <input type="email" id="testEmail" placeholder="Your Email" required>
+            <textarea id="testMessage" placeholder="Test Message" rows="4" required></textarea>
+            <button type="submit">Send Test Email</button>
+        </form>
+    </div>
+
+    <script>
+        // Configuration from your script.js
+        const EMAILJS_PUBLIC_KEY = "xoNNdlL-8ci3ROcRC";
+        const EMAILJS_SERVICE_ID = "service_iqsg9ne";
+        const EMAILJS_TEMPLATE_ID = "template_l0b5tey";
+        
+        const configStatus = document.getElementById("configStatus");
+        const testResults = document.getElementById("testResults");
+        
+        // Check configuration
+        function checkConfig() {
+            let html = '<h3>Configuration Status:</h3>';
+            
+            // Check EmailJS library
+            if (typeof emailjs === 'undefined') {
+                html += '<div class="status error">❌ EmailJS library not loaded</div>';
+            } else {
+                html += '<div class="status success">✅ EmailJS library loaded</div>';
+            }
+            
+            // Check Public Key
+            if (!EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY") {
+                html += '<div class="status error">❌ Public Key not configured</div>';
+            } else {
+                html += `<div class="status success">✅ Public Key: ${EMAILJS_PUBLIC_KEY.substring(0, 10)}...</div>`;
+            }
+            
+            // Check Service ID
+            if (!EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID") {
+                html += '<div class="status error">❌ Service ID not configured</div>';
+            } else {
+                html += `<div class="status success">✅ Service ID: ${EMAILJS_SERVICE_ID}</div>`;
+            }
+            
+            // Check Template ID
+            if (!EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID === "YOUR_TEMPLATE_ID") {
+                html += '<div class="status error">❌ Template ID not configured</div>';
+            } else {
+                html += `<div class="status success">✅ Template ID: ${EMAILJS_TEMPLATE_ID}</div>`;
+            }
+            
+            configStatus.innerHTML = html;
+            
+            // Initialize EmailJS if configured
+            if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+                try {
+                    emailjs.init(EMAILJS_PUBLIC_KEY);
+                    html += '<div class="status success">✅ EmailJS initialized successfully</div>';
+                } catch (e) {
+                    html += `<div class="status error">❌ EmailJS initialization failed: ${e.message}</div>`;
+                }
+            }
+            
+            configStatus.innerHTML = html;
+        }
+        
+        // Test email sending
+        document.getElementById("testForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById("testName").value;
+            const email = document.getElementById("testEmail").value;
+            const message = document.getElementById("testMessage").value;
+            
+            testResults.innerHTML = '<div class="status info">⏳ Sending test email...</div>';
+            
+            const templateParams = {
+                from_name: name,
+                from_email: email,
+                message: message,
+                to_email: "kanekabena@gmail.com"
+            };
+            
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+                .then(function(response) {
+                    testResults.innerHTML = `
+                        <div class="status success">
+                            ✅ Email sent successfully!<br>
+                            Status: ${response.status}<br>
+                            Text: ${response.text}
+                        </div>
+                        <pre>${JSON.stringify(response, null, 2)}</pre>
+                    `;
+                })
+                .catch(function(error) {
+                    testResults.innerHTML = `
+                        <div class="status error">
+                            ❌ Email sending failed!<br>
+                            Error: ${error.text || error.message || JSON.stringify(error)}
+                        </div>
+                        <pre>${JSON.stringify(error, null, 2)}</pre>
+                    `;
+                });
+        });
+        
+        // Run config check on load
+        window.addEventListener("load", function() {
+            setTimeout(checkConfig, 500); // Wait for EmailJS to load
+        });
+    </script>
+</body>
+</html>

@@ -944,8 +944,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Check if EmailJS is available and properly configured
       if (typeof emailjs === 'undefined' || !emailjs.send || 
-          EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID" || 
-          EMAILJS_TEMPLATE_ID === "YOUR_TEMPLATE_ID") {
+          !EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY" ||
+          !EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID" || 
+          !EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID === "YOUR_TEMPLATE_ID") {
         // Fallback to mailto if EmailJS is not configured
         const subject = encodeURIComponent(`Portfolio Contact: ${name}`);
         const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);

@@ -3075,15 +3075,29 @@ footer {
     display: none;
   }
 
-  /* Music control on mobile */
+  /* Music control on mobile - hide by default, show in expanded menu */
   .nav-music-control {
+    display: none;
     order: 2;
     margin-left: 10px;
     gap: 8px;
+    width: 100%;
+    padding: 15px 20px;
+    border-top: 1px solid rgba(93, 173, 226, 0.1);
+    margin-top: 10px;
+  }
+
+  /* Show music control when mobile menu is active */
+  .nav-list.active ~ .nav-music-control,
+  .nav-list.active + .nav-music-control {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .music-volume-control {
     min-width: 80px;
+    width: 100%;
   }
 
   .volume-value {

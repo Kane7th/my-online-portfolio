@@ -3065,6 +3065,22 @@ footer {
     display: none;
   }
 
+  /* Music control on mobile */
+  .nav-music-control {
+    order: 2;
+    margin-left: 10px;
+    gap: 8px;
+  }
+
+  .music-volume-control {
+    min-width: 80px;
+  }
+
+  .volume-value {
+    font-size: 0.7rem;
+    min-width: 30px;
+  }
+
   .hero-title {
     font-size: clamp(2.2rem, 6vw, 2.8rem);
     line-height: 1.2;

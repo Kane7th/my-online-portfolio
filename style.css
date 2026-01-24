@@ -257,6 +257,124 @@ nav.scrolled {
   color: #5dade2;
 }
 
+/* Music Control in Navbar */
+.nav-music-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 20px;
+}
+
+.music-toggle-btn {
+  background: transparent;
+  border: 2px solid rgba(93, 173, 226, 0.3);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #ffffff;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.music-toggle-btn:hover {
+  border-color: #5dade2;
+  background: rgba(93, 173, 226, 0.1);
+  transform: scale(1.05);
+}
+
+.music-toggle-btn.active {
+  border-color: #5dade2;
+  background: rgba(93, 173, 226, 0.2);
+}
+
+.music-icon {
+  width: 20px;
+  height: 20px;
+  color: #5dade2;
+  transition: all 0.3s ease;
+}
+
+.music-toggle-btn:hover .music-icon {
+  color: #7dd3fc;
+}
+
+.music-icon-muted {
+  color: #888;
+}
+
+.music-volume-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.volume-slider {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #5dade2;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(93, 173, 226, 0.5);
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  background: #7dd3fc;
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(93, 173, 226, 0.8);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #5dade2;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(93, 173, 226, 0.5);
+}
+
+.volume-slider::-moz-range-thumb:hover {
+  background: #7dd3fc;
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(93, 173, 226, 0.8);
+}
+
+.volume-slider::-moz-range-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.volume-value {
+  font-size: 0.75rem;
+  color: #b0b0b0;
+  min-width: 35px;
+  text-align: right;
+  font-weight: 500;
+}
+
 /* Mobile Menu Toggle Button */
 .mobile-menu-toggle {
   display: none;

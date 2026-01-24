@@ -182,18 +182,67 @@ document.addEventListener("DOMContentLoaded", function () {
     // Listen for play/pause events to keep state in sync
     backgroundMusic.addEventListener("play", function () {
       isPlaying = true;
+      isPlayingPromise = false; // Clear flag when play event fires
       updateButtonIcons();
+      console.log("Audio play event fired");
     });
 
     backgroundMusic.addEventListener("pause", function () {
-      isPlaying = false;
-      updateButtonIcons();
+      // Only update if not in the middle of a play promise
+      if (!isPlayingPromise) {
+        isPlaying = false;
+        updateButtonIcons();
+        console.log("Audio pause event fired");
+      } else {
+        console.log("Pause event ignored - play promise in progress");
+      }
+    });
+
+    backgroundMusic.addEventListener("loadeddata", function () {
+      console.log("Audio loaded, ready state:", backgroundMusic.readyState);
+      console.log("Audio src:", backgroundMusic.src);
+      console.log("Audio currentSrc:", backgroundMusic.currentSrc);
+      // Set initial volume
+      backgroundMusic.volume = 0.3;
+    });
+
+    backgroundMusic.addEventListener("canplay", function () {
+      console.log("Audio can play");
+    });
+
+    backgroundMusic.addEventListener("canplaythrough", function () {
+      console.log("Audio can play through");
+    });
+
+    backgroundMusic.addEventListener("loadstart", function () {
+      console.log("Audio load started");
+    });
+
+    backgroundMusic.addEventListener("stalled", function () {
+      console.warn("Audio loading stalled");
+    });
+
+    backgroundMusic.addEventListener("suspend", function () {
+      console.warn("Audio loading suspended");
     });
 
     // Don't attempt autoplay - wait for user interaction
     // Set initial state to paused (play icon visible)
     isPlaying = false;
     updateButtonIcons();
+    
+    // Log initial state
+    console.log("Music player initialized. Audio element:", backgroundMusic);
+    console.log("Audio src:", backgroundMusic.src || backgroundMusic.querySelector("source")?.src);
+    console.log("Audio readyState:", backgroundMusic.readyState);
+    
+    // Try to load the audio explicitly
+    try {
+      backgroundMusic.load();
+      console.log("Audio load() called");
+    } catch (e) {
+      console.error("Error calling load():", e);
+    }
   }
   
   // ===== Workspace Images - Get references once =====
@@ -714,12 +763,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ===== Smooth Scrolling for Nav Links =====
-  const navLinks = document.querySelectorAll(".nav-link");
+    // ===== Smooth Scrolling for Nav Links =====
+    const navLinks = document.querySelectorAll(".nav-link");
 
-  navLinks.forEach((link) => {
-    link.addEventListener("click", function (event) {
-      event.preventDefault();
+    navLinks.forEach((link) => {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
       const targetId = this.getAttribute("href");
       
       if (targetId === "#home") {
@@ -733,28 +782,28 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Update active state
-      navLinks.forEach((l) => l.classList.remove("active"));
-      this.classList.add("active");
+            navLinks.forEach((l) => l.classList.remove("active"));
+            this.classList.add("active");
+        });
     });
-  });
 
-  // ===== Active Link on Scroll =====
+    // ===== Active Link on Scroll =====
   const sections = document.querySelectorAll("section[id], header[id]");
   const navbar = document.getElementById("navbar");
 
-  function updateActiveLink() {
+    function updateActiveLink() {
     let scrollPos = window.scrollY + 150; // offset for nav height
 
-    sections.forEach((section) => {
+        sections.forEach((section) => {
       const sectionTop = section.offsetTop;
       const sectionHeight = section.offsetHeight;
       const sectionId = section.getAttribute("id");
 
-      if (
+            if (
         scrollPos >= sectionTop &&
         scrollPos < sectionTop + sectionHeight
-      ) {
-        navLinks.forEach((link) => link.classList.remove("active"));
+            ) {
+                navLinks.forEach((link) => link.classList.remove("active"));
         const activeLink = document.querySelector(
           `.nav-link[href="#${sectionId}"]`
         );
@@ -775,25 +824,25 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ===== Navbar Style on Scroll =====
-  function handleNavbarScroll() {
-    if (window.scrollY > 50) {
-      navbar.classList.add("scrolled");
-    } else {
-      navbar.classList.remove("scrolled");
+    function handleNavbarScroll() {
+        if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+        } else {
+            navbar.classList.remove("scrolled");
+        }
     }
-  }
 
-  // ===== Throttle scroll updates for performance =====
-  let scrollTimeout;
-  window.addEventListener("scroll", function () {
-    if (!scrollTimeout) {
-      scrollTimeout = setTimeout(function () {
-        updateActiveLink();
-        handleNavbarScroll();
-        scrollTimeout = null;
-      }, 100);
-    }
-  });
+    // ===== Throttle scroll updates for performance =====
+    let scrollTimeout;
+    window.addEventListener("scroll", function () {
+        if (!scrollTimeout) {
+            scrollTimeout = setTimeout(function () {
+                updateActiveLink();
+                handleNavbarScroll();
+                scrollTimeout = null;
+            }, 100);
+        }
+    });
 
   // ===== Mobile Menu Toggle =====
   const mobileMenuToggle = document.getElementById("mobileMenuToggle");
@@ -885,9 +934,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Initial check
-  updateActiveLink();
-  handleNavbarScroll();
+    // Initial check
+    updateActiveLink();
+    handleNavbarScroll();
 
   // ===== Skill Modal Functionality =====
   const skillModal = document.getElementById("skillModal");

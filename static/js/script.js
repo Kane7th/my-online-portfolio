@@ -534,10 +534,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Preload the audio file
   function preloadLampSound() {
     try {
-      // Get static URL - check for GitHub Pages path
-      const isGitHubPages = window.location.hostname.includes('github.io');
-      const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-      const staticUrl = window.STATIC_URL || `${basePath}static/`;
+      // Get static URL - use relative path from current location
+      let staticUrl = 'static/';
+      if (window.location.pathname.includes('/my-online-portfolio')) {
+        staticUrl = '/my-online-portfolio/static/';
+      } else if (window.STATIC_URL) {
+        staticUrl = window.STATIC_URL;
+      }
       // Only try mp3 since that's what we have
       const audioPath = `${staticUrl}sounds/lamp-click.mp3`;
       
@@ -551,7 +554,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }, { once: true });
       audio.addEventListener('error', function(e) {
-        console.error(`Failed to load lamp sound: ${audioPath}`, e);
+        console.error(`Failed to load lamp sound: ${audioPath}`, e, audio.error);
       }, { once: true });
       audio.load();
     } catch (e) {
@@ -572,9 +575,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } else {
         // Fallback: create new audio instance
-        const isGitHubPages = window.location.hostname.includes('github.io');
-        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-        const staticUrl = window.STATIC_URL || `${basePath}static/`;
+        let staticUrl = 'static/';
+        if (window.location.pathname.includes('/my-online-portfolio')) {
+          staticUrl = '/my-online-portfolio/static/';
+        } else if (window.STATIC_URL) {
+          staticUrl = window.STATIC_URL;
+        }
         const audioPath = `${staticUrl}sounds/lamp-click.mp3`;
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
@@ -600,9 +606,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Preload screen switch sounds
   function preloadScreenSounds() {
     try {
-      const isGitHubPages = window.location.hostname.includes('github.io');
-      const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-      const staticUrl = window.STATIC_URL || `${basePath}static/`;
+      let staticUrl = 'static/';
+      if (window.location.pathname.includes('/my-online-portfolio')) {
+        staticUrl = '/my-online-portfolio/static/';
+      } else if (window.STATIC_URL) {
+        staticUrl = window.STATIC_URL;
+      }
       
       // Load switch-on audio file
       const audioOn = new Audio(`${staticUrl}sounds/screen-switch-on.mp3`);
@@ -650,9 +659,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } else {
         // Fallback: create new audio instance
-        const isGitHubPages = window.location.hostname.includes('github.io');
-        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-        const staticUrl = window.STATIC_URL || `${basePath}static/`;
+        let staticUrl = 'static/';
+        if (window.location.pathname.includes('/my-online-portfolio')) {
+          staticUrl = '/my-online-portfolio/static/';
+        } else if (window.STATIC_URL) {
+          staticUrl = window.STATIC_URL;
+        }
         const audioPath = `${staticUrl}sounds/screen-switch-on.mp3`;
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
@@ -682,9 +694,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } else {
         // Fallback: create new audio instance
-        const isGitHubPages = window.location.hostname.includes('github.io');
-        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-        const staticUrl = window.STATIC_URL || `${basePath}static/`;
+        let staticUrl = 'static/';
+        if (window.location.pathname.includes('/my-online-portfolio')) {
+          staticUrl = '/my-online-portfolio/static/';
+        } else if (window.STATIC_URL) {
+          staticUrl = window.STATIC_URL;
+        }
         const audioPath = `${staticUrl}sounds/screen-switch-off.mp3`;
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
@@ -705,9 +720,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Preload chair (sit down/up) sounds
   function preloadChairSounds() {
     try {
-      const isGitHubPages = window.location.hostname.includes('github.io');
-      const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-      const staticUrl = window.STATIC_URL || `${basePath}static/`;
+      let staticUrl = 'static/';
+      if (window.location.pathname.includes('/my-online-portfolio')) {
+        staticUrl = '/my-online-portfolio/static/';
+      } else if (window.STATIC_URL) {
+        staticUrl = window.STATIC_URL;
+      }
       
       // Load sit-down audio file
       const audioDown = new Audio(`${staticUrl}sounds/sit-down.mp3`);
@@ -755,9 +773,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } else {
         // Fallback: create new audio instance
-        const isGitHubPages = window.location.hostname.includes('github.io');
-        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-        const staticUrl = window.STATIC_URL || `${basePath}static/`;
+        let staticUrl = 'static/';
+        if (window.location.pathname.includes('/my-online-portfolio')) {
+          staticUrl = '/my-online-portfolio/static/';
+        } else if (window.STATIC_URL) {
+          staticUrl = window.STATIC_URL;
+        }
         const audioPath = `${staticUrl}sounds/sit-down.mp3`;
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
@@ -787,9 +808,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } else {
         // Fallback: create new audio instance
-        const isGitHubPages = window.location.hostname.includes('github.io');
-        const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-        const staticUrl = window.STATIC_URL || `${basePath}static/`;
+        let staticUrl = 'static/';
+        if (window.location.pathname.includes('/my-online-portfolio')) {
+          staticUrl = '/my-online-portfolio/static/';
+        } else if (window.STATIC_URL) {
+          staticUrl = window.STATIC_URL;
+        }
         const audioPath = `${staticUrl}sounds/sit-up.mp3`;
         const audio = new Audio(audioPath);
         audio.volume = 0.7;

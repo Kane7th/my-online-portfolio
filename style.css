@@ -78,16 +78,36 @@ nav.scrolled {
 }
 
 .nav-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.nav-logo-name {
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.5px;
-  white-space: nowrap;
   color: #ffffff;
   transition: color 0.3s ease;
 }
 
-.nav-logo:hover .nav-logo-text {
+.nav-logo-portfolio {
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+  margin-top: 2px;
+}
+
+.nav-logo:hover .nav-logo-name {
   color: #5dade2;
+}
+
+.nav-logo:hover .nav-logo-portfolio {
+  color: rgba(93, 173, 226, 0.7);
 }
 
 .nav-list {
@@ -1936,8 +1956,12 @@ footer {
     justify-content: space-between;
   }
 
-  .nav-logo-text {
+  .nav-logo-name {
     font-size: 0.85rem;
+  }
+
+  .nav-logo-portfolio {
+    font-size: 0.6rem;
   }
 
   .nav-logo-circle {

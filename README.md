@@ -1,172 +1,143 @@
 # Kane Kabena - Portfolio 🚀
 
-Welcome to my portfolio! This site showcases some of my skills, projects, and experience in software development.
+Welcome to my portfolio! This site showcases my skills, projects, and experience in software development.
+
+**Live Site**: [https://kane7th.github.io/my-online-portfolio/](https://kane7th.github.io/my-online-portfolio/)
 
 ## 🌟 Website Features
-- Interactive dark-themed design with atmospheric background
-- Custom **FiveM server development** experience
-- **Python Flask** backend with RESTful API
-- **HTML, CSS, JavaScript** frontend
-- Smooth animations and smooth UI
-- Interactive lamp element
-- Responsive design
+
+- Interactive dark-themed design with atmospheric workspace backgrounds
+- Interactive workspace scene with clickable elements (lamp, PC, chair)
+- **HTML5, CSS3, JavaScript** frontend
+- Smooth animations and polished UI
+- Responsive design for all devices
+- GitHub Stats section with animated counters
+- Technical Skills showcase with interactive modals
+- Project timeline with expandable cards
+- Contact section with multiple ways to reach out
+- Fixed WhatsApp button for quick contact
 
 ## 🛠 Technologies Used
 
-### Backend
-- **Flask** - Python web framework
-- **Flask-CORS** - Cross-origin resource sharing
-- **Python-dotenv** - Environment variable management
-
 ### Frontend
 - **HTML5** & **CSS3** for structure and styling
-- **JavaScript** for interactivity
-- **Google Fonts (Inter)** for typography
+- **JavaScript** for interactivity and animations
+- **Devicon** for technology logos
+- **Google Fonts** for typography
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Python 3.8 or higher
-- pip (Python package manager)
+### Viewing the Site
 
-### Installation
+The site is hosted on **GitHub Pages** and can be accessed directly:
+- **Live URL**: [https://kane7th.github.io/my-online-portfolio/](https://kane7th.github.io/my-online-portfolio/)
+
+### Local Development
+
+To view or edit the site locally:
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/Kane7th/my-online-portfolio.git
    cd my-online-portfolio
    ```
 
-2. **Create a virtual environment** (recommended)
-   ```bash
-   python -m venv venv
-   ```
+2. **Open the site**
+   - Simply open `index.html` in your web browser, or
+   - Use a local development server:
+     ```bash
+     # Using Python 3
+     python -m http.server 8000
+     
+     # Using Node.js (if you have it installed)
+     npx http-server
+     ```
 
-3. **Activate the virtual environment**
-   
-   On Windows:
-   ```bash
-   venv\Scripts\activate
-   ```
-   
-   On macOS/Linux:
-   ```bash
-   source venv/bin/activate
-   ```
-
-4. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-5. **Set up environment variables**
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Edit `.env` and update the configuration:
-   ```
-   SECRET_KEY=your-secret-key-here
-   DEBUG=True
-   PORT=5000
-   ```
-
-### Running the Application
-
-1. **Start the Flask backend**
-   ```bash
-   python app.py
-   ```
-
-2. **Open your browser**
-   Navigate to `http://localhost:5000`
-
-The application will be running on port 5000 by default (or the port specified in your `.env` file).
+3. **Access locally**
+   - Navigate to `http://localhost:8000` (or the port your server uses)
 
 ## 📁 Project Structure
 
 ```
 my-online-portfolio/
-├── app.py                 # Flask application entry point
-├── requirements.txt       # Python dependencies
-├── .env.example          # Environment variables template
-├── .gitignore           # Git ignore file
-├── templates/           # HTML templates
-│   └── index.html      # Main portfolio page
-└── static/             # Static files
-    ├── css/
-    │   └── style.css   # Stylesheet
-    ├── js/
-    │   └── script.js   # JavaScript
-    ├── images/         # Image assets
-    └── Kane - 2025 Resume.pdf
+├── index.html              # Main HTML file
+├── style.css               # Main stylesheet (for GitHub Pages)
+├── script.js               # Main JavaScript file (for GitHub Pages)
+├── Kane - 2025 Resume.pdf  # Resume PDF
+├── static/                 # Static assets
+│   ├── css/
+│   │   └── style.css       # Stylesheet (mirror of root)
+│   ├── js/
+│   │   └── script.js       # JavaScript (mirror of root)
+│   ├── images/             # Image assets
+│   │   ├── workspace-1.jpg through workspace-8.jpg
+│   │   └── ...
+│   └── sounds/             # Audio files for interactions
+│       ├── lamp-click.mp3
+│       ├── screen-switch-on.mp3
+│       ├── screen-switch-off.mp3
+│       ├── sit-down.mp3
+│       └── sit-up.mp3
+└── README.md               # This file
 ```
-
-## 🔌 API Endpoints
-
-### Health Check
-- `GET /api/health` - Check if the API is running
-
-### Projects
-- `GET /api/projects` - Get list of projects
-
-### Skills
-- `GET /api/skills` - Get list of skills
-
-### Contact
-- `POST /api/contact` - Submit contact form
-  ```json
-  {
-    "name": "John Doe",
-    "email": "john@example.com",
-    "message": "Hello!"
-  }
-  ```
 
 ## 🎨 Features
 
-- **Dark Theme**: Atmospheric dark blue/gray color scheme
-- **Interactive Elements**: Clickable lamp with glow effect
+- **Dark Theme**: Atmospheric dark blue/gray color scheme with glassmorphism effects
+- **Interactive Workspace**: Clickable elements that change background images
 - **Smooth Scrolling**: Navigation with smooth scroll behavior
-- **Responsive Design**: Works on desktop, tablet, and mobile
-- **Animated Background**: Mountain landscape with birds and tree
-- **HTML Tag Styling**: Decorative HTML tags in hero section
+- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile
+- **Animated Counters**: GitHub stats animate when scrolled into view
+- **Interactive Skills**: Click on skill logos to see detailed descriptions
+- **Project Timeline**: Expandable project cards in chronological order
+- **Contact Cards**: Multiple contact methods with hover effects
+- **Fixed WhatsApp Button**: Always-visible contact button in bottom right
 
 ## 📝 Development
 
-### Adding New Features
+### Making Changes
 
-1. **Backend Routes**: Add new routes in `app.py`
-2. **Frontend**: Update templates in `templates/` and static files in `static/`
-3. **Styling**: Modify `static/css/style.css`
-4. **JavaScript**: Update `static/js/script.js`
+1. **HTML**: Edit `index.html` for structure and content
+2. **Styling**: Modify `style.css` (root) or `static/css/style.css` (both should be kept in sync)
+3. **JavaScript**: Update `script.js` (root) or `static/js/script.js` (both should be kept in sync)
+4. **Images**: Add new images to `static/images/`
+5. **Sounds**: Add audio files to `static/sounds/`
 
-### Environment Variables
+### Keeping Files in Sync
 
-- `SECRET_KEY`: Flask secret key for sessions (change in production!)
-- `DEBUG`: Enable/disable debug mode (set to `False` in production)
-- `PORT`: Port number for the Flask server (default: 5000)
+The root `index.html`, `style.css`, and `script.js` files are used by GitHub Pages. The files in `static/` are mirrors for consistency. When making changes, update both locations to keep them in sync.
+
+### Deploying Changes
+
+1. **Commit your changes**
+   ```bash
+   git add .
+   git commit -m "Your commit message"
+   git push origin main
+   ```
+
+2. **GitHub Pages will automatically rebuild**
+   - Changes typically appear within 1-5 minutes
+   - Check the repository's Actions tab for build status
 
 ## 🌍 Deployment
 
-### Production Checklist
-- [ ] Set `DEBUG=False` in `.env`
-- [ ] Change `SECRET_KEY` to a secure random string
-- [ ] Use a production WSGI server (e.g., Gunicorn)
-- [ ] Set up proper error logging
-- [ ] Configure CORS for your domain
-- [ ] Set up SSL/HTTPS
+This site is deployed on **GitHub Pages**, which automatically serves static files from the repository.
 
-### Example with Gunicorn
-```bash
-pip install gunicorn
-gunicorn -w 4 -b 0.0.0.0:5000 app:app
-```
+### GitHub Pages Setup
+
+1. Go to your repository settings on GitHub
+2. Navigate to "Pages" in the left sidebar
+3. Select the branch (usually `main`) and folder (`/root`)
+4. Save - GitHub Pages will automatically deploy your site
+
+The site will be available at: `https://[username].github.io/[repository-name]/`
 
 ## 📧 Contact
 
 - **Email**: kanekabena@gmail.com
 - **Phone**: +44 7565 470 169
+- **WhatsApp**: [Start a conversation](https://api.whatsapp.com/send?phone=447565470169&text=Hello!%20I'd%20like%20to%20get%20in%20touch.)
 - **GitHub**: [Kane7th](https://github.com/Kane7th)
 - **LinkedIn**: [kanekabena](https://www.linkedin.com/in/kanekabena/)
 

@@ -609,26 +609,54 @@ document.addEventListener("DOMContentLoaded", function () {
   // Preload the audio file
   function preloadLampSound() {
     try {
-      // Get static URL - check for GitHub Pages path
-      const isGitHubPages = window.location.hostname.includes('github.io');
-      const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-      const staticUrl = window.STATIC_URL || `${basePath}static/`;
+      // Get static URL - use relative path from current location
+      let staticUrl = 'static/';
+      if (window.location.pathname.includes('/my-online-portfolio')) {
+        staticUrl = '/my-online-portfolio/static/';
+      } else if (window.STATIC_URL) {
+        staticUrl = window.STATIC_URL;
+      }
       // Only try mp3 since that's what we have
       const audioPath = `${staticUrl}sounds/lamp-click.mp3`;
       
-      const audio = new Audio(audioPath);
-      audio.preload = 'auto';
-      audio.addEventListener('canplaythrough', function() {
-        if (!lampClickAudio) {
-          lampClickAudio = audio;
-          lampClickAudio.volume = 0.7; // Set volume (0.0 to 1.0)
-          console.log(`Lamp sound loaded: ${audioPath}`);
-        }
-      }, { once: true });
-      audio.addEventListener('error', function(e) {
-        console.error(`Failed to load lamp sound: ${audioPath}`, e);
-      }, { once: true });
-      audio.load();
+      // First verify the file exists
+      fetch(audioPath, { method: 'HEAD' })
+        .then(response => {
+          if (response.ok) {
+            const audio = new Audio(audioPath);
+            audio.preload = 'auto';
+            audio.addEventListener('canplaythrough', function() {
+              if (!lampClickAudio) {
+                lampClickAudio = audio;
+                lampClickAudio.volume = 0.7; // Set volume (0.0 to 1.0)
+                console.log(`Lamp sound loaded: ${audioPath}`);
+              }
+            }, { once: true });
+            audio.addEventListener('error', function(e) {
+              console.error(`Failed to load lamp sound: ${audioPath}`, e, audio.error);
+            }, { once: true });
+            audio.load();
+          } else {
+            console.warn(`Lamp sound file not found: ${audioPath} (Status: ${response.status})`);
+          }
+        })
+        .catch(err => {
+          console.warn(`Could not verify lamp sound file: ${audioPath}`, err);
+          // Try loading anyway in case fetch fails but file exists
+          const audio = new Audio(audioPath);
+          audio.preload = 'auto';
+          audio.addEventListener('canplaythrough', function() {
+            if (!lampClickAudio) {
+              lampClickAudio = audio;
+              lampClickAudio.volume = 0.7;
+              console.log(`Lamp sound loaded (fallback): ${audioPath}`);
+            }
+          }, { once: true });
+          audio.addEventListener('error', function(e) {
+            console.error(`Failed to load lamp sound: ${audioPath}`, e);
+          }, { once: true });
+          audio.load();
+        });
     } catch (e) {
       console.error("Audio file preload error:", e);
     }

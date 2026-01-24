@@ -1624,16 +1624,26 @@ nav.scrolled {
 }
 
 .project-node.active .project-card-content {
-  max-height: 1000px;
+  max-height: 2000px;
   opacity: 1;
   margin-top: 15px;
 }
 
 .project-card-content p {
   color: #e0e0e0;
-  line-height: 1.6;
+  line-height: 1.8;
+  margin-bottom: 15px;
+}
+
+.project-card-content p:last-of-type {
   margin-bottom: 20px;
 }
+
+.project-card-content strong {
+  color: #5dade2;
+  font-weight: 600;
+}
+
 
 .btn {
   display: inline-block;

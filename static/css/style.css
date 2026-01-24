@@ -387,6 +387,8 @@ nav.scrolled {
   border: none;
   opacity: 1;
   transition: all 0.3s ease;
+  display: block !important;
+  visibility: visible !important;
 }
 
 .person-zone:hover {
@@ -458,6 +460,8 @@ nav.scrolled {
   border: none;
   opacity: 1;
   transition: all 0.3s ease;
+  display: block !important;
+  visibility: visible !important;
 }
 
 .workspace4-zone:hover {
@@ -530,6 +534,8 @@ nav.scrolled {
   border-radius: 50%;
   z-index: 20;
   pointer-events: all !important;
+  display: block !important;
+  visibility: visible !important;
 }
 
 .lamp-hint {

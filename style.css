@@ -371,6 +371,9 @@ nav.scrolled {
   -webkit-tap-highlight-color: rgba(93, 173, 226, 0.2);
   min-height: 44px;
   min-width: 44px;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .clickable-zone:hover {

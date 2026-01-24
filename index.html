@@ -7,6 +7,7 @@
     <!-- Mobile hamburger menu enabled -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" />
     <link rel="stylesheet" href="style.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script defer src="script.js"></script>
   </head>
   <body>
@@ -615,6 +616,12 @@
         <span class="contact-modal-close">&times;</span>
         <div class="contact-modal-icon">✉️</div>
         <h3 class="contact-modal-title">Send Me a Message</h3>
+        <p class="contact-modal-subtitle">I'll get back to you as soon as possible!</p>
+        <div id="contactFormSuccess" class="contact-form-success" style="display: none;">
+          <div class="success-icon">✓</div>
+          <h4>Message Sent!</h4>
+          <p>Thank you for reaching out. I'll get back to you soon!</p>
+        </div>
         <form id="contactForm" class="contact-form">
           <div class="form-group">
             <label for="contactName">Your Name</label>
@@ -628,7 +635,11 @@
             <label for="contactMessage">Message</label>
             <textarea id="contactMessage" name="message" rows="5" required placeholder="Your message here..."></textarea>
           </div>
-          <button type="submit" class="btn btn-small contact-form-btn">Send Message</button>
+          <div id="contactFormError" class="contact-form-error" style="display: none;"></div>
+          <button type="submit" class="btn btn-small contact-form-btn" id="contactFormSubmitBtn">
+            <span class="btn-text">Send Message</span>
+            <span class="btn-loading" style="display: none;">Sending...</span>
+          </button>
         </form>
       </div>
     </div>

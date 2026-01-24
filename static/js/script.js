@@ -879,28 +879,148 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Initialize EmailJS (replace with your actual keys after setting up EmailJS account)
+  // Get your keys from https://www.emailjs.com/
+  if (typeof emailjs !== 'undefined') {
+    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+  }
+
   // Handle form submission
   if (contactForm) {
     contactForm.addEventListener("submit", function (e) {
       e.preventDefault();
       
-      const name = document.getElementById("contactName").value;
-      const email = document.getElementById("contactEmail").value;
-      const message = document.getElementById("contactMessage").value;
+      const name = document.getElementById("contactName").value.trim();
+      const email = document.getElementById("contactEmail").value.trim();
+      const message = document.getElementById("contactMessage").value.trim();
+      const submitBtn = document.getElementById("contactFormSubmitBtn");
+      const btnText = submitBtn ? submitBtn.querySelector(".btn-text") : null;
+      const btnLoading = submitBtn ? submitBtn.querySelector(".btn-loading") : null;
+      const errorDiv = document.getElementById("contactFormError");
+      const successDiv = document.getElementById("contactFormSuccess");
 
-      // Create mailto link with form data
-      const subject = encodeURIComponent(`Portfolio Contact: ${name}`);
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-      const mailtoLink = `mailto:kanekabena@gmail.com?subject=${subject}&body=${body}`;
+      // Hide previous errors
+      if (errorDiv) {
+        errorDiv.style.display = "none";
+        errorDiv.textContent = "";
+      }
 
-      // Open email client
-      window.location.href = mailtoLink;
+      // Validate form
+      if (!name || !email || !message) {
+        if (errorDiv) {
+          errorDiv.textContent = "Please fill in all required fields.";
+          errorDiv.style.display = "block";
+        }
+        return;
+      }
 
-      // Close modal after a short delay
-      setTimeout(() => {
-        hideContactForm();
-      }, 100);
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        if (errorDiv) {
+          errorDiv.textContent = "Please enter a valid email address.";
+          errorDiv.style.display = "block";
+        }
+        return;
+      }
+
+      // Show loading state
+      if (submitBtn) submitBtn.disabled = true;
+      if (btnText) btnText.style.display = "none";
+      if (btnLoading) btnLoading.style.display = "inline";
+
+      // Prepare email parameters
+      const templateParams = {
+        from_name: name,
+        from_email: email,
+        message: message,
+        to_email: "kanekabena@gmail.com"
+      };
+
+      // Check if EmailJS is available
+      if (typeof emailjs === 'undefined' || !emailjs.send) {
+        // Fallback to mailto if EmailJS is not configured
+        const subject = encodeURIComponent(`Portfolio Contact: ${name}`);
+        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+        const mailtoLink = `mailto:kanekabena@gmail.com?subject=${subject}&body=${body}`;
+        window.location.href = mailtoLink;
+        
+        // Show success message
+        if (contactForm) contactForm.style.display = "none";
+        if (successDiv) successDiv.style.display = "block";
+        
+        // Close modal after 3 seconds
+        setTimeout(function() {
+          hideContactForm();
+        }, 3000);
+        return;
+      }
+
+      // Send email using EmailJS
+      // Replace "YOUR_SERVICE_ID" and "YOUR_TEMPLATE_ID" with your actual EmailJS service and template IDs
+      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", templateParams)
+        .then(function(response) {
+          console.log("Email sent successfully!", response.status, response.text);
+          
+          // Show success message
+          if (contactForm) contactForm.style.display = "none";
+          if (successDiv) successDiv.style.display = "block";
+          
+          // Reset form
+          contactForm.reset();
+          
+          // Close modal after 3 seconds
+          setTimeout(function() {
+            hideContactForm();
+          }, 3000);
+        })
+        .catch(function(error) {
+          console.error("Email sending failed:", error);
+          
+          // Show error message
+          if (errorDiv) {
+            errorDiv.textContent = "Failed to send message. Please try again or contact me directly at kanekabena@gmail.com";
+            errorDiv.style.display = "block";
+          }
+          
+          // Reset button state
+          if (submitBtn) submitBtn.disabled = false;
+          if (btnText) btnText.style.display = "inline";
+          if (btnLoading) btnLoading.style.display = "none";
+        });
     });
+  }
+
+  // Update hideContactForm to reset form state
+  function hideContactForm() {
+    if (contactFormModal) {
+      contactFormModal.classList.remove("show");
+      document.body.style.overflow = "";
+      
+      // Reset form and UI
+      if (contactForm) {
+        contactForm.reset();
+        contactForm.style.display = "block";
+      }
+      
+      const successDiv = document.getElementById("contactFormSuccess");
+      if (successDiv) successDiv.style.display = "none";
+      
+      const errorDiv = document.getElementById("contactFormError");
+      if (errorDiv) {
+        errorDiv.style.display = "none";
+        errorDiv.textContent = "";
+      }
+      
+      const submitBtn = document.getElementById("contactFormSubmitBtn");
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        const btnText = submitBtn.querySelector(".btn-text");
+        const btnLoading = submitBtn.querySelector(".btn-loading");
+        if (btnText) btnText.style.display = "inline";
+        if (btnLoading) btnLoading.style.display = "none";
+      }
+    }
   }
 
   // ===== Parallax Effect for Background =====

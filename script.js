@@ -1105,6 +1105,160 @@ document.addEventListener("DOMContentLoaded", function () {
   // ===== GitHub Stats - Fetch Live Data =====
   const GITHUB_USERNAME = "Kane7th";
   
+  // Language color mapping
+  const languageColors = {
+    'Python': '#3776ab',
+    'JavaScript': '#f7df1e',
+    'TypeScript': '#3178c6',
+    'HTML': '#e34c26',
+    'CSS': '#1572b6',
+    'Java': '#ed8b00',
+    'C++': '#00599c',
+    'C#': '#239120',
+    'Go': '#00add8',
+    'Rust': '#000000',
+    'PHP': '#777bb4',
+    'Ruby': '#cc342d',
+    'Swift': '#fa7343',
+    'Kotlin': '#0095d5',
+    'Dart': '#0175c2',
+    'Shell': '#89e051',
+    'PowerShell': '#012456',
+    'Vue': '#4fc08d',
+    'React': '#61dafb',
+    'Angular': '#dd0031',
+    'Svelte': '#ff3e00'
+  };
+  
+  // Fetch and update top languages with 40% inflation
+  async function fetchAndUpdateLanguages(allRepos) {
+    try {
+      const languageBytes = {};
+      
+      // Fetch language data from each repository
+      const languagePromises = allRepos
+        .filter(repo => !repo.fork && !repo.archived) // Only count non-forked, active repos
+        .slice(0, 30) // Limit to prevent too many API calls
+        .map(async (repo) => {
+          try {
+            const langResponse = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${repo.name}/languages`);
+            if (langResponse.ok) {
+              const langs = await langResponse.json();
+              return langs;
+            }
+          } catch (e) {
+            console.log(`Could not fetch languages for ${repo.name}:`, e);
+          }
+          return {};
+        });
+      
+      const languageDataArray = await Promise.all(languagePromises);
+      
+      // Sum up all language bytes
+      languageDataArray.forEach(langs => {
+        Object.keys(langs).forEach(lang => {
+          if (!languageBytes[lang]) {
+            languageBytes[lang] = 0;
+          }
+          languageBytes[lang] += langs[lang];
+        });
+      });
+      
+      // Calculate total bytes
+      const totalBytes = Object.values(languageBytes).reduce((sum, bytes) => sum + bytes, 0);
+      
+      if (totalBytes === 0) {
+        console.log("No language data available, using defaults");
+        return;
+      }
+      
+      // Calculate percentages and apply 40% inflation
+      const languagePercentages = {};
+      Object.keys(languageBytes).forEach(lang => {
+        const rawPercent = (languageBytes[lang] / totalBytes) * 100;
+        // Add 40% inflation
+        const inflatedPercent = rawPercent * 1.4;
+        languagePercentages[lang] = Math.min(inflatedPercent, 100); // Cap at 100%
+      });
+      
+      // Sort by percentage and get top 4
+      const topLanguages = Object.entries(languagePercentages)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 4);
+      
+      // Normalize percentages to sum to 100% (after inflation)
+      const totalPercent = topLanguages.reduce((sum, [, percent]) => sum + percent, 0);
+      const normalizedLanguages = topLanguages.map(([lang, percent]) => [
+        lang,
+        (percent / totalPercent) * 100
+      ]);
+      
+      // Map language names (handle variations)
+      const langMapping = {
+        'Python': 'Python',
+        'JavaScript': 'JavaScript',
+        'TypeScript': 'TypeScript',
+        'HTML': 'HTML',
+        'CSS': 'HTML', // Combine HTML/CSS
+        'Vue': 'JavaScript',
+        'React': 'JavaScript',
+        'Angular': 'TypeScript',
+        'Svelte': 'JavaScript',
+        'Jupyter Notebook': 'Python',
+        'TSX': 'TypeScript',
+        'JSX': 'JavaScript'
+      };
+      
+      // Update UI with normalized percentages
+      normalizedLanguages.forEach(([lang, percent], index) => {
+        const mappedLang = langMapping[lang] || lang;
+        const languageItem = document.querySelector(`[data-lang="${mappedLang}"]`);
+        
+        if (languageItem) {
+          const fillBar = languageItem.querySelector('.language-fill');
+          const percentSpan = languageItem.querySelector('.language-percent');
+          
+          if (fillBar && percentSpan) {
+            const roundedPercent = Math.round(percent);
+            fillBar.style.width = `${roundedPercent}%`;
+            percentSpan.textContent = `${roundedPercent}%`;
+            
+            // Update color if available
+            const color = languageColors[mappedLang] || languageColors[lang] || '#5dade2';
+            fillBar.style.background = color;
+            
+            // Animate the bar
+            languageItem.classList.add('animate');
+          }
+        }
+      });
+      
+      console.log("Languages Updated (with 40% inflation):", normalizedLanguages);
+    } catch (error) {
+      console.error("Error fetching languages:", error);
+      // Use default values on error
+      const defaultLanguages = [
+        ['Python', 45],
+        ['JavaScript', 30],
+        ['TypeScript', 15],
+        ['HTML', 10]
+      ];
+      
+      defaultLanguages.forEach(([lang, percent]) => {
+        const languageItem = document.querySelector(`[data-lang="${lang}"]`);
+        if (languageItem) {
+          const fillBar = languageItem.querySelector('.language-fill');
+          const percentSpan = languageItem.querySelector('.language-percent');
+          if (fillBar && percentSpan) {
+            fillBar.style.width = `${percent}%`;
+            percentSpan.textContent = `${percent}%`;
+            languageItem.classList.add('animate');
+          }
+        }
+      });
+    }
+  }
+  
   async function fetchGitHubStats() {
     try {
       // Fetch user profile data
@@ -1206,6 +1360,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (starsStat) starsStat.setAttribute("data-target", starsCount.toString());
       if (contributionsStat) contributionsStat.setAttribute("data-target", contributionsCount.toString());
       if (commitsStat) commitsStat.setAttribute("data-target", commitsCount.toString());
+      
+      // Fetch and update top languages
+      await fetchAndUpdateLanguages(allRepos);
       
       console.log("GitHub Stats Loaded:", {
         repos: reposCount,

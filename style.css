@@ -4,6 +4,28 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Touch-friendly base styles for interactive elements */
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: rgba(93, 173, 226, 0.2);
+}
+
+/* Improve touch targets for interactive elements */
+button,
+.btn,
+.nav-link,
+.resume-link,
+.contact-card-link,
+.skill-item,
+.social-link {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
 }
 
 body, html {
@@ -189,6 +211,11 @@ nav.scrolled {
   letter-spacing: 1px;
   transition: color 0.3s ease;
   position: relative;
+  padding: 8px 12px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-link:hover,
@@ -219,6 +246,11 @@ nav.scrolled {
   font-size: 14px;
   letter-spacing: 1px;
   transition: color 0.3s ease;
+  padding: 8px 16px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .resume-link:hover {
@@ -721,6 +753,7 @@ nav.scrolled {
   display: inline-block;
   margin-top: 40px;
   padding: 15px 40px;
+  min-height: 48px;
   border: 2px solid #ffffff;
   color: #ffffff;
   text-decoration: none;
@@ -2309,7 +2342,7 @@ nav.scrolled {
 
 .btn {
   display: inline-block;
-  padding: 10px 25px;
+  padding: 12px 28px;
   background: transparent;
   border: 2px solid #5dade2;
   color: #5dade2;
@@ -2317,6 +2350,10 @@ nav.scrolled {
   border-radius: 5px;
   font-weight: 500;
   transition: all 0.3s ease;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn:hover {
@@ -2326,7 +2363,8 @@ nav.scrolled {
 
 .btn-small {
   font-size: 0.9rem;
-  padding: 8px 20px;
+  padding: 10px 22px;
+  min-height: 44px;
 }
 
 /* Contact */

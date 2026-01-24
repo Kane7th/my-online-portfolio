@@ -675,9 +675,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Preload screen switch sounds
   function preloadScreenSounds() {
     try {
-      const isGitHubPages = window.location.hostname.includes('github.io');
-      const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-      const staticUrl = window.STATIC_URL || `${basePath}static/`;
+      let staticUrl = 'static/';
+      if (window.location.pathname.includes('/my-online-portfolio')) {
+        staticUrl = '/my-online-portfolio/static/';
+      } else if (window.STATIC_URL) {
+        staticUrl = window.STATIC_URL;
+      }
       
       // Load switch-on audio file
       const audioOn = new Audio(`${staticUrl}sounds/screen-switch-on.mp3`);
@@ -780,9 +783,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Preload chair (sit down/up) sounds
   function preloadChairSounds() {
     try {
-      const isGitHubPages = window.location.hostname.includes('github.io');
-      const basePath = isGitHubPages ? '/my-online-portfolio/' : '';
-      const staticUrl = window.STATIC_URL || `${basePath}static/`;
+      let staticUrl = 'static/';
+      if (window.location.pathname.includes('/my-online-portfolio')) {
+        staticUrl = '/my-online-portfolio/static/';
+      } else if (window.STATIC_URL) {
+        staticUrl = window.STATIC_URL;
+      }
       
       // Load sit-down audio file
       const audioDown = new Audio(`${staticUrl}sounds/sit-down.mp3`);

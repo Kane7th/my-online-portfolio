@@ -579,6 +579,70 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // ===== Mobile Menu Toggle =====
+  const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+  const navList = document.getElementById("navList");
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  function toggleMobileMenu() {
+    if (mobileMenuToggle && navList) {
+      mobileMenuToggle.classList.toggle("active");
+      navList.classList.toggle("active");
+      
+      // Prevent body scroll when menu is open
+      if (navList.classList.contains("active")) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+    }
+  }
+
+  function closeMobileMenu() {
+    if (mobileMenuToggle && navList) {
+      mobileMenuToggle.classList.remove("active");
+      navList.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+  }
+
+  if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleMobileMenu();
+    });
+  }
+
+  // Close menu when clicking on a nav link
+  navLinks.forEach((link) => {
+    link.addEventListener("click", function () {
+      closeMobileMenu();
+    });
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener("click", function (e) {
+    if (navList && navList.classList.contains("active")) {
+      if (!navList.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+        closeMobileMenu();
+      }
+    }
+  });
+
+  // Close menu on window resize if it becomes desktop size
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 768) {
+      closeMobileMenu();
+    }
+  });
+
+  // Close menu with Escape key
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && navList && navList.classList.contains("active")) {
+      closeMobileMenu();
+    }
+  });
+
   // ===== Scroll Indicator Click =====
   const scrollIndicator = document.querySelector(".scroll-indicator");
   if (scrollIndicator) {

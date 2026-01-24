@@ -20,6 +20,24 @@ document.addEventListener("DOMContentLoaded", function () {
     volumeValue.textContent = "30%";
   }
 
+  // Track if music has been started by user interaction
+  let musicStarted = false;
+
+  // Function to start music (only works after user interaction)
+  function startMusic() {
+    if (!backgroundMusic || musicStarted) return;
+    
+    backgroundMusic.play().then(() => {
+      musicStarted = true;
+      if (musicToggleBtn) musicToggleBtn.classList.add("active");
+      if (musicIcon) musicIcon.style.display = "block";
+      if (musicIconMuted) musicIconMuted.style.display = "none";
+    }).catch(err => {
+      // Silently handle autoplay errors - user will need to click the button
+      console.log("Music start requires user interaction");
+    });
+  }
+
   // Update volume when slider changes
   if (volumeSlider && backgroundMusic) {
     volumeSlider.addEventListener("input", function (e) {
@@ -29,14 +47,9 @@ document.addEventListener("DOMContentLoaded", function () {
         volumeValue.textContent = `${e.target.value}%`;
       }
       
-      // Auto-play if volume is increased from 0
-      if (volume > 0 && backgroundMusic.paused) {
-        backgroundMusic.play().catch(err => {
-          console.log("Auto-play prevented:", err);
-        });
-        if (musicToggleBtn) musicToggleBtn.classList.add("active");
-        if (musicIcon) musicIcon.style.display = "block";
-        if (musicIconMuted) musicIconMuted.style.display = "none";
+      // Try to start music if volume is increased from 0 and user has interacted
+      if (volume > 0 && backgroundMusic.paused && !musicStarted) {
+        startMusic();
       }
     });
   }
@@ -47,13 +60,15 @@ document.addEventListener("DOMContentLoaded", function () {
       e.stopPropagation();
       
       if (backgroundMusic.paused) {
+        // User interaction - safe to play
         backgroundMusic.play().then(() => {
+          musicStarted = true;
           musicToggleBtn.classList.add("active");
           if (musicIcon) musicIcon.style.display = "block";
           if (musicIconMuted) musicIconMuted.style.display = "none";
         }).catch(err => {
-          console.log("Play failed:", err);
-          // If autoplay is blocked, show muted icon
+          console.error("Play failed:", err);
+          // Show muted icon if play fails
           if (musicIcon) musicIcon.style.display = "none";
           if (musicIconMuted) musicIconMuted.style.display = "block";
         });
@@ -79,44 +94,13 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Auto-play on page load (with user interaction fallback)
-    backgroundMusic.addEventListener("loadeddata", function () {
-      // Try to play, but don't force if browser blocks it
-      if (backgroundMusic.readyState >= 2) {
-        backgroundMusic.play().then(() => {
-          if (musicToggleBtn) musicToggleBtn.classList.add("active");
-          if (musicIcon) musicIcon.style.display = "block";
-          if (musicIconMuted) musicIconMuted.style.display = "none";
-        }).catch(err => {
-          console.log("Auto-play blocked, waiting for user interaction:", err);
-          // Music will start when user interacts with the page
-        });
-      }
-    });
-
-    // Start music on first user interaction if it hasn't started
-    let musicStarted = false;
-    const startMusicOnInteraction = function () {
-      if (!musicStarted && backgroundMusic.paused) {
-        backgroundMusic.play().then(() => {
-          musicStarted = true;
-          if (musicToggleBtn) musicToggleBtn.classList.add("active");
-          if (musicIcon) musicIcon.style.display = "block";
-          if (musicIconMuted) musicIconMuted.style.display = "none";
-          // Remove listeners after first play
-          document.removeEventListener("click", startMusicOnInteraction);
-          document.removeEventListener("scroll", startMusicOnInteraction);
-          document.removeEventListener("keydown", startMusicOnInteraction);
-        }).catch(err => {
-          console.log("Music start failed:", err);
-        });
-      }
-    };
-
-    // Listen for user interaction to start music
-    document.addEventListener("click", startMusicOnInteraction, { once: true });
-    document.addEventListener("scroll", startMusicOnInteraction, { once: true });
-    document.addEventListener("keydown", startMusicOnInteraction, { once: true });
+    // Don't attempt autoplay - wait for user interaction
+    // Set initial state to paused (muted icon visible)
+    if (musicToggleBtn) {
+      musicToggleBtn.classList.remove("active");
+      if (musicIcon) musicIcon.style.display = "none";
+      if (musicIconMuted) musicIconMuted.style.display = "block";
+    }
   }
   
   // ===== Workspace Images - Get references once =====

@@ -1360,6 +1360,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (contributionsStat) contributionsStat.setAttribute("data-target", contributionsCount.toString());
       if (commitsStat) commitsStat.setAttribute("data-target", commitsCount.toString());
       
+      // Fetch and update top languages
+      await fetchAndUpdateLanguages(allRepos);
+      
       console.log("GitHub Stats Loaded:", {
         repos: reposCount,
         stars: starsCount,

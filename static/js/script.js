@@ -544,19 +544,44 @@ document.addEventListener("DOMContentLoaded", function () {
       // Only try mp3 since that's what we have
       const audioPath = `${staticUrl}sounds/lamp-click.mp3`;
       
-      const audio = new Audio(audioPath);
-      audio.preload = 'auto';
-      audio.addEventListener('canplaythrough', function() {
-        if (!lampClickAudio) {
-          lampClickAudio = audio;
-          lampClickAudio.volume = 0.7; // Set volume (0.0 to 1.0)
-          console.log(`Lamp sound loaded: ${audioPath}`);
-        }
-      }, { once: true });
-      audio.addEventListener('error', function(e) {
-        console.error(`Failed to load lamp sound: ${audioPath}`, e, audio.error);
-      }, { once: true });
-      audio.load();
+      // First verify the file exists
+      fetch(audioPath, { method: 'HEAD' })
+        .then(response => {
+          if (response.ok) {
+            const audio = new Audio(audioPath);
+            audio.preload = 'auto';
+            audio.addEventListener('canplaythrough', function() {
+              if (!lampClickAudio) {
+                lampClickAudio = audio;
+                lampClickAudio.volume = 0.7; // Set volume (0.0 to 1.0)
+                console.log(`Lamp sound loaded: ${audioPath}`);
+              }
+            }, { once: true });
+            audio.addEventListener('error', function(e) {
+              console.error(`Failed to load lamp sound: ${audioPath}`, e, audio.error);
+            }, { once: true });
+            audio.load();
+          } else {
+            console.warn(`Lamp sound file not found: ${audioPath} (Status: ${response.status})`);
+          }
+        })
+        .catch(err => {
+          console.warn(`Could not verify lamp sound file: ${audioPath}`, err);
+          // Try loading anyway in case fetch fails but file exists
+          const audio = new Audio(audioPath);
+          audio.preload = 'auto';
+          audio.addEventListener('canplaythrough', function() {
+            if (!lampClickAudio) {
+              lampClickAudio = audio;
+              lampClickAudio.volume = 0.7;
+              console.log(`Lamp sound loaded (fallback): ${audioPath}`);
+            }
+          }, { once: true });
+          audio.addEventListener('error', function(e) {
+            console.error(`Failed to load lamp sound: ${audioPath}`, e);
+          }, { once: true });
+          audio.load();
+        });
     } catch (e) {
       console.error("Audio file preload error:", e);
     }
@@ -613,35 +638,84 @@ document.addEventListener("DOMContentLoaded", function () {
         staticUrl = window.STATIC_URL;
       }
       
+      const audioOnPath = `${staticUrl}sounds/screen-switch-on.mp3`;
+      const audioOffPath = `${staticUrl}sounds/screen-switch-off.mp3`;
+      
       // Load switch-on audio file
-      const audioOn = new Audio(`${staticUrl}sounds/screen-switch-on.mp3`);
-      audioOn.preload = 'auto';
-      audioOn.addEventListener('canplaythrough', function() {
-        if (!screenSwitchOnAudio) {
-          screenSwitchOnAudio = audioOn;
-          screenSwitchOnAudio.volume = 0.7;
-          console.log(`Screen switch-on sound loaded: ${staticUrl}sounds/screen-switch-on.mp3`);
-        }
-      }, { once: true });
-      audioOn.addEventListener('error', function(e) {
-        console.error(`Failed to load screen switch-on sound:`, e);
-      }, { once: true });
-      audioOn.load();
+      fetch(audioOnPath, { method: 'HEAD' })
+        .then(response => {
+          if (response.ok) {
+            const audioOn = new Audio(audioOnPath);
+            audioOn.preload = 'auto';
+            audioOn.addEventListener('canplaythrough', function() {
+              if (!screenSwitchOnAudio) {
+                screenSwitchOnAudio = audioOn;
+                screenSwitchOnAudio.volume = 0.7;
+                console.log(`Screen switch-on sound loaded: ${audioOnPath}`);
+              }
+            }, { once: true });
+            audioOn.addEventListener('error', function(e) {
+              console.error(`Failed to load screen switch-on sound:`, e);
+            }, { once: true });
+            audioOn.load();
+          } else {
+            console.warn(`Screen switch-on sound file not found: ${audioOnPath} (Status: ${response.status})`);
+          }
+        })
+        .catch(err => {
+          console.warn(`Could not verify screen switch-on sound: ${audioOnPath}`, err);
+          const audioOn = new Audio(audioOnPath);
+          audioOn.preload = 'auto';
+          audioOn.addEventListener('canplaythrough', function() {
+            if (!screenSwitchOnAudio) {
+              screenSwitchOnAudio = audioOn;
+              screenSwitchOnAudio.volume = 0.7;
+              console.log(`Screen switch-on sound loaded (fallback): ${audioOnPath}`);
+            }
+          }, { once: true });
+          audioOn.addEventListener('error', function(e) {
+            console.error(`Failed to load screen switch-on sound:`, e);
+          }, { once: true });
+          audioOn.load();
+        });
       
       // Load switch-off audio file
-      const audioOff = new Audio(`${staticUrl}sounds/screen-switch-off.mp3`);
-      audioOff.preload = 'auto';
-      audioOff.addEventListener('canplaythrough', function() {
-        if (!screenSwitchOffAudio) {
-          screenSwitchOffAudio = audioOff;
-          screenSwitchOffAudio.volume = 0.7;
-          console.log(`Screen switch-off sound loaded: ${staticUrl}sounds/screen-switch-off.mp3`);
-        }
-      }, { once: true });
-      audioOff.addEventListener('error', function(e) {
-        console.error(`Failed to load screen switch-off sound:`, e);
-      }, { once: true });
-      audioOff.load();
+      fetch(audioOffPath, { method: 'HEAD' })
+        .then(response => {
+          if (response.ok) {
+            const audioOff = new Audio(audioOffPath);
+            audioOff.preload = 'auto';
+            audioOff.addEventListener('canplaythrough', function() {
+              if (!screenSwitchOffAudio) {
+                screenSwitchOffAudio = audioOff;
+                screenSwitchOffAudio.volume = 0.7;
+                console.log(`Screen switch-off sound loaded: ${audioOffPath}`);
+              }
+            }, { once: true });
+            audioOff.addEventListener('error', function(e) {
+              console.error(`Failed to load screen switch-off sound:`, e);
+            }, { once: true });
+            audioOff.load();
+          } else {
+            console.warn(`Screen switch-off sound file not found: ${audioOffPath} (Status: ${response.status})`);
+          }
+        })
+        .catch(err => {
+          console.warn(`Could not verify screen switch-off sound: ${audioOffPath}`, err);
+          const audioOff = new Audio(audioOffPath);
+          audioOff.preload = 'auto';
+          audioOff.addEventListener('canplaythrough', function() {
+            if (!screenSwitchOffAudio) {
+              screenSwitchOffAudio = audioOff;
+              screenSwitchOffAudio.volume = 0.7;
+              console.log(`Screen switch-off sound loaded (fallback): ${audioOffPath}`);
+            }
+          }, { once: true });
+          audioOff.addEventListener('error', function(e) {
+            console.error(`Failed to load screen switch-off sound:`, e);
+          }, { once: true });
+          audioOff.load();
+        });
     } catch (e) {
       console.error("Screen sound files preload error:", e);
     }

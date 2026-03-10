@@ -110,7 +110,7 @@ def get_skills():
 @app.route('/resume')
 def download_resume():
     """Serve resume PDF"""
-    return app.send_static_file('Kane - 2025 Resume.pdf')
+    return app.send_static_file('Kane Kabena CV - Mar 2026.pdf')
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))

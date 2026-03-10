@@ -63,7 +63,7 @@ my-online-portfolio/
 ├── index.html              # Main HTML file
 ├── style.css               # Main stylesheet (for GitHub Pages)
 ├── script.js               # Main JavaScript file (for GitHub Pages)
-├── Kane - 2025 Resume.pdf  # Resume PDF
+├── Kane Kabena CV - Mar 2026.pdf  # Resume PDF
 ├── static/                 # Static assets
 │   ├── css/
 │   │   └── style.css       # Stylesheet (mirror of root)

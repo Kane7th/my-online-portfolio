@@ -123,7 +123,12 @@
         <span>scroll</span>
         <div class="scroll-arrow" aria-hidden="true">&darr;</div>
       </div>
-      <div class="hero-container">
+      <button type="button" class="hero-intro-open" id="heroIntroOpen" aria-haspopup="dialog" aria-controls="heroIntroModal">About me</button>
+    </header>
+    <div class="hero-intro-modal" id="heroIntroModal" role="dialog" aria-modal="true" aria-labelledby="heroIntroTitle" hidden>
+      <button type="button" class="hero-intro-backdrop" id="heroIntroBackdrop" aria-label="Close intro" tabindex="-1"></button>
+      <div class="hero-intro-panel">
+        <button type="button" class="hero-intro-close" id="heroIntroClose" aria-label="Close intro">&times;</button>
         <div class="hero-left">
           <div class="logo-container">
             <div class="logo-circle">
@@ -132,12 +137,12 @@
               <span class="logo-bracket">&gt;</span>
             </div>
           </div>
-          <h1 class="hero-title">
+          <h1 class="hero-title" id="heroIntroTitle">
             Hi! I'm <span class="highlight">K</span>ane,<br />
             <span class="subtitle">Full-Stack Developer</span>
           </h1>
           <p class="hero-subtitle">
-            Building <strong>MySmartRental</strong>: property management for landlords and tenants worldwide.
+            Currently working on <strong>MySmartRental</strong>: property management for landlords and tenants worldwide.
           </p>
           <div class="hero-cta-row">
             <a href="https://staging.mysmartrental.com/" target="_blank" rel="noopener noreferrer" class="btn btn-small btn-hero-primary" id="stagingCta" data-prefetch="https://staging.mysmartrental.com/">Try staging</a>
@@ -150,7 +155,7 @@
           </p>
         </div>
       </div>
-    </header>
+    </div>
     </div>
 
     <section id="projects" class="section">

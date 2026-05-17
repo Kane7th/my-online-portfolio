@@ -1,18 +1,18 @@
 # Kane Kabena - Portfolio 🚀
 
-Welcome to my portfolio! This site showcases my skills, projects, and experience in software development.
+My portfolio site: skills, projects, and contact details for Kane Kabena (full-stack developer).
 
 **Live Site**: [https://kane7th.github.io/my-online-portfolio/](https://kane7th.github.io/my-online-portfolio/)
 
 ## 🌟 Website Features
 
-- Interactive dark-themed design with atmospheric workspace backgrounds
+- Dark theme with an interactive workspace background
 - Interactive workspace scene with clickable elements (lamp, PC, chair)
 - **HTML5, CSS3, JavaScript** frontend
-- Smooth animations and polished UI
+- Smooth animations and a clean UI
 - Responsive design for all devices
 - GitHub Stats section with animated counters
-- Technical Skills showcase with interactive modals
+- Technical skills section with click-to-read modals
 - Project timeline with expandable cards
 - Contact section with multiple ways to reach out
 - Fixed WhatsApp button for quick contact
@@ -83,10 +83,10 @@ my-online-portfolio/
 
 ## 🎨 Features
 
-- **Dark Theme**: Atmospheric dark blue/gray color scheme with glassmorphism effects
+- **Dark Theme**: Dark blue/gray palette with frosted-glass-style cards
 - **Interactive Workspace**: Clickable elements that change background images
 - **Smooth Scrolling**: Navigation with smooth scroll behavior
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile
+- **Responsive Design**: Usable on desktop, tablet, and mobile
 - **Animated Counters**: GitHub stats animate when scrolled into view
 - **Interactive Skills**: Click on skill logos to see detailed descriptions
 - **Project Timeline**: Expandable project cards in chronological order
@@ -134,4 +134,4 @@ This site is deployed on **GitHub Pages**, which automatically serves static fil
 
 ## 📄 License
 
-© 2025 Kane Kabena. All rights reserved.
+© 2026 Kane Kabena. All rights reserved.

@@ -54,7 +54,7 @@ def contact():
         
         return jsonify({
             'success': True,
-            'message': 'Thank you for your message! I will get back to you soon.'
+            'message': 'Message received. I will reply soon.'
         }), 200
         
     except Exception as e:
@@ -69,22 +69,43 @@ def get_projects():
     projects = [
         {
             'id': 1,
+            'title': 'MySmartRental 2.0',
+            'description': 'Flagship property management SaaS. React, TypeScript, Flask, PostgreSQL, M-Pesa, native mobile apps. Staging live.',
+            'link': 'https://staging.mysmartrental.com/',
+            'type': 'site'
+        },
+        {
+            'id': 2,
+            'title': 'Uptwn Ldn Clothing Website',
+            'description': 'React + Vite e-commerce site with Node/Express API, cart, checkout, and nginx on Ubuntu.',
+            'link': 'http://72.61.146.2/',
+            'type': 'site'
+        },
+        {
+            'id': 3,
+            'title': 'Seven Scripts (Tebex)',
+            'description': 'Tebex store for FiveM and RedM Lua scripts. Custom theme, Discord support, Tebex checkout.',
+            'link': 'https://sevenscripts.tebex.io/',
+            'type': 'store'
+        },
+        {
+            'id': 4,
             'title': 'SokoCredit',
-            'description': 'Full-stack loan management system for microfinance lenders with M-Pesa & Twilio integrations. Features role-based access, analytics, and real-time notifications.',
+            'description': 'Loan management app for microfinance lenders. M-Pesa, Twilio SMS, RBAC, Flask API, React frontend.',
             'link': 'https://github.com/Kane7th/Phase-5-Project-SokoCredit',
             'type': 'code'
         },
         {
-            'id': 2,
+            'id': 5,
             'title': 'Hotel Booking System',
-            'description': 'React + Flask web app with JWT authentication, admin & customer portals, and a polished UI with pagination, filters, and toast notifications.',
+            'description': 'React + Flask app with JWT auth, admin and customer areas, search, filters, and toast notifications.',
             'link': 'https://youtu.be/WrYNyjDwBYI',
             'type': 'demo'
         },
         {
-            'id': 3,
+            'id': 6,
             'title': 'Zone 7 RP',
-            'description': 'Custom FiveM roleplay server with advanced player systems, economy balancing, and immersive scripts for enhanced gameplay.',
+            'description': 'FiveM roleplay server. Lua scripts, economy tuning, MySQL player data, jobs and admin tools.',
             'link': '#',
             'type': 'server'
         }

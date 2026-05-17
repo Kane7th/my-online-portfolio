@@ -1274,9 +1274,9 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Email sending failed:", error);
           
           // Check for Gmail API scope errors
-          let errorMessage = "Failed to send message. Please try again or contact me directly at kanekabena@gmail.com";
+          let errorMessage = "Could not send your message. Try again or email kanekabena@gmail.com";
           if (error.text && error.text.includes("Gmail_API") && error.text.includes("insufficient authentication scopes")) {
-            errorMessage = "Email service configuration error. Please use EmailJS service (not Gmail API) or contact me directly at kanekabena@gmail.com";
+            errorMessage = "This form is not wired to email correctly. Email kanekabena@gmail.com instead.";
           }
           
           // Show error message

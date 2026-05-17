@@ -70,9 +70,9 @@ def get_projects():
         {
             'id': 1,
             'title': 'MySmartRental 2.0',
-            'description': 'Flagship property management SaaS. React, TypeScript, Flask, PostgreSQL, M-Pesa, native mobile apps. Staging live.',
+            'description': 'Flagship property management SaaS (Next.js, TypeScript, PostgreSQL). M-Pesa, maintenance, messaging, native mobile apps. Staging: staging.mysmartrental.com',
             'link': 'https://staging.mysmartrental.com/',
-            'type': 'site'
+            'type': 'saas'
         },
         {
             'id': 2,
@@ -104,6 +104,13 @@ def get_projects():
         },
         {
             'id': 6,
+            'title': 'MySmartRental.com (2025)',
+            'description': 'Earlier Flask/React property management SaaS with JWT, WebSockets, Stripe, Redis, AWS.',
+            'link': 'https://mysmartrental.com',
+            'type': 'saas'
+        },
+        {
+            'id': 7,
             'title': 'Zone 7 RP',
             'description': 'FiveM roleplay server. Lua scripts, economy tuning, MySQL player data, jobs and admin tools.',
             'link': '#',

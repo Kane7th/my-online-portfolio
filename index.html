@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -91,7 +91,7 @@
         <div class="clickable-zone lamp-zone lamp-zone-right" id="lampRight" title="Click to toggle lamp">
           <div class="lamp-hint" id="lampHintRight">
             <span>turn on the lamp!</span>
-            <div class="hint-arrow">â†’</div>
+            <div class="hint-arrow">?</div>
           </div>
           <div class="lamp-light-effect lamp-light-right"></div>
         </div>
@@ -102,7 +102,7 @@
     <header class="hero" id="home">
       <div class="scroll-indicator">
         <span>scroll</span>
-        <div class="scroll-arrow">â†“</div>
+        <div class="scroll-arrow">?</div>
       </div>
       <div class="hero-container">
         <div class="hero-left">
@@ -146,7 +146,7 @@
         <h2 class="section-title">About Me</h2>
         <div class="about-content">
           <div class="about-card about-intro">
-            <div class="card-icon">ðŸ‘‹</div>
+            <div class="card-icon">??</div>
             <h3>Who I Am</h3>
             <p>
               I'm <strong>Kane Kabena</strong>, a full-stack developer based in London. I work mainly with
@@ -158,7 +158,7 @@
           </div>
 
           <div class="about-card about-projects">
-            <div class="card-icon">ðŸš€</div>
+            <div class="card-icon">??</div>
             <h3>What I Build</h3>
             <p>
               Recent work includes <strong>SokoCredit</strong> (loan management with <strong>M-Pesa</strong>,
@@ -169,7 +169,7 @@
           </div>
 
           <div class="about-card about-unique">
-            <div class="card-icon">ðŸŽ®</div>
+            <div class="card-icon">??</div>
             <h3>Beyond Web Dev</h3>
             <p>
               I also build for <strong>FiveM</strong> and <strong>RedM</strong>: custom <strong>Lua</strong>
@@ -179,7 +179,7 @@
           </div>
 
           <div class="about-card about-philosophy">
-            <div class="card-icon">ðŸ’¡</div>
+            <div class="card-icon">??</div>
             <h3>My Approach</h3>
             <p>
               I keep learning as tools change. On each project I aim for clear <strong>REST APIs</strong>,
@@ -416,47 +416,51 @@
               </div>
               <div class="project-card-content">
                 <p>
-                  <strong>Flagship product:</strong> property management software for landlords and tenants in Kenya and beyond.
-                  Live staging at <strong>staging.mysmartrental.com</strong>. Replaces rent chasing on WhatsApp and spreadsheets with one
-                  system for sites, units, leases, invoices, maintenance, messaging, and reporting. Built with
-                  <strong>React</strong>, <strong>TypeScript</strong>, <strong>Flask</strong>, <strong>PostgreSQL</strong>,
-                  <strong>SQLAlchemy</strong>, <strong>Redis</strong>, and <strong>Docker</strong> on <strong>AWS</strong>.
+                  <strong>Flagship product:</strong> property management software for Kenyan landlords, tenants, and
+                  property managers. One platform for rent collection, maintenance, messaging, and portfolio reporting.
+                  Live on staging at
+                  <a href="https://staging.mysmartrental.com/" target="_blank" rel="noopener noreferrer">staging.mysmartrental.com</a>
+                  (usable today). Replaces spreadsheets and WhatsApp rent chasing with a single dashboard plus native
+                  <strong>iOS</strong> and <strong>Android</strong> apps for both sides.
                 </p>
                 <p>
-                  <strong>Platforms:</strong> Landlord web dashboard (portfolio, finances, approvals, documents, reports) plus
-                  <strong>native iOS and Android apps</strong> for landlords and tenants. Same account and data whether someone pays rent
-                  from a phone in Mombasa or reviews arrears on a laptop in Nairobi. Public marketing site with pricing, feature tour, and a
-                  <strong>live demo</strong> that runs without sign-up.
+                  <strong>Stack:</strong> <strong>Next.js</strong> (App Router, <strong>TypeScript</strong>, React) for the
+                  marketing site, landlord portal, tenant flows, and <strong>API routes</strong>
+                  (<code>/api/health</code>, <code>/api/v1</code>). <strong>PostgreSQL</strong> for data
+                  (health check reports DB reachable). Hosted on <strong>nginx</strong> / <strong>Ubuntu</strong>.
+                  Localised for <strong>en-GB</strong> and <strong>sw-KE</strong>. UI built with modern React patterns,
+                  toast notifications, cookie consent, and analytics hooks.
                 </p>
                 <p>
-                  <strong>What I built (product):</strong> Multi-site property hierarchy (buildings grouped into sites, unit-level occupancy).
-                  <strong>Recurring rent invoices</strong> with arrears and collection stats.
-                  <strong>M-Pesa STK push</strong> so tenants pay in-app; SMS receipts when payment clears.
-                  Multi-currency support (<strong>KES</strong>, <strong>USD</strong>, <strong>GBP</strong>, <strong>EUR</strong>).
-                  <strong>Maintenance module</strong>: tenants attach photos, landlords assign contractors, status visible to both sides.
-                  In-app <strong>messaging</strong> and <strong>broadcast announcements</strong>. Lease workflows, tenant invites,
-                  phone-verified profiles, document storage, contractor records, and finance dashboards (collected vs outstanding, occupancy,
-                  response times).
+                  <strong>Landlord & tenant features:</strong> Sites and units with occupancy tracking; recurring
+                  invoices; <strong>M-Pesa STK push</strong> (Paybill / Till) with SMS receipts; offline payment recording;
+                  maintenance tickets with photos and contractor assignment; in-app messaging and broadcast announcements;
+                  document storage; finances and reporting; team approvals; multi-currency display
+                  (<strong>KES</strong>, <strong>USD</strong>, <strong>GBP</strong>, <strong>EUR</strong>).
+                  Public <strong>demo</strong> and sign-up funnels without forcing card details for trial units.
                 </p>
                 <p>
-                  <strong>What I built (engineering):</strong> <strong>JWT authentication</strong> and <strong>role-based access</strong>
-                  (landlord, tenant, staff). <strong>REST API</strong> design with validated inputs and consistent error handling.
-                  <strong>WebSockets</strong> for notifications and live dashboard updates.
-                  <strong>SQLAlchemy ORM</strong> for leases, invoices, payments, and maintenance entities.
-                  Payment webhooks and reconciliation so each M-Pesa transaction maps to the right unit and lease.
-                  File uploads for maintenance images and documents. Caching and background jobs where the API needs them.
-                  Staging environment for QA before production cutover.
+                  <strong>What I built:</strong> End-to-end product engineering: data model for portfolios and leases,
+                  payment reconciliation against units, real-time activity feeds across web and mobile, verified tenant
+                  onboarding, and landlord dashboards (properties, tenants, leases, invoices, maintenance, contractors,
+                  messages, reports, settings). Payment flows tuned for Kenya (M-Pesa first, instant payout routing,
+                  arrears visibility). Security-minded defaults (strict transport, frame controls, encrypted sensitive
+                  payout fields in UI copy).
                 </p>
                 <p>
-                  <strong>Status:</strong> In active development on staging; core landlord and tenant flows are usable end to end.
-                  Focused on how Kenyan landlords actually work: M-Pesa-first rent collection, county-scale portfolios, and mobile-first tenants.
+                  <strong>Status:</strong> Active development on staging; production marketing site at
+                  <a href="https://mysmartrental.com" target="_blank" rel="noopener noreferrer">mysmartrental.com</a>.
+                  Earlier Flask/React version kept in the timeline below as <em>MySmartRental.com (2025)</em>.
                 </p>
-                <a href="https://staging.mysmartrental.com/" target="_blank" rel="noopener noreferrer" class="btn btn-small">Visit Staging</a>
+                <a href="https://staging.mysmartrental.com/" target="_blank" rel="noopener noreferrer" class="btn btn-small">Try staging</a>
+                <a href="https://staging.mysmartrental.com/demo?from=portfolio" target="_blank" rel="noopener noreferrer" class="btn btn-small">Live demo</a>
               </div>
             </div>
           </div>
 
+          <!-- Most Recent -->
           <div class="project-node" data-project="uptwnldn">
+
             <div class="project-node-line"></div>
             <div class="project-node-dot"></div>
             <div class="project-card">
@@ -519,6 +523,35 @@
             </div>
           </div>
 
+          <div class="project-node" data-project="mysmartrental">
+            <div class="project-node-line"></div>
+            <div class="project-node-dot"></div>
+            <div class="project-card">
+              <div class="project-card-header">
+                <h3>MySmartRental.com (2025)</h3>
+                <span class="project-year">2025</span>
+              </div>
+              <div class="project-card-content">
+                <p>
+                  <strong>Earlier property management SaaS</strong> (first major release) for landlords and tenants.
+                  <strong>React</strong> and <strong>TypeScript</strong> frontend,
+                  <strong>Flask</strong> REST API, <strong>PostgreSQL</strong>.
+                </p>
+                <p>
+                  <strong>What I built:</strong> <strong>JWT auth</strong> and role-based access,
+                  <strong>WebSocket</strong> notifications, <strong>Stripe</strong> payments, document storage,
+                  <strong>SQLAlchemy</strong> queries, <strong>Redis</strong> caching,
+                  <strong>AWS</strong> and <strong>Docker</strong> deployment.
+                </p>
+                <p>
+                  <strong>Results:</strong> Less manual paperwork, clearer tenant?landlord messaging,
+                  lease renewals, maintenance tickets, and reporting dashboards.
+                </p>
+                <a href="https://mysmartrental.com" target="_blank" class="btn btn-small">Visit Site</a>
+              </div>
+            </div>
+          </div>
+          
           <!-- Second -->
           <div class="project-node" data-project="sokocredit">
             <div class="project-node-line"></div>
@@ -686,8 +719,8 @@
 
         <!-- Availability Notice -->
         <div class="availability-notice">
-          <p>ðŸ’¼ <strong>Currently available for:</strong> Full-time opportunities, freelance projects, and consulting work</p>
-          <p>â±ï¸ <strong>Response time:</strong> Usually within 24 hours</p>
+          <p>?? <strong>Currently available for:</strong> Full-time opportunities, freelance projects, and consulting work</p>
+          <p>?? <strong>Response time:</strong> Usually within 24 hours</p>
         </div>
       </div>
     </section>
@@ -696,11 +729,11 @@
     <div id="contactFormModal" class="contact-modal">
       <div class="contact-modal-content">
         <span class="contact-modal-close">&times;</span>
-        <div class="contact-modal-icon">âœ‰ï¸</div>
+        <div class="contact-modal-icon">??</div>
         <h3 class="contact-modal-title">Send Me a Message</h3>
         <p class="contact-modal-subtitle">I will reply as soon as I can.</p>
         <div id="contactFormSuccess" class="contact-form-success" style="display: none;">
-          <div class="success-icon">âœ“</div>
+          <div class="success-icon">?</div>
           <h4>Message Sent!</h4>
           <p>Message sent. I will reply soon.</p>
         </div>
@@ -730,7 +763,7 @@
     <div id="serverOfflineModal" class="error-modal">
       <div class="error-modal-content">
         <span class="error-modal-close">&times;</span>
-        <div class="error-modal-icon">âš ï¸</div>
+        <div class="error-modal-icon">??</div>
         <h3 class="error-modal-title">Server Currently Offline</h3>
         <p class="error-modal-message">
           The Zone 7 RP server is currently offline. Please check back later for updates.

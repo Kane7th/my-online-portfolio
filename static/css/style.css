@@ -2608,6 +2608,17 @@ nav.scrolled {
   font-weight: 600;
 }
 
+.project-card-content a:not(.btn) {
+  color: #5dade2;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.project-card-content a:not(.btn):hover {
+  color: #85c1e9;
+}
+
 
 .btn {
   display: inline-block;

@@ -1579,6 +1579,15 @@ nav.scrolled {
   text-shadow: 0 0 8px rgba(93, 173, 226, 0.4);
 }
 
+/* GSAP takes over entrance animations when enabled */
+html.gsap-enabled .about-intro,
+html.gsap-enabled .about-projects,
+html.gsap-enabled .about-unique,
+html.gsap-enabled .about-philosophy,
+html.gsap-enabled .skill-item {
+  animation: none;
+}
+
 /* Specific card animations */
 .about-intro {
   animation: fadeInUp 0.6s ease 0.1s both;

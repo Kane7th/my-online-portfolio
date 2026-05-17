@@ -632,17 +632,7 @@ nav.scrolled {
   opacity: 1;
 }
 
-.workspace-image-2 {
-  background-image: url('static/images/workspace-2.jpg');
-}
-
-.workspace-image-3 {
-  background-image: url('static/images/workspace-3.jpg');
-}
-
-.workspace-image-4 {
-  background-image: url('static/images/workspace-4.jpg');
-}
+/* workspace-2/3/4 backgrounds load on demand via script.js */
 
 .workspace-overlay {
   position: absolute;

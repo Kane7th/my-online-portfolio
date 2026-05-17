@@ -276,7 +276,48 @@ document.addEventListener("DOMContentLoaded", function () {
   const workspaceImage3 = document.querySelector(".workspace-image-3");
   const workspaceImage4 = document.querySelector(".workspace-image-4");
   const workspaceOverlay = document.querySelector(".workspace-overlay");
-  
+
+  const WORKSPACE_BG = {
+    2: "static/images/workspace-2.jpg",
+    3: "static/images/workspace-3.jpg",
+    4: "static/images/workspace-4.jpg",
+  };
+  const workspaceBgLoaded = { 1: true, 2: false, 3: false, 4: false };
+
+  function ensureWorkspaceBg(num, done) {
+    if (num === 1 || workspaceBgLoaded[num]) {
+      if (done) done();
+      return;
+    }
+    const el =
+      num === 2 ? workspaceImage2 : num === 3 ? workspaceImage3 : workspaceImage4;
+    const src = WORKSPACE_BG[num];
+    if (!el || !src) {
+      if (done) done();
+      return;
+    }
+    const img = new Image();
+    img.onload = function () {
+      el.style.backgroundImage = "url('" + src + "')";
+      workspaceBgLoaded[num] = true;
+      if (done) done();
+    };
+    img.onerror = function () {
+      if (done) done();
+    };
+    img.src = src;
+  }
+
+  function preloadWorkspaceBackgrounds() {
+    [2, 3, 4].forEach((n) => ensureWorkspaceBg(n));
+  }
+
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(preloadWorkspaceBackgrounds, { timeout: 5000 });
+  } else {
+    setTimeout(preloadWorkspaceBackgrounds, 3000);
+  }
+
   // Ensure images are initialized with opacity
   if (workspaceImage1) workspaceImage1.style.opacity = "1";
   if (workspaceImage2) workspaceImage2.style.opacity = "0";
@@ -315,28 +356,31 @@ document.addEventListener("DOMContentLoaded", function () {
           screenClickState = screenClickState + 1;
           
           if (screenClickState === 1) {
-            // First click: Image 1 → Image 4 (switching on)
-            workspaceImage4.style.opacity = "1";
-            playScreenSwitchOnSound();
+            ensureWorkspaceBg(4, () => {
+              workspaceImage4.style.opacity = "1";
+              playScreenSwitchOnSound();
+            });
           } else if (screenClickState === 2) {
-            // Second click: Image 4 → Image 3 (switching off)
-            workspaceImage3.style.opacity = "1";
-            screenToggleMode = true; // Enter toggle mode
-            screenClickState = 3; // Set to image 3 state
-            playScreenSwitchOffSound();
+            ensureWorkspaceBg(3, () => {
+              workspaceImage3.style.opacity = "1";
+              screenToggleMode = true;
+              screenClickState = 3;
+              playScreenSwitchOffSound();
+            });
           }
         } else {
-          // Toggle mode: Switch between Image 3 and Image 4
           if (screenClickState === 3) {
-            // Currently showing 3, switch to 4 (switching on)
-            workspaceImage4.style.opacity = "1";
-            screenClickState = 4;
-            playScreenSwitchOnSound();
+            ensureWorkspaceBg(4, () => {
+              workspaceImage4.style.opacity = "1";
+              screenClickState = 4;
+              playScreenSwitchOnSound();
+            });
           } else {
-            // Currently showing 4, switch to 3 (switching off)
-            workspaceImage3.style.opacity = "1";
-            screenClickState = 3;
-            playScreenSwitchOffSound();
+            ensureWorkspaceBg(3, () => {
+              workspaceImage3.style.opacity = "1";
+              screenClickState = 3;
+              playScreenSwitchOffSound();
+            });
           }
         }
         
@@ -376,40 +420,45 @@ document.addEventListener("DOMContentLoaded", function () {
         const image4Visible = workspaceImage4.style.opacity === "1" || getComputedStyle(workspaceImage4).opacity === "1";
         
         if (image3Visible) {
-          // If image 3 is already displayed, switch to image 4
           workspaceImage1.style.opacity = "0";
           workspaceImage2.style.opacity = "0";
           workspaceImage3.style.opacity = "0";
-          workspaceImage4.style.opacity = "1";
-          chairZoneActive = true;
-          playSitDownSound();
+          ensureWorkspaceBg(4, () => {
+            workspaceImage4.style.opacity = "1";
+            chairZoneActive = true;
+            playSitDownSound();
+          });
         } else if (image4Visible) {
-          // If image 4 is displayed, switch back to previous image (image 1 or 2)
-          workspaceImage1.style.opacity = previousImageBeforeChair === 1 ? "1" : "0";
-          workspaceImage2.style.opacity = previousImageBeforeChair === 2 ? "1" : "0";
-          workspaceImage3.style.opacity = "0";
-          workspaceImage4.style.opacity = "0";
-          chairZoneActive = false;
-          playSitUpSound();
+          const showPrev = () => {
+            workspaceImage1.style.opacity = previousImageBeforeChair === 1 ? "1" : "0";
+            workspaceImage2.style.opacity = previousImageBeforeChair === 2 ? "1" : "0";
+            workspaceImage3.style.opacity = "0";
+            workspaceImage4.style.opacity = "0";
+            chairZoneActive = false;
+            playSitUpSound();
+          };
+          if (previousImageBeforeChair === 2) {
+            ensureWorkspaceBg(2, showPrev);
+          } else {
+            showPrev();
+          }
         } else {
-          // If image 1 or 2 is showing, switch to image 3
-          // Save which image was showing (1 or 2)
           if (image1Visible) {
             previousImageBeforeChair = 1;
           } else if (image2Visible) {
             previousImageBeforeChair = 2;
           } else {
-            // Default to image 1 if neither is visible
             previousImageBeforeChair = 1;
           }
-          
-          // Switch to workspace-3.jpg - Sit down
+
           workspaceImage1.style.opacity = "0";
           workspaceImage2.style.opacity = "0";
-          workspaceImage3.style.opacity = "1";
           workspaceImage4.style.opacity = "0";
-          chairZoneActive = true;
-          playSitDownSound();
+          ensureWorkspaceBg(3, () => {
+            workspaceImage3.style.opacity = "1";
+            chairZoneActive = true;
+            playSitDownSound();
+          });
         }
         
         // Deactivate other zones
@@ -505,10 +554,10 @@ toggleLamp();
       workspaceImage4.style.opacity = "0";
       
       if (anyLampLit) {
-        // Lamp is ON: Show image 2
-        workspaceImage2.style.opacity = "1";
+        ensureWorkspaceBg(2, () => {
+          workspaceImage2.style.opacity = "1";
+        });
       } else {
-        // Lamp is OFF: Show image 1
         workspaceImage1.style.opacity = "1";
       }
       

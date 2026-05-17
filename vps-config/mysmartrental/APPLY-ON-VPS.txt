@@ -31,7 +31,11 @@ Pick ONE approach (nginx OR Next.js). Using both is fine if headers are not dupl
 You should see:
   Access-Control-Allow-Origin: https://kane7th.github.io
 
-Browser test: open portfolio, top bar should show "API + DB online" or "API online".
+Browser test: open portfolio, expand MySmartRental 2.0 — card should show
+"Staging: API + DB online" or "Staging: API online" (not hidden).
+
+Portfolio URL after deploy:
+  https://kane7th.github.io/my-online-portfolio/
 
 --- Troubleshooting ---
 

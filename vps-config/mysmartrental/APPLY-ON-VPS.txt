@@ -1,0 +1,40 @@
+MySmartRental staging CORS for portfolio health widget
+====================================================
+
+Portfolio origin to allow:
+  https://kane7th.github.io
+
+Pick ONE approach (nginx OR Next.js). Using both is fine if headers are not duplicated incorrectly.
+
+--- Option A: nginx only (fastest, no app redeploy) ---
+
+1. SSH into your VPS.
+2. Open your staging site config, e.g.:
+     sudo nano /etc/nginx/sites-available/staging.mysmartrental.com
+3. Paste the contents of nginx-health-cors.conf inside the server { } block.
+4. Set proxy_pass port to match your Next.js process (PM2: pm2 list).
+5. Test and reload:
+     sudo nginx -t && sudo systemctl reload nginx
+
+--- Option B: Next.js route (recommended long-term) ---
+
+1. On your dev machine, open the MySmartRental repo.
+2. Copy route.health.ts.example to app/api/health/route.ts (merge DB logic).
+3. Deploy / restart on VPS:
+     cd /path/to/mysmartrental && git pull && npm run build && pm2 restart all
+4. If nginx still strips headers, use Option A as well.
+
+--- Verify from your PC ---
+
+  curl.exe -sI "https://staging.mysmartrental.com/api/health" -H "Origin: https://kane7th.github.io"
+
+You should see:
+  Access-Control-Allow-Origin: https://kane7th.github.io
+
+Browser test: open portfolio, top bar should show "API + DB online" or "API online".
+
+--- Troubleshooting ---
+
+- Duplicate CORS headers: use only nginx OR only Next.js headers.
+- 502 on /api/health: wrong proxy_pass port; check pm2 list.
+- Still blocked: Cloudflare or another proxy may need a Page Rule / Transform Rule for CORS.

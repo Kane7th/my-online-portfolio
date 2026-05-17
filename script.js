@@ -1575,4 +1575,121 @@ document.addEventListener("DOMContentLoaded", function () {
 
     statsObserver.observe(githubStatsSection);
   }
+
+  // ===== Reduce motion toggle =====
+  const reduceMotionToggle = document.getElementById("reduceMotionToggle");
+  const REDUCE_MOTION_KEY = "portfolioReduceMotion";
+
+  function applyReduceMotion(enabled) {
+    document.documentElement.classList.toggle("reduce-motion", enabled);
+    if (reduceMotionToggle) {
+      reduceMotionToggle.setAttribute("aria-pressed", enabled ? "true" : "false");
+      reduceMotionToggle.textContent = enabled ? "Motion off" : "Motion";
+    }
+  }
+
+  const savedReduceMotion = localStorage.getItem(REDUCE_MOTION_KEY);
+  const prefersReduced =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  applyReduceMotion(savedReduceMotion === "true" || (savedReduceMotion !== "false" && prefersReduced));
+
+  if (reduceMotionToggle) {
+    reduceMotionToggle.addEventListener("click", () => {
+      const next = !document.documentElement.classList.contains("reduce-motion");
+      applyReduceMotion(next);
+      localStorage.setItem(REDUCE_MOTION_KEY, next ? "true" : "false");
+    });
+  }
+
+  // ===== MySmartRental staging health check =====
+  const healthStatusDot = document.getElementById("healthStatusDot");
+  const healthStatusText = document.getElementById("healthStatusText");
+  const HEALTH_URL = "https://staging.mysmartrental.com/api/health";
+
+  async function checkStagingHealth() {
+    if (!healthStatusDot || !healthStatusText) return;
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      const response = await fetch(HEALTH_URL, {
+        method: "GET",
+        signal: controller.signal,
+        mode: "cors",
+      });
+      clearTimeout(timeoutId);
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      const data = await response.json().catch(() => ({}));
+      const dbOk =
+        data.database === "connected" ||
+        data.db === "ok" ||
+        data.status === "ok" ||
+        data.ok === true;
+      healthStatusDot.className = "status-dot status-ok";
+      healthStatusText.textContent = dbOk ? "API + DB online" : "API online";
+    } catch (e) {
+      healthStatusDot.className = "status-dot status-error";
+      healthStatusText.textContent = "Unreachable (CORS or offline)";
+    }
+  }
+
+  checkStagingHealth();
+  setInterval(checkStagingHealth, 120000);
+
+  // ===== GitHub pinned repositories =====
+  const PINNED_REPO_NAMES = [
+    "Phase-5-Project-SokoCredit",
+    "my-smart-rental",
+    "MySmartRental",
+    "mysmartrental",
+  ];
+
+  async function loadPinnedRepos() {
+    const container = document.getElementById("githubPinnedRepos");
+    if (!container) return;
+    try {
+      const response = await fetch(
+        `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`
+      );
+      if (!response.ok) throw new Error("GitHub API error");
+      const repos = await response.json();
+      const pinned = [];
+      PINNED_REPO_NAMES.forEach((name) => {
+        const found = repos.find((r) => r.name.toLowerCase() === name.toLowerCase());
+        if (found) pinned.push(found);
+      });
+      const extras = repos
+        .filter((r) => !r.fork && !pinned.some((p) => p.id === r.id))
+        .sort((a, b) => b.stargazers_count - a.stargazers_count)
+        .slice(0, Math.max(0, 3 - pinned.length));
+      const display = [...pinned, ...extras].slice(0, 3);
+      if (display.length === 0) return;
+      container.innerHTML = display
+        .map(
+          (repo) => `
+        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="pinned-repo-card">
+          <span class="pinned-repo-name">${repo.name}</span>
+          <span class="pinned-repo-desc">${repo.description || "Open repository on GitHub."}</span>
+        </a>`
+        )
+        .join("");
+    } catch (e) {
+      console.log("Pinned repos fallback:", e);
+    }
+  }
+
+  const pinnedSection = document.getElementById("githubPinnedRepos");
+  if (pinnedSection) {
+    const pinnedObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            loadPinnedRepos();
+            pinnedObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    pinnedObserver.observe(pinnedSection);
+  }
 });

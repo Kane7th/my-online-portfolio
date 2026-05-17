@@ -3,7 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kane Kabena | Full-Stack Developer</title>
+    <title>Kane Kabena | Full-Stack Developer | MySmartRental</title>
+    <meta name="description" content="Kane Kabena, full-stack developer in London. Building MySmartRental property management (Next.js, PostgreSQL, mobile). Also e-commerce, payments, and FiveM tooling." />
+    <link rel="canonical" href="https://kane7th.github.io/my-online-portfolio/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Kane Kabena | Full-Stack Developer" />
+    <meta property="og:description" content="Building MySmartRental: property management for landlords and tenants worldwide. Try staging, read the case study, get in touch." />
+    <meta property="og:url" content="https://kane7th.github.io/my-online-portfolio/" />
+    <meta property="og:image" content="https://kane7th.github.io/my-online-portfolio/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kane Kabena | Full-Stack Developer" />
+    <meta name="twitter:description" content="Building MySmartRental: property management worldwide. Next.js, PostgreSQL, M-Pesa, iOS and Android." />
+    <meta name="twitter:image" content="https://kane7th.github.io/my-online-portfolio/assets/og-image.png" />
     <!-- Mobile hamburger menu enabled -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" />
     <link rel="stylesheet" href="style.css" />
@@ -57,9 +70,24 @@
           <!-- YouTube IFrame Player (hidden) -->
           <div id="youtube-player" style="display: none;"></div>
         </div>
+        <button type="button" id="reduceMotionToggle" class="reduce-motion-toggle" aria-pressed="false" title="Reduce motion">
+          Motion
+        </button>
         <a href="Kane Kabena CV - Mar 2026.pdf" class="resume-link" download id="resumeLink">RESUME</a>
       </div>
     </nav>
+
+    <div class="top-status-bar" id="topStatusBar">
+      <div class="building-banner">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span>Currently building: <strong>MySmartRental 2.0</strong></span>
+        <a href="#projects">See project</a>
+        <span class="status-separator" aria-hidden="true">|</span>
+        <span class="status-label">Staging API</span>
+        <span class="status-dot status-pending" id="healthStatusDot" aria-hidden="true"></span>
+        <span id="healthStatusText">Checking...</span>
+      </div>
+    </div>
 
     <!-- Workspace Background Section (Static/Parallax) -->
     <div class="workspace-background-section">
@@ -102,7 +130,7 @@
     <header class="hero" id="home">
       <div class="scroll-indicator">
         <span>scroll</span>
-        <div class="scroll-arrow">?</div>
+        <div class="scroll-arrow" aria-hidden="true">?</div>
       </div>
       <div class="hero-container">
         <div class="hero-left">
@@ -127,15 +155,20 @@
             <span class="html-tag">&lt;P&gt;</span>
           </div>
           <p class="hero-subtitle">
-            I build web applications with <strong>Python</strong>, <strong>React</strong>,
-            and cloud hosting. APIs, frontends, and backends that hold up in production.
+            Building <strong>MySmartRental</strong>: property management for landlords and tenants worldwide.
+            <strong>Next.js</strong>, <strong>PostgreSQL</strong>, payments, and native <strong>iOS</strong> / <strong>Android</strong>.
           </p>
           <div class="html-tags">
             <span class="html-tag">&lt;/P&gt;</span>
             <span class="html-tag">&lt;/BODY&gt;</span>
             <span class="html-tag">&lt;/HTML&gt;</span>
           </div>
-          <a href="#contact" class="btn-contact">CONTACT ME</a>
+          <div class="hero-cta-row">
+            <a href="https://staging.mysmartrental.com/" target="_blank" rel="noopener noreferrer" class="btn btn-small btn-hero-primary">Try staging</a>
+            <a href="https://staging.mysmartrental.com/demo?from=portfolio-hero" target="_blank" rel="noopener noreferrer" class="btn btn-small">Live demo</a>
+            <a href="mysmartrental-case-study.html" class="btn btn-small btn-ghost">Case study</a>
+            <a href="#contact" class="btn-contact btn-contact-inline">Contact</a>
+          </div>
         </div>
       </div>
     </header>
@@ -146,30 +179,33 @@
         <h2 class="section-title">About Me</h2>
         <div class="about-content">
           <div class="about-card about-intro">
-            <div class="card-icon">??</div>
+            <div class="card-icon card-icon-svg" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
             <h3>Who I Am</h3>
             <p>
-              I'm <strong>Kane Kabena</strong>, a full-stack developer based in London. I work mainly with
-              <strong>Python</strong> and <strong>Flask</strong> for REST APIs (<strong>SQLAlchemy</strong>,
-              <strong>PostgreSQL</strong>) and <strong>React</strong> with <strong>Redux Toolkit</strong> on the
-              frontend. I care about readable code, sensible structure, and <strong>JWT auth</strong> where
-              apps need login and roles.
+              I'm <strong>Kane Kabena</strong>, a full-stack developer in London. I ship production software:
+              <strong>Next.js</strong> and <strong>TypeScript</strong> for product UIs, <strong>Python</strong> / <strong>Flask</strong>
+              for APIs, and <strong>PostgreSQL</strong> for data that has to stay correct under load.
             </p>
           </div>
 
           <div class="about-card about-projects">
-            <div class="card-icon">??</div>
+            <div class="card-icon card-icon-svg" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
             <h3>What I Build</h3>
             <p>
-              Recent work includes <strong>SokoCredit</strong> (loan management with <strong>M-Pesa</strong>,
-              <strong>Twilio</strong> SMS, and role-based access) and a hotel booking app with
-              <strong>JWT auth</strong>, search and filters, pagination, and toast notifications. I split time
-              between API design, database work, and the React UI.
+              My flagship is <strong>MySmartRental 2.0</strong> (staging live today). I have also shipped
+              <strong>e-commerce</strong> (Uptwn Ldn), <strong>SokoCredit</strong> (M-Pesa, Twilio, RBAC), and
+              property SaaS v1. I own the stack from schema design to deployed nginx.
             </p>
           </div>
 
           <div class="about-card about-unique">
-            <div class="card-icon">??</div>
+            <div class="card-icon card-icon-svg" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m8-3v2"/></svg>
+            </div>
             <h3>Beyond Web Dev</h3>
             <p>
               I also build for <strong>FiveM</strong> and <strong>RedM</strong>: custom <strong>Lua</strong>
@@ -179,7 +215,9 @@
           </div>
 
           <div class="about-card about-philosophy">
-            <div class="card-icon">??</div>
+            <div class="card-icon card-icon-svg" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+            </div>
             <h3>My Approach</h3>
             <p>
               I keep learning as tools change. On each project I aim for clear <strong>REST APIs</strong>,
@@ -195,7 +233,9 @@
     <section id="skills" class="section section-dark">
       <div class="section-container">
         <h2 class="section-title">Technical Skills</h2>
-        <div class="skills-grid">
+        <p class="skills-intro">Depth on what I ship daily; breadth where projects need it.</p>
+        <h3 class="skills-group-title">Ship daily</h3>
+        <div class="skills-grid skills-grid-primary">
           <div class="skill-item" data-skill="Python" data-description="I use Python as my primary backend language for building RESTful APIs, data processing, and automation scripts. I use its clean syntax and extensive libraries like SQLAlchemy for ORM, Flask for web frameworks, and various data manipulation libraries for complex business logic.">
             <i class="devicon-python-plain colored"></i>
             <span>Python</span>
@@ -208,9 +248,9 @@
             <i class="devicon-react-original colored"></i>
             <span>React</span>
           </div>
-          <div class="skill-item" data-skill="Redux Toolkit" data-description="I use Redux Toolkit for state in larger React apps. Predictable updates, async flows, and a clear split between UI and data logic.">
-            <i class="devicon-redux-original colored"></i>
-            <span>Redux Toolkit</span>
+          <div class="skill-item" data-skill="Next.js" data-description="I use Next.js App Router with TypeScript for marketing sites, dashboards, and API routes. Server and client components, auth flows, and production deploys on nginx.">
+            <i class="devicon-nextjs-original"></i>
+            <span>Next.js</span>
           </div>
           <div class="skill-item" data-skill="TypeScript" data-description="TypeScript enhances my JavaScript development with type safety and better IDE support. I use it to write more maintainable code, catch errors at compile time, and improve code documentation through type annotations.">
             <i class="devicon-typescript-plain colored"></i>
@@ -223,10 +263,6 @@
           <div class="skill-item" data-skill="PostgreSQL" data-description="PostgreSQL is my preferred relational database for production applications. I design normalized schemas, write clear queries, use transactions for data integrity, and use advanced features like JSON columns when needed.">
             <i class="devicon-postgresql-plain colored"></i>
             <span>PostgreSQL</span>
-          </div>
-          <div class="skill-item" data-skill="MongoDB" data-description="I use MongoDB for flexible, document-based data storage when schema flexibility is needed. I work with Mongoose ODM, design efficient document structures, and optimize queries for performance in NoSQL environments.">
-            <i class="devicon-mongodb-plain colored"></i>
-            <span>MongoDB</span>
           </div>
           <div class="skill-item" data-skill="Node.js" data-description="I use Node.js for APIs, WebSockets, and I/O-heavy services when JavaScript on the server fits the project.">
             <i class="devicon-nodejs-plain colored"></i>
@@ -252,6 +288,25 @@
             <i class="devicon-docker-plain colored"></i>
             <span>Docker</span>
           </div>
+          <div class="skill-item" data-skill="Git" data-description="Git is essential to my workflow for version control. I use branching strategies, handle merge conflicts, and maintain clean commit histories. I use branches, pull requests, and code review on team projects.">
+            <i class="devicon-git-plain colored"></i>
+            <span>Git</span>
+          </div>
+          <div class="skill-item" data-skill="GitHub" data-description="I use GitHub for code hosting, collaboration, and project management. I manage repositories, create pull requests, use GitHub Actions for CI/CD, and contribute to open-source projects.">
+            <i class="devicon-github-original colored"></i>
+            <span>GitHub</span>
+          </div>
+        </div>
+        <h3 class="skills-group-title">Also use</h3>
+        <div class="skills-grid skills-grid-secondary">
+          <div class="skill-item" data-skill="Redux Toolkit" data-description="I use Redux Toolkit for state in larger React apps. Predictable updates, async flows, and a clear split between UI and data logic.">
+            <i class="devicon-redux-original colored"></i>
+            <span>Redux Toolkit</span>
+          </div>
+          <div class="skill-item" data-skill="MongoDB" data-description="I use MongoDB for flexible, document-based data storage when schema flexibility is needed. I work with Mongoose ODM, design efficient document structures, and optimize queries for performance in NoSQL environments.">
+            <i class="devicon-mongodb-plain colored"></i>
+            <span>MongoDB</span>
+          </div>
           <div class="skill-item" data-skill="AWS" data-description="I deploy on AWS (EC2, S3, RDS, Lambda) for production apps. Networking, storage, and managed services as the project needs.">
             <i class="devicon-amazonwebservices-original colored"></i>
             <span>AWS</span>
@@ -271,14 +326,6 @@
           <div class="skill-item" data-skill="Azure" data-description="I deploy on Azure (App Service, Azure SQL, Functions) for hosting, data, and serverless jobs.">
             <i class="devicon-azure-plain colored"></i>
             <span>Azure</span>
-          </div>
-          <div class="skill-item" data-skill="Git" data-description="Git is essential to my workflow for version control. I use branching strategies, handle merge conflicts, and maintain clean commit histories. I use branches, pull requests, and code review on team projects.">
-            <i class="devicon-git-plain colored"></i>
-            <span>Git</span>
-          </div>
-          <div class="skill-item" data-skill="GitHub" data-description="I use GitHub for code hosting, collaboration, and project management. I manage repositories, create pull requests, use GitHub Actions for CI/CD, and contribute to open-source projects.">
-            <i class="devicon-github-original colored"></i>
-            <span>GitHub</span>
           </div>
         </div>
         
@@ -388,6 +435,21 @@
           </div>
         </div>
 
+        <!-- Featured repositories -->
+        <div class="github-pinned-section">
+          <h3 class="github-languages-title">Featured repositories</h3>
+          <div class="github-pinned-grid" id="githubPinnedRepos">
+            <a href="https://github.com/Kane7th/Phase-5-Project-SokoCredit" target="_blank" rel="noopener noreferrer" class="pinned-repo-card">
+              <span class="pinned-repo-name">Phase-5-Project-SokoCredit</span>
+              <span class="pinned-repo-desc">Loan management app: Flask API, React, M-Pesa, Twilio SMS, RBAC.</span>
+            </a>
+            <a href="https://github.com/Kane7th" target="_blank" rel="noopener noreferrer" class="pinned-repo-card pinned-repo-placeholder" data-repo-fallback>
+              <span class="pinned-repo-name">Loading repos?</span>
+              <span class="pinned-repo-desc">Fetched from GitHub when you scroll here.</span>
+            </a>
+          </div>
+        </div>
+
         <!-- GitHub Profile Link -->
         <div class="github-profile-link">
           <a href="https://github.com/Kane7th" target="_blank" class="btn btn-github">
@@ -415,6 +477,15 @@
                 <span class="project-year">2026</span>
               </div>
               <div class="project-card-content">
+                <div class="project-preview">
+                  <img src="assets/mysmartrental-dashboard.png" alt="MySmartRental landlord dashboard showing portfolio overview, income trend, and occupancy" width="1200" height="675" loading="lazy" />
+                </div>
+                <ul class="project-outcomes">
+                  <li><strong>Live staging</strong> at staging.mysmartrental.com, usable today</li>
+                  <li><strong>Web + mobile</strong> for landlords and tenants</li>
+                  <li><strong>Payments in product</strong>: M-Pesa STK, cards, bank, reconciliation</li>
+                  <li><strong>Multi-currency</strong> KES, USD, GBP, EUR</li>
+                </ul>
                 <p>
                   <strong>Flagship product:</strong> property management software for landlords, tenants, and
                   property managers worldwide. One platform for rent collection, maintenance, messaging, and portfolio reporting.
@@ -455,6 +526,7 @@
                 </p>
                 <a href="https://staging.mysmartrental.com/" target="_blank" rel="noopener noreferrer" class="btn btn-small">Try staging</a>
                 <a href="https://staging.mysmartrental.com/demo?from=portfolio" target="_blank" rel="noopener noreferrer" class="btn btn-small">Live demo</a>
+                <a href="mysmartrental-case-study.html" class="btn btn-small btn-ghost">Read case study</a>
               </div>
             </div>
           </div>
@@ -470,6 +542,14 @@
                 <span class="project-year">2026</span>
               </div>
               <div class="project-card-content">
+                <div class="project-preview">
+                  <img src="assets/uptwnldn-home.png" alt="Uptwn Ldn streetwear storefront hero, Beyond The Noise" width="1200" height="675" loading="lazy" />
+                </div>
+                <ul class="project-outcomes">
+                  <li><strong>Live VPS</strong> storefront and admin on nginx</li>
+                  <li><strong>Guest cart</strong> with server sync and checkout flow</li>
+                  <li><strong>Admin catalogue</strong> API through to production deploy</li>
+                </ul>
                 <p>
                   <strong>Full-stack e-commerce site</strong> for <strong>Uptwn Ldn</strong>, a London streetwear label
                   (<em>Beyond The Noise</em>). <strong>React</strong> and <strong>Vite</strong> SPA,
@@ -545,7 +625,7 @@
                   <strong>AWS</strong> and <strong>Docker</strong> deployment.
                 </p>
                 <p>
-                  <strong>Results:</strong> Less manual paperwork, clearer tenant?landlord messaging,
+                  <strong>Results:</strong> Less manual paperwork, clearer tenant-landlord messaging,
                   lease renewals, maintenance tickets, and reporting dashboards.
                 </p>
                 <a href="https://mysmartrental.com" target="_blank" class="btn btn-small">Visit Site</a>
@@ -641,6 +721,33 @@
       </div>
     </section>
 
+    <!-- Problems I solve -->
+    <section id="expertise" class="section section-dark">
+      <div class="section-container">
+        <h2 class="section-title">Problems I Solve</h2>
+        <p class="section-lead">What hiring managers and clients usually need from a product-minded full-stack developer.</p>
+        <div class="expertise-grid">
+          <div class="expertise-card">
+            <h3>Payments and reconciliation</h3>
+            <p>M-Pesa STK, cards, bank transfers, invoices tied to units, arrears visibility, and payout routing without spreadsheet chaos.</p>
+          </div>
+          <div class="expertise-card">
+            <h3>Full-stack product delivery</h3>
+            <p>Schema design, APIs, React or Next.js UIs, nginx deploys, and staging environments that behave like production.</p>
+          </div>
+          <div class="expertise-card">
+            <h3>Real-time and mobile</h3>
+            <p>WebSockets, activity feeds, and web plus native apps sharing one PostgreSQL data model with role-scoped access.</p>
+          </div>
+          <div class="expertise-card">
+            <h3>E-commerce and integrations</h3>
+            <p>Storefronts, admin tools, carts, third-party SMS and payment providers, and ops-friendly admin dashboards.</p>
+          </div>
+        </div>
+        <p class="performance-note">This portfolio is static HTML/CSS/JS on GitHub Pages, tuned for fast load and accessible navigation.</p>
+      </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="section section-dark">
       <div class="section-container">
@@ -720,8 +827,8 @@
 
         <!-- Availability Notice -->
         <div class="availability-notice">
-          <p>?? <strong>Currently available for:</strong> Full-time opportunities, freelance projects, and consulting work</p>
-          <p>?? <strong>Response time:</strong> Usually within 24 hours</p>
+          <p><span class="availability-icon" aria-hidden="true"></span> <strong>Currently available for:</strong> Full-time opportunities, freelance projects, and consulting work</p>
+          <p><span class="availability-icon" aria-hidden="true"></span> <strong>Response time:</strong> Usually within 24 hours</p>
         </div>
       </div>
     </section>
@@ -730,11 +837,13 @@
     <div id="contactFormModal" class="contact-modal">
       <div class="contact-modal-content">
         <span class="contact-modal-close">&times;</span>
-        <div class="contact-modal-icon">??</div>
+        <div class="contact-modal-icon" aria-hidden="true">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
         <h3 class="contact-modal-title">Send Me a Message</h3>
         <p class="contact-modal-subtitle">I will reply as soon as I can.</p>
         <div id="contactFormSuccess" class="contact-form-success" style="display: none;">
-          <div class="success-icon">?</div>
+          <div class="success-icon" aria-hidden="true"></div>
           <h4>Message Sent!</h4>
           <p>Message sent. I will reply soon.</p>
         </div>
@@ -764,7 +873,9 @@
     <div id="serverOfflineModal" class="error-modal">
       <div class="error-modal-content">
         <span class="error-modal-close">&times;</span>
-        <div class="error-modal-icon">??</div>
+        <div class="error-modal-icon" aria-hidden="true">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
         <h3 class="error-modal-title">Server Currently Offline</h3>
         <p class="error-modal-message">
           The Zone 7 RP server is currently offline. Please check back later for updates.

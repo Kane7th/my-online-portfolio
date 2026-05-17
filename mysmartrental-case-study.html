@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MySmartRental 2.0 Case Study | Kane Kabena</title>
+    <meta name="description" content="How I built MySmartRental 2.0: Next.js, PostgreSQL, M-Pesa payments, and native mobile for landlords and tenants worldwide." />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
+  </head>
+  <body class="case-study-page">
+    <nav id="navbar" class="scrolled">
+      <div class="nav-container">
+        <a href="index.html#home" class="nav-logo">
+          <div class="nav-logo-circle">
+            <span class="nav-logo-bracket">&lt;</span>
+            <span class="nav-logo-letter">K</span>
+            <span class="nav-logo-bracket">&gt;</span>
+          </div>
+          <span class="nav-logo-text">
+            <span class="nav-logo-name">Kane Kabena</span>
+            <span class="nav-logo-portfolio">Portfolio</span>
+          </span>
+        </a>
+        <ul class="nav-list" id="navList">
+          <li><a href="index.html#projects" class="nav-link">BACK TO WORK</a></li>
+          <li><a href="index.html#contact" class="nav-link">CONTACT</a></li>
+        </ul>
+        <button type="button" id="reduceMotionToggle" class="reduce-motion-toggle" aria-pressed="false" title="Reduce motion">
+          Reduce motion
+        </button>
+      </div>
+    </nav>
+
+    <main class="case-study-main">
+      <header class="case-study-hero">
+        <p class="case-study-eyebrow">Case study ù 2026</p>
+        <h1>MySmartRental 2.0</h1>
+        <p class="case-study-lead">
+          Property management software for landlords, tenants, and property managers worldwide.
+          One product replacing spreadsheets, WhatsApp rent chasing, and disconnected tools.
+        </p>
+        <div class="case-study-hero-actions">
+          <a href="https://staging.mysmartrental.com/" target="_blank" rel="noopener noreferrer" class="btn btn-small">Try staging</a>
+          <a href="https://staging.mysmartrental.com/demo?from=portfolio-case-study" target="_blank" rel="noopener noreferrer" class="btn btn-small">Live demo</a>
+          <a href="index.html#projects" class="btn btn-small btn-ghost">Portfolio</a>
+        </div>
+        <img src="assets/mysmartrental-dashboard.png" alt="MySmartRental landlord dashboard" class="case-study-hero-image" width="1200" height="675" loading="eager" />
+      </header>
+
+      <article class="case-study-article section-container">
+        <section class="case-study-block">
+          <h2>Problem</h2>
+          <p>
+            Small and mid-size operators run portfolios on spreadsheets, bank SMS screenshots, and chat apps.
+            Rent status is unclear, maintenance requests get lost, and payouts need manual reconciliation per unit.
+          </p>
+        </section>
+
+        <section class="case-study-block">
+          <h2>My role</h2>
+          <p>
+            Solo product engineer: product direction, data model, Next.js web app, API routes, payment integrations,
+            landlord and tenant flows, and coordination with native iOS and Android builds.
+          </p>
+        </section>
+
+        <section class="case-study-block">
+          <h2>Architecture</h2>
+          <div class="architecture-diagram" role="img" aria-label="System architecture diagram">
+            <div class="arch-row arch-clients">
+              <span class="arch-box">Marketing site</span>
+              <span class="arch-box">Landlord portal</span>
+              <span class="arch-box">Tenant flows</span>
+              <span class="arch-box">iOS / Android</span>
+            </div>
+            <span class="arch-arrow" aria-hidden="true">?</span>
+            <div class="arch-row">
+              <span class="arch-box arch-highlight">Next.js App Router ù TypeScript ù API routes</span>
+            </div>
+            <span class="arch-arrow" aria-hidden="true">?</span>
+            <div class="arch-row">
+              <span class="arch-box">PostgreSQL</span>
+              <span class="arch-box">M-Pesa ù Card ù Bank</span>
+              <span class="arch-box">nginx ù Ubuntu</span>
+            </div>
+          </div>
+          <p>
+            Public <code>/api/health</code> confirms API and database reachability on staging.
+            Versioned API under <code>/api/v1</code> for mobile and web clients.
+          </p>
+        </section>
+
+        <section class="case-study-block">
+          <h2>What I shipped</h2>
+          <ul class="case-study-list">
+            <li>Portfolio model: sites, units, leases, recurring invoices, occupancy tracking</li>
+            <li>M-Pesa STK push (Paybill / Till) with SMS receipts; card and bank where operators use them</li>
+            <li>Payment reconciliation tied to units; arrears and payout visibility</li>
+            <li>Maintenance tickets with photos, contractor assignment, and status workflow</li>
+            <li>In-app messaging and broadcast announcements for landlords and tenants</li>
+            <li>Multi-currency UI (KES, USD, GBP, EUR) and multi-locale support</li>
+            <li>Demo and sign-up funnels without forcing card details for trial units</li>
+            <li>Security defaults: strict transport, frame controls, sensitive payout fields handled carefully in UI</li>
+          </ul>
+        </section>
+
+        <section class="case-study-block">
+          <h2>Outcomes</h2>
+          <ul class="project-outcomes">
+            <li><strong>Live staging</strong> at staging.mysmartrental.com ù usable today, not vaporware</li>
+            <li><strong>Web + mobile</strong> ù landlords and tenants on dashboard and native apps</li>
+            <li><strong>Payments in product</strong> ù STK push, offline recording, reconciliation in one place</li>
+            <li><strong>Earlier version preserved</strong> ù Flask/React MySmartRental.com (2025) shows iteration over time</li>
+          </ul>
+        </section>
+
+        <section class="case-study-block">
+          <h2>Hard problems</h2>
+          <h3>Payments across regions</h3>
+          <p>
+            Operators expect M-Pesa where they use it, but global portfolios need card and bank options too.
+            The UI and reconciliation layer had to treat currency and provider per operator, not as a single-country bolt-on.
+          </p>
+          <h3>One data model, two audiences</h3>
+          <p>
+            Landlords need portfolio-wide reporting; tenants need a narrow view of their lease, invoices, and tickets.
+            Role-scoped queries and dashboards share one PostgreSQL schema without leaking cross-tenant data.
+          </p>
+          <h3>Staging as a real environment</h3>
+          <p>
+            Health checks, nginx, and production-like config on Ubuntu mean demos and QA run on infrastructure close to go-live,
+            not only on localhost.
+          </p>
+        </section>
+
+        <section class="case-study-block case-study-cta">
+          <h2>Try it</h2>
+          <p>Open staging or the guided demo. If you are hiring for product-minded full-stack work, get in touch.</p>
+          <a href="index.html#contact" class="btn btn-small">Contact Kane</a>
+        </section>
+      </article>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 Kane Kabena. <a href="index.html">Back to portfolio</a></p>
+    </footer>
+  </body>
+</html>

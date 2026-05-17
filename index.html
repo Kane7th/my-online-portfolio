@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="style.css" />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
     <script defer src="script.js"></script>
   </head>
   <body>
@@ -428,14 +426,22 @@
               </div>
               <div class="project-card-content">
                 <p>
-                  <strong>London streetwear brand storefront</strong> for <strong>Uptwn Ldn</strong> —
-                  <em>Beyond The Noise</em>. A bold, brand-led e-commerce experience built to showcase collections,
-                  tell the brand story, and convert visitors on desktop and mobile.
+                  <strong>Full-stack e-commerce platform</strong> for <strong>Uptwn Ldn</strong> — London streetwear label
+                  <em>Beyond The Noise</em>. Built with <strong>React</strong> and <strong>Vite</strong> for a fast SPA storefront,
+                  <strong>React Router</strong> for client-side navigation, and <strong>CSS Modules</strong> with a custom design system
+                  (Bebas Neue / Inter typography, brand tokens). Deployed on an <strong>Ubuntu VPS</strong> behind <strong>nginx</strong>.
                 </p>
                 <p>
-                  <strong>Highlights:</strong> Responsive layout tuned for fashion retail, clear product and collection
-                  navigation, and a polished visual identity that matches the label's urban aesthetic. Optimized for
-                  fast browsing, strong typography, and a seamless path from discovery to purchase intent.
+                  <strong>Key Technical Achievements:</strong> Designed a <strong>Node.js / Express REST API</strong> with separate
+                  <strong>storefront</strong> and <strong>admin</strong> routes — product catalog with categories, stock levels, and image
+                  hover states served from <code>/api/storefront</code>. Implemented <strong>cart persistence</strong> (guest
+                  <code>localStorage</code> + server sync), category-filtered shop views, and a <strong>checkout</strong> flow.
+                  Used <strong>GSAP</strong> for scroll and UI micro-interactions, <strong>React Context</strong> for global store state,
+                  and security headers (Helmet-style) on the API. Includes cookie-consent handling and a responsive layout across mobile and desktop.
+                </p>
+                <p>
+                  <strong>Scope:</strong> Product shop, cart, checkout, refunds policy pages, and admin-backed catalogue management —
+                  end-to-end from catalogue API to production deployment on dedicated infrastructure.
                 </p>
                 <a href="http://72.61.146.2/" target="_blank" rel="noopener noreferrer" class="btn btn-small">Visit Site</a>
               </div>

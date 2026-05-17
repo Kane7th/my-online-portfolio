@@ -1359,7 +1359,35 @@ document.addEventListener("DOMContentLoaded", function () {
     interactiveZones.classList.remove("fade-out");
   }
 
-  initGsapAnimations();
+  // ===== Fade in animation on scroll =====
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px"
+  };
+
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = "1";
+        entry.target.style.transform = "translateY(0)";
+      }
+    });
+  }, observerOptions);
+
+  // Observe all sections
+  sections.forEach((section) => {
+    section.style.opacity = "0";
+    section.style.transform = "translateY(30px)";
+    section.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+    observer.observe(section);
+  });
+
+  // Hero section should be visible immediately
+  const hero = document.querySelector(".hero");
+  if (hero) {
+    hero.style.opacity = "1";
+    hero.style.transform = "translateY(0)";
+  }
 
   // ===== GitHub Stats - Fetch Live Data =====
   const GITHUB_USERNAME = "Kane7th";
@@ -1548,196 +1576,3 @@ document.addEventListener("DOMContentLoaded", function () {
     statsObserver.observe(githubStatsSection);
   }
 });
-
-/**
- * GSAP + ScrollTrigger entrance and scroll animations.
- * Skipped when the library fails to load or the user prefers reduced motion.
- */
-function initGsapAnimations() {
-  if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
-    return;
-  }
-
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    return;
-  }
-
-  document.documentElement.classList.add("gsap-enabled");
-  gsap.registerPlugin(ScrollTrigger);
-
-  const scrollReveal = (targets, options = {}) => {
-    const elements = gsap.utils.toArray(targets);
-    if (!elements.length) return;
-
-    gsap.from(elements, {
-      scrollTrigger: {
-        trigger: options.trigger || elements[0],
-        start: options.start || "top 82%",
-        toggleActions: "play none none none",
-        once: true,
-      },
-      y: options.y ?? 40,
-      x: options.x ?? 0,
-      opacity: 0,
-      scale: options.scale ?? 1,
-      duration: options.duration ?? 0.7,
-      stagger: options.stagger ?? 0.1,
-      ease: options.ease ?? "power2.out",
-    });
-  };
-
-  // Page load — hero & nav
-  const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
-  heroTimeline
-    .from("#navbar", { y: -28, opacity: 0, duration: 0.65 })
-    .from(".logo-circle", { scale: 0.5, opacity: 0, rotation: -12, duration: 0.75 }, "-=0.35")
-    .from(".hero .html-tags", { y: 18, opacity: 0, duration: 0.45, stagger: 0.06 }, "-=0.4")
-    .from(".hero-title", { y: 36, opacity: 0, duration: 0.8 }, "-=0.3")
-    .from(".hero-subtitle", { y: 24, opacity: 0, duration: 0.65 }, "-=0.5")
-    .from(".btn-contact", { y: 18, opacity: 0, duration: 0.55 }, "-=0.45")
-    .from(".scroll-indicator", { opacity: 0, y: 10, duration: 0.5 }, "-=0.35");
-
-  gsap.to(".scroll-indicator", {
-    y: 10,
-    duration: 1.4,
-    ease: "sine.inOut",
-    yoyo: true,
-    repeat: -1,
-    delay: 1.8,
-  });
-
-  // Workspace parallax
-  const workspaceSection = document.querySelector(".workspace-background-section");
-  if (workspaceSection) {
-    gsap.to(".workspace-background", {
-      scrollTrigger: {
-        trigger: workspaceSection,
-        start: "top top",
-        end: "bottom top",
-        scrub: 0.6,
-      },
-      y: 70,
-      ease: "none",
-    });
-  }
-
-  // Interactive hints — gentle attention pulse
-  gsap.to(".zone-hint", {
-    y: -4,
-    duration: 1.6,
-    ease: "sine.inOut",
-    yoyo: true,
-    repeat: -1,
-    stagger: 0.25,
-  });
-
-  // Section headings & intros
-  document.querySelectorAll(".section-title").forEach((title) => {
-    scrollReveal(title, {
-      trigger: title.closest("section") || title,
-      y: 28,
-      duration: 0.65,
-      stagger: 0,
-    });
-  });
-  scrollReveal(".github-subtitle", { trigger: "#github-stats", y: 20, duration: 0.55 });
-  scrollReveal(".contact-subtitle", { trigger: "#contact", y: 20, duration: 0.55 });
-  scrollReveal(".social-section-title", { trigger: ".social-section", y: 20, duration: 0.5 });
-
-  scrollReveal(".about-card", {
-    trigger: "#about .about-content",
-    y: 48,
-    stagger: 0.12,
-    duration: 0.75,
-  });
-
-  scrollReveal(".skill-item", {
-    trigger: "#skills .skills-grid",
-    y: 28,
-    scale: 0.88,
-    stagger: 0.035,
-    duration: 0.55,
-  });
-
-  scrollReveal(".github-stat-card", {
-    trigger: "#github-stats .github-stats-grid",
-    y: 36,
-    stagger: 0.1,
-    duration: 0.65,
-  });
-
-  scrollReveal(".language-item", {
-    trigger: ".github-languages",
-    x: -24,
-    y: 0,
-    stagger: 0.08,
-    duration: 0.6,
-  });
-
-  scrollReveal(".github-profile-link .btn-github", {
-    trigger: ".github-profile-link",
-    scale: 0.92,
-    y: 16,
-    duration: 0.55,
-  });
-
-  scrollReveal(".project-node", {
-    trigger: "#projects .projects-tree",
-    y: 55,
-    stagger: 0.14,
-    duration: 0.75,
-  });
-
-  scrollReveal(".contact-card", {
-    trigger: "#contact .contact-grid",
-    y: 42,
-    stagger: 0.1,
-    duration: 0.65,
-  });
-
-  scrollReveal(".social-link", {
-    trigger: ".social-links",
-    scale: 0.85,
-    y: 20,
-    stagger: 0.08,
-    duration: 0.5,
-  });
-
-  scrollReveal(".availability-notice", {
-    trigger: ".availability-notice",
-    y: 24,
-    duration: 0.6,
-  });
-
-  scrollReveal("footer p", { trigger: "footer", y: 16, duration: 0.5 });
-
-  // Language bars grow on scroll
-  gsap.utils.toArray(".language-fill").forEach((fill, index) => {
-    const targetWidth = fill.style.width;
-    if (!targetWidth) return;
-
-    gsap.set(fill, { width: "0%" });
-    gsap.to(fill, {
-      scrollTrigger: {
-        trigger: ".github-languages",
-        start: "top 78%",
-        once: true,
-      },
-      width: targetWidth,
-      duration: 1.1,
-      delay: index * 0.08,
-      ease: "power2.out",
-    });
-  });
-
-  // Floating WhatsApp button
-  gsap.from(".whatsapp-button", {
-    scale: 0,
-    opacity: 0,
-    duration: 0.65,
-    ease: "back.out(1.8)",
-    delay: 1.4,
-  });
-
-  window.addEventListener("load", () => ScrollTrigger.refresh());
-}

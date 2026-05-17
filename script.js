@@ -516,193 +516,69 @@ toggleLamp();
     }
   }
 
-  let lampClickAudio = null;
+  const workspaceSoundCache = {};
 
-  let screenSwitchOnAudio = null;
-  let screenSwitchOffAudio = null;
+  function getSoundUrl(filename) {
+    return new URL(`static/sounds/${filename}`, window.location.href).href;
+  }
 
-  let sitDownAudio = null;
-  let sitUpAudio = null;
+  function loadWorkspaceSound(id, filename) {
+    if (workspaceSoundCache[id]) return workspaceSoundCache[id];
+    const audio = new Audio(getSoundUrl(filename));
+    audio.volume = 0.7;
+    audio.preload = "auto";
+    workspaceSoundCache[id] = audio;
+    audio.load();
+    return audio;
+  }
 
-  function getSoundPath(filename) {
-    let staticUrl = 'static/sounds/';
-    if (window.location.pathname.includes('/my-online-portfolio')) {
-      staticUrl = '/my-online-portfolio/static/sounds/';
+  function playWorkspaceSound(id, filename) {
+    const audio = loadWorkspaceSound(id, filename);
+    const playNow = () => {
+      audio.currentTime = 0;
+      const promise = audio.play();
+      if (promise) promise.catch(() => {});
+    };
+    if (audio.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
+      playNow();
+      return;
     }
-    return `${staticUrl}${filename}`;
+    audio.addEventListener("canplaythrough", playNow, { once: true });
+    audio.addEventListener(
+      "error",
+      () => {
+        delete workspaceSoundCache[id];
+      },
+      { once: true }
+    );
   }
 
-  function preloadLampSound() {
-  }
+  [
+    ["lamp", "lamp-click.mp3"],
+    ["screen-on", "screen-switch-on.mp3"],
+    ["screen-off", "screen-switch-off.mp3"],
+    ["sit-down", "sit-down.mp3"],
+    ["sit-up", "sit-up.mp3"],
+  ].forEach(([id, file]) => loadWorkspaceSound(id, file));
 
   function playLampSwitchSound() {
-    try {
-      if (lampClickAudio && lampClickAudio.readyState >= 2) {
-        lampClickAudio.currentTime = 0;
-        const playPromise = lampClickAudio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(e => {
-            console.error("Could not play lamp audio:", e);
-          });
-        }
-      } else {
-        const audioPath = getSoundPath('lamp-click.mp3');
-        const audio = new Audio(audioPath);
-        audio.volume = 0.7;
-
-        if (!lampClickAudio) {
-          lampClickAudio = audio;
-        }
-
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-          }).catch(e => {
-            console.error(`Failed to play lamp sound: ${audioPath}`, e);
-          });
-        }
-      }
-    } catch (e) {
-      console.error("Lamp audio playback error:", e);
-    }
-  }
-
-  preloadLampSound();
-  preloadScreenSounds();
-  preloadChairSounds();
-
-  function preloadScreenSounds() {
+    playWorkspaceSound("lamp", "lamp-click.mp3");
   }
 
   function playScreenSwitchOnSound() {
-    try {
-      if (screenSwitchOnAudio && screenSwitchOnAudio.readyState >= 2) {
-        screenSwitchOnAudio.currentTime = 0;
-        const playPromise = screenSwitchOnAudio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(e => {
-            console.error("Could not play switch-on audio:", e);
-          });
-        }
-      } else {
-        const audioPath = getSoundPath('screen-switch-on.mp3');
-        const audio = new Audio(audioPath);
-        audio.volume = 0.7;
-
-        if (!screenSwitchOnAudio) {
-          screenSwitchOnAudio = audio;
-        }
-
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-          }).catch(e => {
-            console.error(`Failed to play screen switch-on sound: ${audioPath}`, e);
-          });
-        }
-      }
-    } catch (e) {
-      console.error("Screen switch-on audio playback error:", e);
-    }
+    playWorkspaceSound("screen-on", "screen-switch-on.mp3");
   }
 
   function playScreenSwitchOffSound() {
-    try {
-      if (screenSwitchOffAudio && screenSwitchOffAudio.readyState >= 2) {
-        screenSwitchOffAudio.currentTime = 0;
-        const playPromise = screenSwitchOffAudio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(e => {
-            console.error("Could not play switch-off audio:", e);
-          });
-        }
-      } else {
-        const audioPath = getSoundPath('screen-switch-off.mp3');
-        const audio = new Audio(audioPath);
-        audio.volume = 0.7;
-
-        if (!screenSwitchOffAudio) {
-          screenSwitchOffAudio = audio;
-        }
-
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-          }).catch(e => {
-            console.error(`Failed to play screen switch-off sound: ${audioPath}`, e);
-          });
-        }
-      }
-    } catch (e) {
-      console.error("Screen switch-off audio playback error:", e);
-    }
-  }
-
-  function preloadChairSounds() {
+    playWorkspaceSound("screen-off", "screen-switch-off.mp3");
   }
 
   function playSitDownSound() {
-    try {
-      if (sitDownAudio && sitDownAudio.readyState >= 2) {
-        sitDownAudio.currentTime = 0;
-        const playPromise = sitDownAudio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(e => {
-            console.error("Could not play sit-down audio:", e);
-          });
-        }
-      } else {
-        const audioPath = getSoundPath('sit-down.mp3');
-        const audio = new Audio(audioPath);
-        audio.volume = 0.7;
-
-        if (!sitDownAudio) {
-          sitDownAudio = audio;
-        }
-
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-          }).catch(e => {
-            console.error(`Failed to play sit-down sound: ${audioPath}`, e);
-          });
-        }
-      }
-    } catch (e) {
-      console.error("Sit-down audio playback error:", e);
-    }
+    playWorkspaceSound("sit-down", "sit-down.mp3");
   }
 
   function playSitUpSound() {
-    try {
-      if (sitUpAudio && sitUpAudio.readyState >= 2) {
-        sitUpAudio.currentTime = 0;
-        const playPromise = sitUpAudio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(e => {
-            console.error("Could not play sit-up audio:", e);
-          });
-        }
-      } else {
-        const audioPath = getSoundPath('sit-up.mp3');
-        const audio = new Audio(audioPath);
-        audio.volume = 0.7;
-
-        if (!sitUpAudio) {
-          sitUpAudio = audio;
-        }
-
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-          }).catch(e => {
-            console.error(`Failed to play sit-up sound: ${audioPath}`, e);
-          });
-        }
-      }
-    } catch (e) {
-      console.error("Sit-up audio playback error:", e);
-    }
+    playWorkspaceSound("sit-up", "sit-up.mp3");
   }
 
     const navLinks = document.querySelectorAll(".nav-link");
@@ -1173,6 +1049,58 @@ toggleLamp();
     hero.style.opacity = "1";
     hero.style.transform = "translateY(0)";
   }
+
+  const heroIntroModal = document.getElementById("heroIntroModal");
+  const heroIntroOpen = document.getElementById("heroIntroOpen");
+  const heroIntroClose = document.getElementById("heroIntroClose");
+  const heroIntroBackdrop = document.getElementById("heroIntroBackdrop");
+
+  function openHeroIntro() {
+    if (!heroIntroModal) return;
+    heroIntroModal.hidden = false;
+    document.body.classList.add("hero-intro-active");
+    if (heroIntroOpen) heroIntroOpen.setAttribute("aria-expanded", "true");
+    if (heroIntroClose) heroIntroClose.focus();
+  }
+
+  function closeHeroIntro() {
+    if (!heroIntroModal) return;
+    heroIntroModal.hidden = true;
+    document.body.classList.remove("hero-intro-active");
+    if (heroIntroOpen) {
+      heroIntroOpen.setAttribute("aria-expanded", "false");
+      heroIntroOpen.focus();
+    }
+  }
+
+  if (heroIntroOpen) {
+    heroIntroOpen.setAttribute("aria-expanded", "false");
+    heroIntroOpen.addEventListener("click", openHeroIntro);
+  }
+  if (heroIntroClose) {
+    heroIntroClose.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeHeroIntro();
+    });
+  }
+  if (heroIntroBackdrop) heroIntroBackdrop.addEventListener("click", closeHeroIntro);
+
+  if (heroIntroModal) {
+    heroIntroModal.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener("click", () => {
+        if (!heroIntroModal.hidden) closeHeroIntro();
+      });
+    });
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && heroIntroModal && !heroIntroModal.hidden) {
+      closeHeroIntro();
+    }
+  });
+
+  openHeroIntro();
 
   const GITHUB_USERNAME = "Kane7th";
 

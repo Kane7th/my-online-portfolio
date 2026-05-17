@@ -1,5 +1,37 @@
 // ===== Music Player (YouTube) - Global Variables =====
 let youtubePlayer = null;
+let youtubeApiLoading = false;
+let youtubeApiReady = false;
+
+function loadYouTubeApi() {
+  return new Promise((resolve) => {
+    if (window.YT && window.YT.Player) {
+      youtubeApiReady = true;
+      resolve();
+      return;
+    }
+    if (youtubeApiLoading) {
+      const wait = setInterval(() => {
+        if (window.YT && window.YT.Player) {
+          clearInterval(wait);
+          youtubeApiReady = true;
+          resolve();
+        }
+      }, 100);
+      return;
+    }
+    youtubeApiLoading = true;
+    window.onYouTubeIframeAPIReady = function () {
+      youtubeApiReady = true;
+      resolve();
+      if (typeof initializeYouTubePlayer === "function") initializeYouTubePlayer();
+    };
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+  });
+}
+
 let musicStarted = false;
 let isPlaying = false;
 const YOUTUBE_VIDEO_ID = "AzV77KFsLn4"; // Extract ID from https://www.youtube.com/watch?v=AzV77KFsLn4
@@ -41,8 +73,6 @@ function updateButtonIcons() {
 
 // Initialize YouTube IFrame Player - Must be global for YouTube API
 function onYouTubeIframeAPIReady() {
-  console.log("YouTube IFrame API ready, initializing player...");
-  
   const playerContainer = document.getElementById("youtube-player");
   if (!playerContainer) {
     console.error("YouTube player container not found");
@@ -50,7 +80,6 @@ function onYouTubeIframeAPIReady() {
     setTimeout(() => {
       const retryContainer = document.getElementById("youtube-player");
       if (retryContainer) {
-        console.log("Retrying YouTube player initialization...");
         initializeYouTubePlayer();
       } else {
         console.error("YouTube player container still not found after retry");
@@ -70,7 +99,6 @@ function initializeYouTubePlayer() {
   }
   
   if (youtubePlayer) {
-    console.log("YouTube player already initialized");
     return;
   }
   
@@ -95,7 +123,6 @@ function initializeYouTubePlayer() {
       },
       events: {
         onReady: function(event) {
-          console.log("YouTube player ready!");
           // Set initial volume to 30%
           event.target.setVolume(30);
           if (volumeSlider) {
@@ -114,16 +141,13 @@ function initializeYouTubePlayer() {
             isPlaying = true;
             musicStarted = true;
             updateButtonIcons();
-            console.log("YouTube player playing");
           } else if (event.data === YT.PlayerState.PAUSED) {
             isPlaying = false;
             updateButtonIcons();
-            console.log("YouTube player paused");
           } else if (event.data === YT.PlayerState.ENDED) {
             // Video ended, but with loop: 1 it should restart automatically
             isPlaying = true;
             updateButtonIcons();
-            console.log("YouTube player ended (will loop)");
           }
         },
         onError: function(event) {
@@ -138,7 +162,6 @@ function initializeYouTubePlayer() {
         }
       }
     });
-    console.log("YouTube player initialization started");
   } catch (error) {
     console.error("Error creating YouTube player:", error);
   }
@@ -148,7 +171,7 @@ function initializeYouTubePlayer() {
 window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Script loaded and DOM ready!"); // Debug
+  const NAV_SCROLL_OFFSET = 120;
 
   // ===== Music Player (YouTube) - Get DOM References =====
   musicToggleBtn = document.getElementById("musicToggleBtn");
@@ -166,14 +189,6 @@ document.addEventListener("DOMContentLoaded", function () {
     volumeValue.textContent = "30%";
   }
   
-  // Check if YouTube API is already loaded
-  if (typeof YT !== 'undefined' && YT.Player) {
-    console.log("YouTube API already loaded, initializing player...");
-    initializeYouTubePlayer();
-  } else {
-    console.log("Waiting for YouTube API to load...");
-  }
-
   // Function to update button icons based on state
   function updateButtonIcons() {
     if (!musicToggleBtn) return;
@@ -226,115 +241,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Toggle music play/pause
   if (musicToggleBtn) {
-    musicToggleBtn.addEventListener("click", function (e) {
+    musicToggleBtn.addEventListener("click", async function (e) {
       e.stopPropagation();
       e.preventDefault();
-      
+
       const volume = volumeSlider ? parseInt(volumeSlider.value) : 30;
-      
-      // Don't allow play if volume is 0
-      if (volume === 0) {
-        return;
-      }
-      
-      if (!youtubePlayer) {
-        console.error("YouTube player not initialized");
-        return;
-      }
-      
+      if (volume === 0) return;
+
+      await loadYouTubeApi();
+      if (!youtubePlayer) initializeYouTubePlayer();
+      if (!youtubePlayer) return;
+
       if (!isPlaying) {
-        // Play music
         youtubePlayer.setVolume(volume);
         youtubePlayer.playVideo();
         musicStarted = true;
         isPlaying = true;
         updateButtonIcons();
-        console.log("Music playing");
       } else {
-        // Pause music
         youtubePlayer.pauseVideo();
         isPlaying = false;
         updateButtonIcons();
-        console.log("Music paused");
       }
     });
   }
 
-  // Initialize YouTube IFrame Player
-  function onYouTubeIframeAPIReady() {
-    const playerContainer = document.getElementById("youtube-player");
-    if (!playerContainer) {
-      console.error("YouTube player container not found");
-      return;
-    }
-    
-    youtubePlayer = new YT.Player("youtube-player", {
-      height: "0",
-      width: "0",
-      videoId: YOUTUBE_VIDEO_ID,
-      playerVars: {
-        autoplay: 0,
-        controls: 0,
-        disablekb: 1,
-        enablejsapi: 1,
-        fs: 0,
-        iv_load_policy: 3,
-        loop: 1,
-        modestbranding: 1,
-        playsinline: 1,
-        rel: 0,
-        showinfo: 0
-      },
-      events: {
-        onReady: function(event) {
-          console.log("YouTube player ready");
-          // Set initial volume to 30%
-          event.target.setVolume(30);
-          if (volumeSlider) {
-            volumeSlider.value = 30;
-          }
-          if (volumeValue) {
-            volumeValue.textContent = "30%";
-          }
-          updateButtonIcons();
-        },
-        onStateChange: function(event) {
-          // YT.PlayerState.PLAYING = 1
-          // YT.PlayerState.PAUSED = 2
-          // YT.PlayerState.ENDED = 0
-          if (event.data === YT.PlayerState.PLAYING) {
-            isPlaying = true;
-            musicStarted = true;
-            updateButtonIcons();
-            console.log("YouTube player playing");
-          } else if (event.data === YT.PlayerState.PAUSED) {
-            isPlaying = false;
-            updateButtonIcons();
-            console.log("YouTube player paused");
-          } else if (event.data === YT.PlayerState.ENDED) {
-            // Video ended, but with loop: 1 it should restart automatically
-            isPlaying = true;
-            updateButtonIcons();
-            console.log("YouTube player ended (will loop)");
-          }
-        },
-        onError: function(event) {
-          console.error("YouTube player error:", event.data);
-          // Hide music controls if player fails
-          if (musicToggleBtn) {
-            musicToggleBtn.style.display = "none";
-          }
-          if (volumeSlider && volumeSlider.parentElement) {
-            volumeSlider.parentElement.style.display = "none";
-          }
-        }
-      }
-    });
-  }
-  
-  // Make onYouTubeIframeAPIReady available globally
-  window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
-  
   // Set initial state to paused (play icon visible)
   isPlaying = false;
   updateButtonIcons();
@@ -372,8 +303,6 @@ document.addEventListener("DOMContentLoaded", function () {
     personZone.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
-      console.log("Screen clicked!"); // Debug log
-      
       if (workspaceImage1 && workspaceImage2 && workspaceImage3 && workspaceImage4) {
         // Reset all images
         workspaceImage1.style.opacity = "0";
@@ -439,8 +368,6 @@ document.addEventListener("DOMContentLoaded", function () {
     workspace4Zone.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
-      console.log("Chair clicked!"); // Debug log
-      
       if (workspaceImage1 && workspaceImage2 && workspaceImage3 && workspaceImage4) {
         // Check which image is currently showing
         const image1Visible = workspaceImage1.style.opacity === "1" || getComputedStyle(workspaceImage1).opacity === "1";
@@ -532,8 +459,7 @@ document.addEventListener("DOMContentLoaded", function () {
     lampRight.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
-      console.log("Lamp zone clicked!"); // Debug log
-      toggleLamp();
+toggleLamp();
     });
   }
   
@@ -542,8 +468,7 @@ document.addEventListener("DOMContentLoaded", function () {
     lampHintRight.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
-      console.log("Lamp hint clicked!"); // Debug log
-      toggleLamp();
+toggleLamp();
     });
     
     // Make hint arrow clickable too
@@ -552,8 +477,7 @@ document.addEventListener("DOMContentLoaded", function () {
       hintArrow.addEventListener("click", function (e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log("Lamp arrow clicked!"); // Debug log
-        toggleLamp();
+toggleLamp();
       });
     }
   }
@@ -647,7 +571,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
-            console.log(`Playing lamp sound: ${audioPath}`);
           }).catch(e => {
             console.error(`Failed to play lamp sound: ${audioPath}`, e);
           });
@@ -692,7 +615,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
-            console.log(`Playing screen switch-on sound: ${audioPath}`);
           }).catch(e => {
             console.error(`Failed to play screen switch-on sound: ${audioPath}`, e);
           });
@@ -727,7 +649,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
-            console.log(`Playing screen switch-off sound: ${audioPath}`);
           }).catch(e => {
             console.error(`Failed to play screen switch-off sound: ${audioPath}`, e);
           });
@@ -767,7 +688,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
-            console.log(`Playing sit-down sound: ${audioPath}`);
           }).catch(e => {
             console.error(`Failed to play sit-down sound: ${audioPath}`, e);
           });
@@ -802,7 +722,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
-            console.log(`Playing sit-up sound: ${audioPath}`);
           }).catch(e => {
             console.error(`Failed to play sit-up sound: ${audioPath}`, e);
           });
@@ -826,7 +745,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         const section = document.querySelector(targetId);
         if (section) {
-          const offsetTop = section.offsetTop - 80; // Account for fixed nav
+          const offsetTop = section.offsetTop - NAV_SCROLL_OFFSET; // Account for fixed nav
           window.scrollTo({ top: offsetTop, behavior: "smooth" });
         }
       }
@@ -842,7 +761,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const navbar = document.getElementById("navbar");
 
     function updateActiveLink() {
-    let scrollPos = window.scrollY + 150; // offset for nav height
+    let scrollPos = window.scrollY + NAV_SCROLL_OFFSET + 20; // offset for nav height
 
         sections.forEach((section) => {
       const sectionTop = section.offsetTop;
@@ -978,7 +897,7 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
       const contactSection = document.querySelector("#contact");
       if (contactSection) {
-        const offsetTop = contactSection.offsetTop - 80;
+        const offsetTop = contactSection.offsetTop - NAV_SCROLL_OFFSET;
         window.scrollTo({ top: offsetTop, behavior: "smooth" });
       }
     });
@@ -988,15 +907,15 @@ document.addEventListener("DOMContentLoaded", function () {
     updateActiveLink();
     handleNavbarScroll();
 
-  // ===== Skill Modal Functionality =====
+  // ===== Skill Modal Functionality (legacy; chips used on main page) =====
   const skillModal = document.getElementById("skillModal");
+  const skillItems = document.querySelectorAll(".skill-item");
+  if (skillModal && skillItems.length) {
   const skillModalTitle = document.getElementById("skillModalTitle");
   const skillModalDescription = document.getElementById("skillModalDescription");
   const skillModalIcon = document.getElementById("skillModalIcon");
   const skillModalClose = document.querySelector(".skill-modal-close");
-  const skillItems = document.querySelectorAll(".skill-item");
 
-  // Open modal when skill item is clicked
   skillItems.forEach((item) => {
     item.addEventListener("click", function () {
       const skillName = this.getAttribute("data-skill");
@@ -1037,29 +956,31 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && skillModal.classList.contains("show")) {
       skillModal.classList.remove("show");
-      document.body.style.overflow = ""; // Restore scrolling
+      document.body.style.overflow = "";
     }
   });
+  }
 
   // ===== Project Tree Click Functionality =====
   const projectNodes = document.querySelectorAll(".project-node");
   
   projectNodes.forEach((node) => {
     node.addEventListener("click", function (e) {
-      // Don't trigger if clicking on a link inside the card
-      if (e.target.tagName === 'A' || e.target.closest('a')) {
-        return;
-      }
-      
-      // Toggle active state
+      if (e.target.tagName === "A" || e.target.closest("a")) return;
+      if (e.target.closest(".project-card-header")) return;
+
       const isActive = this.classList.contains("active");
-      
-      // Close all nodes first
-      projectNodes.forEach((n) => n.classList.remove("active"));
-      
-      // If this node wasn't active, open it
+
+      projectNodes.forEach((n) => {
+        n.classList.remove("active");
+        const h = n.querySelector(".project-card-header");
+        if (h) h.setAttribute("aria-expanded", "false");
+      });
+
       if (!isActive) {
         this.classList.add("active");
+        const h = this.querySelector(".project-card-header");
+        if (h) h.setAttribute("aria-expanded", "true");
       }
     });
   });
@@ -1256,8 +1177,6 @@ document.addEventListener("DOMContentLoaded", function () {
       // Recommended: Use EmailJS's own email service or SMTP service
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
         .then(function(response) {
-          console.log("Email sent successfully!", response.status, response.text);
-          
           // Show success message
           if (contactForm) contactForm.style.display = "none";
           if (successDiv) successDiv.style.display = "block";
@@ -1394,18 +1313,18 @@ document.addEventListener("DOMContentLoaded", function () {
   
   async function fetchGitHubStats() {
     try {
-      // Fetch user profile data
       const userResponse = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
       if (!userResponse.ok) throw new Error("Failed to fetch user data");
       const userData = await userResponse.json();
-      
-      // Fetch all repositories (paginated)
+
       let allRepos = [];
       let page = 1;
       let hasMore = true;
-      
+
       while (hasMore) {
-        const reposResponse = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&page=${page}&sort=updated`);
+        const reposResponse = await fetch(
+          `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&page=${page}&sort=updated`
+        );
         if (!reposResponse.ok) break;
         const repos = await reposResponse.json();
         if (repos.length === 0) {
@@ -1413,104 +1332,22 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           allRepos = allRepos.concat(repos);
           page++;
-          // Limit to prevent too many requests
           if (page > 10) hasMore = false;
         }
       }
-      
-      // Calculate stats
+
       const reposCount = userData.public_repos || allRepos.length;
       const starsCount = allRepos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0);
-      
-      // Calculate contributions (estimate based on repository activity)
-      // GitHub's contribution graph API requires authentication, so we estimate
-      // based on repository count and activity
-      let contributionsCount = 1500; // Default fallback
-      try {
-        // Estimate: active repos * average contributions per repo
-        const activeRepos = allRepos.filter(repo => !repo.archived && !repo.fork).length;
-        contributionsCount = Math.max(activeRepos * 25, 1500); // Minimum 1500
-      } catch (e) {
-        console.log("Could not calculate contributions:", e);
-      }
-      
-      // Calculate total commits across all repositories
-      // We'll fetch commit counts from a sample of repos to estimate
-      let commitsCount = 2500; // Default fallback
-      try {
-        // Get commit counts from a sample of most active repos
-        const activeRepos = allRepos
-          .filter(repo => !repo.archived)
-          .sort((a, b) => (b.pushed_at || '').localeCompare(a.pushed_at || ''))
-          .slice(0, Math.min(10, allRepos.length)); // Sample top 10 most active
-        
-        let totalCommits = 0;
-        const commitPromises = activeRepos.map(async (repo) => {
-          try {
-            const commitsResponse = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${repo.name}/commits?per_page=1`);
-            if (commitsResponse.ok) {
-              const commits = await commitsResponse.json();
-              // Get total count from Link header if available, or estimate
-              const linkHeader = commitsResponse.headers.get('Link');
-              if (linkHeader) {
-                const match = linkHeader.match(/page=(\d+)>; rel="last"/);
-                if (match) {
-                  return parseInt(match[1]);
-                }
-              }
-              // Estimate based on repo size and activity
-              return Math.max(repo.size / 10, 50);
-            }
-          } catch (e) {
-            // If individual repo fails, estimate
-            return Math.max(repo.size / 10, 50);
-          }
-          return 0;
-        });
-        
-        const commitCounts = await Promise.all(commitPromises);
-        totalCommits = commitCounts.reduce((sum, count) => sum + count, 0);
-        
-        // Extrapolate to all repos
-        if (activeRepos.length > 0) {
-          const avgCommitsPerRepo = totalCommits / activeRepos.length;
-          commitsCount = Math.floor(avgCommitsPerRepo * allRepos.filter(r => !r.archived).length);
-        }
-        
-        // Ensure minimum value
-        commitsCount = Math.max(commitsCount, 2500);
-      } catch (e) {
-        console.log("Could not calculate commits:", e);
-      }
-      
-      // Update the data-target attributes
+
       const reposStat = document.querySelector('[data-stat="repos"]');
       const starsStat = document.querySelector('[data-stat="stars"]');
-      const contributionsStat = document.querySelector('[data-stat="contributions"]');
-      const commitsStat = document.querySelector('[data-stat="commits"]');
-      
       if (reposStat) reposStat.setAttribute("data-target", reposCount.toString());
       if (starsStat) starsStat.setAttribute("data-target", starsCount.toString());
-      if (contributionsStat) contributionsStat.setAttribute("data-target", contributionsCount.toString());
-      if (commitsStat) commitsStat.setAttribute("data-target", commitsCount.toString());
-      
-      console.log("GitHub Stats Loaded:", {
-        repos: reposCount,
-        stars: starsCount,
-        contributions: contributionsCount,
-        commits: commitsCount
-      });
-      
-      return { reposCount, starsCount, contributionsCount, commitsCount };
+
+      return { reposCount, starsCount };
     } catch (error) {
       console.error("Error fetching GitHub stats:", error);
-      // Use fallback values if API fails
-      return {
-        reposCount: 50,
-        starsCount: 120,
-        contributionsCount: 1500,
-        commitsCount: 2500
-      };
+      return { reposCount: 50, starsCount: 120 };
     }
   }
 
@@ -1601,13 +1438,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ===== MySmartRental staging health check =====
+
+  // ===== MySmartRental staging health (project card only) =====
   const healthStatusDot = document.getElementById("healthStatusDot");
   const healthStatusText = document.getElementById("healthStatusText");
+  const projectHealthStatus = document.getElementById("projectHealthStatus");
   const HEALTH_URL = "https://staging.mysmartrental.com/api/health";
 
   async function checkStagingHealth() {
-    if (!healthStatusDot || !healthStatusText) return;
+    if (!healthStatusDot || !healthStatusText || !projectHealthStatus) return;
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 8000);
@@ -1625,15 +1464,21 @@ document.addEventListener("DOMContentLoaded", function () {
         data.status === "ok" ||
         data.ok === true;
       healthStatusDot.className = "status-dot status-ok";
-      healthStatusText.textContent = dbOk ? "API + DB online" : "API online";
+      healthStatusText.textContent = dbOk ? "Staging: API + DB online" : "Staging: API online";
+      projectHealthStatus.hidden = false;
     } catch (e) {
-      healthStatusDot.className = "status-dot status-error";
-      healthStatusText.textContent = "Unreachable (CORS or offline)";
+      projectHealthStatus.hidden = true;
     }
   }
 
   checkStagingHealth();
-  setInterval(checkStagingHealth, 120000);
+
+
+  function escapeHtml(text) {
+    const div = document.createElement("div");
+    div.textContent = text == null ? "" : String(text);
+    return div.innerHTML;
+  }
 
   // ===== GitHub pinned repositories =====
   const PINNED_REPO_NAMES = [
@@ -1667,13 +1512,12 @@ document.addEventListener("DOMContentLoaded", function () {
         .map(
           (repo) => `
         <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="pinned-repo-card">
-          <span class="pinned-repo-name">${repo.name}</span>
-          <span class="pinned-repo-desc">${repo.description || "Open repository on GitHub."}</span>
+          <span class="pinned-repo-name">${escapeHtml(repo.name)}</span>
+          <span class="pinned-repo-desc">${escapeHtml(repo.description) || "Open repository on GitHub."}</span>
         </a>`
         )
         .join("");
     } catch (e) {
-      console.log("Pinned repos fallback:", e);
     }
   }
 
@@ -1692,4 +1536,74 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     pinnedObserver.observe(pinnedSection);
   }
+  // ===== Show more projects =====
+  const projectsMoreToggle = document.getElementById("projectsMoreToggle");
+  const projectsMore = document.getElementById("projectsMore");
+  if (projectsMoreToggle && projectsMore) {
+    projectsMoreToggle.addEventListener("click", () => {
+      const open = projectsMore.hidden;
+      projectsMore.hidden = !open;
+      projectsMoreToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      projectsMoreToggle.textContent = open ? "Hide older projects" : "Show more projects";
+    });
+  }
+
+  // ===== Project card headers (aria + keyboard) =====
+  document.querySelectorAll(".project-card-header").forEach((header) => {
+    if (!header.hasAttribute("role")) {
+      header.setAttribute("role", "button");
+      header.setAttribute("tabindex", "0");
+    }
+    const nodeForAria = header.closest(".project-node");
+    if (nodeForAria && !header.hasAttribute("aria-expanded")) {
+      header.setAttribute(
+        "aria-expanded",
+        nodeForAria.classList.contains("active") ? "true" : "false"
+      );
+    }
+  });
+  document.querySelectorAll(".project-card-header[role='button']").forEach((header) => {
+    const node = header.closest(".project-node");
+    const toggle = () => {
+      if (!node) return;
+      const isActive = node.classList.contains("active");
+      document.querySelectorAll(".project-node").forEach((n) => {
+        n.classList.remove("active");
+        const h = n.querySelector(".project-card-header[role='button']");
+        if (h) h.setAttribute("aria-expanded", "false");
+      });
+      if (!isActive) {
+        node.classList.add("active");
+        header.setAttribute("aria-expanded", "true");
+      }
+    };
+    header.addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
+      e.stopPropagation();
+      toggle();
+    });
+    header.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggle();
+      }
+    });
+  });
+
+  // ===== Prefetch staging on hero CTA hover =====
+  const stagingCta = document.getElementById("stagingCta");
+  if (stagingCta) {
+    const prefetchUrl = stagingCta.getAttribute("data-prefetch");
+    let prefetched = false;
+    stagingCta.addEventListener("mouseenter", () => {
+      if (prefetched || !prefetchUrl) return;
+      prefetched = true;
+      const link = document.createElement("link");
+      link.rel = "prefetch";
+      link.href = prefetchUrl;
+      document.head.appendChild(link);
+    }, { once: true });
+  }
+
+
 });

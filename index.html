@@ -17,18 +17,21 @@
     <meta name="twitter:title" content="Kane Kabena | Full-Stack Developer" />
     <meta name="twitter:description" content="Building MySmartRental: property management worldwide. Next.js, PostgreSQL, M-Pesa, iOS and Android." />
     <meta name="twitter:image" content="https://kane7th.github.io/my-online-portfolio/assets/og-image.png" />
-    <!-- Mobile hamburger menu enabled -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="preload" href="static/images/workspace-1.jpg" as="image" fetchpriority="high" />
+    <link rel="dns-prefetch" href="https://staging.mysmartrental.com" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" /></noscript>
     <link rel="stylesheet" href="style.css" />
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
     <script defer src="script.js"></script>
   </head>
   <body>
+    <a class="skip-link" href="#projects">Skip to work</a>
     <!-- Navigation -->
     <nav id="navbar">
       <div class="nav-container">
-        <a href="#home" class="nav-logo">
+        <a href="#home" class="nav-logo" aria-label="Kane Kabena home">
           <div class="nav-logo-circle">
             <span class="nav-logo-bracket">&lt;</span>
             <span class="nav-logo-letter">K</span>
@@ -45,10 +48,9 @@
           <span class="hamburger-line"></span>
         </button>
         <ul class="nav-list" id="navList">
-          <li><a href="#home" class="nav-link">HOME</a></li>
-          <li><a href="#about" class="nav-link">WHO</a></li>
-          <li><a href="#github-stats" class="nav-link">GITHUB</a></li>
           <li><a href="#projects" class="nav-link">WORK</a></li>
+          <li><a href="#about" class="nav-link">ABOUT</a></li>
+          <li><a href="#github-stats" class="nav-link">GITHUB</a></li>
           <li><a href="#contact" class="nav-link">CONTACT</a></li>
         </ul>
         <div class="nav-music-control">
@@ -82,13 +84,10 @@
         <span class="pulse-dot" aria-hidden="true"></span>
         <span>Currently building: <strong>MySmartRental 2.0</strong></span>
         <a href="#projects">See project</a>
-        <span class="status-separator" aria-hidden="true">|</span>
-        <span class="status-label">Staging API</span>
-        <span class="status-dot status-pending" id="healthStatusDot" aria-hidden="true"></span>
-        <span id="healthStatusText">Checking...</span>
       </div>
     </div>
 
+    <div class="workspace-hero-wrap" id="home">
     <!-- Workspace Background Section (Static/Parallax) -->
     <div class="workspace-background-section">
       <div class="workspace-background">
@@ -119,7 +118,7 @@
         <div class="clickable-zone lamp-zone lamp-zone-right" id="lampRight" title="Click to toggle lamp">
           <div class="lamp-hint" id="lampHintRight">
             <span>turn on the lamp!</span>
-            <div class="hint-arrow">?</div>
+            <div class="hint-arrow" aria-hidden="true">&darr;</div>
           </div>
           <div class="lamp-light-effect lamp-light-right"></div>
         </div>
@@ -127,10 +126,10 @@
     </div>
 
     <!-- Hero Section -->
-    <header class="hero" id="home">
+    <header class="hero hero-overlay">
       <div class="scroll-indicator">
         <span>scroll</span>
-        <div class="scroll-arrow" aria-hidden="true">?</div>
+        <div class="scroll-arrow" aria-hidden="true">&darr;</div>
       </div>
       <div class="hero-container">
         <div class="hero-left">
@@ -141,326 +140,26 @@
               <span class="logo-bracket">&gt;</span>
             </div>
           </div>
-          <div class="html-tags">
-            <span class="html-tag">&lt;HTML&gt;</span>
-            <span class="html-tag">&lt;BODY&gt;</span>
-            <span class="html-tag">&lt;H1&gt;</span>
-          </div>
           <h1 class="hero-title">
             Hi! I'm <span class="highlight">K</span>ane,<br />
             <span class="subtitle">Full-Stack Developer</span>
           </h1>
-          <div class="html-tags">
-            <span class="html-tag">&lt;/H1&gt;</span>
-            <span class="html-tag">&lt;P&gt;</span>
-          </div>
           <p class="hero-subtitle">
             Building <strong>MySmartRental</strong>: property management for landlords and tenants worldwide.
-            <strong>Next.js</strong>, <strong>PostgreSQL</strong>, payments, and native <strong>iOS</strong> / <strong>Android</strong>.
           </p>
-          <div class="html-tags">
-            <span class="html-tag">&lt;/P&gt;</span>
-            <span class="html-tag">&lt;/BODY&gt;</span>
-            <span class="html-tag">&lt;/HTML&gt;</span>
-          </div>
           <div class="hero-cta-row">
-            <a href="https://staging.mysmartrental.com/" target="_blank" rel="noopener noreferrer" class="btn btn-small btn-hero-primary">Try staging</a>
-            <a href="https://staging.mysmartrental.com/demo?from=portfolio-hero" target="_blank" rel="noopener noreferrer" class="btn btn-small">Live demo</a>
-            <a href="mysmartrental-case-study.html" class="btn btn-small btn-ghost">Case study</a>
+            <a href="https://staging.mysmartrental.com/" target="_blank" rel="noopener noreferrer" class="btn btn-small btn-hero-primary" id="stagingCta" data-prefetch="https://staging.mysmartrental.com/">Try staging</a>
             <a href="#contact" class="btn-contact btn-contact-inline">Contact</a>
           </div>
+          <p class="hero-secondary-links">
+            <a href="mysmartrental-case-study.html">Case study</a>
+            <span aria-hidden="true"> &middot; </span>
+            <a href="https://staging.mysmartrental.com/demo?from=portfolio-hero" target="_blank" rel="noopener noreferrer">Live demo</a>
+          </p>
         </div>
       </div>
     </header>
-
-    <!-- About Section -->
-    <section id="about" class="section">
-      <div class="section-container">
-        <h2 class="section-title">About Me</h2>
-        <div class="about-content">
-          <div class="about-card about-intro">
-            <div class="card-icon card-icon-svg" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            </div>
-            <h3>Who I Am</h3>
-            <p>
-              I'm <strong>Kane Kabena</strong>, a full-stack developer in London. I ship production software:
-              <strong>Next.js</strong> and <strong>TypeScript</strong> for product UIs, <strong>Python</strong> / <strong>Flask</strong>
-              for APIs, and <strong>PostgreSQL</strong> for data that has to stay correct under load.
-            </p>
-          </div>
-
-          <div class="about-card about-projects">
-            <div class="card-icon card-icon-svg" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-            </div>
-            <h3>What I Build</h3>
-            <p>
-              My flagship is <strong>MySmartRental 2.0</strong> (staging live today). I have also shipped
-              <strong>e-commerce</strong> (Uptwn Ldn), <strong>SokoCredit</strong> (M-Pesa, Twilio, RBAC), and
-              property SaaS v1. I own the stack from schema design to deployed nginx.
-            </p>
-          </div>
-
-          <div class="about-card about-unique">
-            <div class="card-icon card-icon-svg" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m8-3v2"/></svg>
-            </div>
-            <h3>Beyond Web Dev</h3>
-            <p>
-              I also build for <strong>FiveM</strong> and <strong>RedM</strong>: custom <strong>Lua</strong>
-              scripts, economy tuning, and server tooling. Running a roleplay server and selling scripts on
-              <strong>Tebex</strong> taught me how web backends, databases, and in-game logic fit together.
-            </p>
-          </div>
-
-          <div class="about-card about-philosophy">
-            <div class="card-icon card-icon-svg" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
-            </div>
-            <h3>My Approach</h3>
-            <p>
-              I keep learning as tools change. On each project I aim for clear <strong>REST APIs</strong>,
-              sensible database queries, and docs or tests where they help the next person. Outside client
-              work I try new frameworks and chip in on open source when I can.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="section section-dark">
-      <div class="section-container">
-        <h2 class="section-title">Technical Skills</h2>
-        <p class="skills-intro">Depth on what I ship daily; breadth where projects need it.</p>
-        <h3 class="skills-group-title">Ship daily</h3>
-        <div class="skills-grid skills-grid-primary">
-          <div class="skill-item" data-skill="Python" data-description="I use Python as my primary backend language for building RESTful APIs, data processing, and automation scripts. I use its clean syntax and extensive libraries like SQLAlchemy for ORM, Flask for web frameworks, and various data manipulation libraries for complex business logic.">
-            <i class="devicon-python-plain colored"></i>
-            <span>Python</span>
-          </div>
-          <div class="skill-item" data-skill="Flask" data-description="Flask is my go-to framework for lightweight REST APIs. I use it with SQLAlchemy ORM, JWT authentication, and REST conventions for backends that pair with React frontends.">
-            <i class="devicon-flask-original colored"></i>
-            <span>Flask</span>
-          </div>
-          <div class="skill-item" data-skill="React" data-description="I build responsive UIs with React, reusable components, and clear state management. Toast notifications, loading states, and sensible rendering for everyday apps.">
-            <i class="devicon-react-original colored"></i>
-            <span>React</span>
-          </div>
-          <div class="skill-item" data-skill="Next.js" data-description="I use Next.js App Router with TypeScript for marketing sites, dashboards, and API routes. Server and client components, auth flows, and production deploys on nginx.">
-            <i class="devicon-nextjs-original"></i>
-            <span>Next.js</span>
-          </div>
-          <div class="skill-item" data-skill="TypeScript" data-description="TypeScript enhances my JavaScript development with type safety and better IDE support. I use it to write more maintainable code, catch errors at compile time, and improve code documentation through type annotations.">
-            <i class="devicon-typescript-plain colored"></i>
-            <span>TypeScript</span>
-          </div>
-          <div class="skill-item" data-skill="JavaScript" data-description="JavaScript is fundamental to my frontend development. I use modern ES6+ features, async/await patterns, and DOM manipulation to create interactive web experiences. I also use it for Node.js backend development.">
-            <i class="devicon-javascript-plain colored"></i>
-            <span>JavaScript</span>
-          </div>
-          <div class="skill-item" data-skill="PostgreSQL" data-description="PostgreSQL is my preferred relational database for production applications. I design normalized schemas, write clear queries, use transactions for data integrity, and use advanced features like JSON columns when needed.">
-            <i class="devicon-postgresql-plain colored"></i>
-            <span>PostgreSQL</span>
-          </div>
-          <div class="skill-item" data-skill="Node.js" data-description="I use Node.js for APIs, WebSockets, and I/O-heavy services when JavaScript on the server fits the project.">
-            <i class="devicon-nodejs-plain colored"></i>
-            <span>Node.js</span>
-          </div>
-          <div class="skill-item" data-skill="Express.js" data-description="Express.js is my framework of choice for Node.js backend development. I use it to create RESTful APIs, handle middleware, implement routing, and integrate with various services and databases.">
-            <i class="devicon-express-original colored"></i>
-            <span>Express.js</span>
-          </div>
-          <div class="skill-item" data-skill="HTML5" data-description="I write semantic HTML5 for structure, accessibility, and SEO. Forms, landmarks, and native validation where they belong.">
-            <i class="devicon-html5-plain colored"></i>
-            <span>HTML5</span>
-          </div>
-          <div class="skill-item" data-skill="CSS3" data-description="I use CSS3 for layout (Flexbox, Grid), motion, and custom properties. Responsive breakpoints and maintainable stylesheets.">
-            <i class="devicon-css3-plain colored"></i>
-            <span>CSS3</span>
-          </div>
-          <div class="skill-item" data-skill="Tailwind CSS" data-description="Tailwind CSS helps me rapidly prototype and build consistent UIs with utility-first classes. I use it to create responsive designs quickly while maintaining custom styling when needed for unique components.">
-            <i class="devicon-tailwindcss-plain colored"></i>
-            <span>Tailwind CSS</span>
-          </div>
-          <div class="skill-item" data-skill="Docker" data-description="I containerize applications with Docker for consistent development and deployment environments. I create Dockerfiles, manage multi-container applications, and ensure applications run reliably across different environments.">
-            <i class="devicon-docker-plain colored"></i>
-            <span>Docker</span>
-          </div>
-          <div class="skill-item" data-skill="Git" data-description="Git is essential to my workflow for version control. I use branching strategies, handle merge conflicts, and maintain clean commit histories. I use branches, pull requests, and code review on team projects.">
-            <i class="devicon-git-plain colored"></i>
-            <span>Git</span>
-          </div>
-          <div class="skill-item" data-skill="GitHub" data-description="I use GitHub for code hosting, collaboration, and project management. I manage repositories, create pull requests, use GitHub Actions for CI/CD, and contribute to open-source projects.">
-            <i class="devicon-github-original colored"></i>
-            <span>GitHub</span>
-          </div>
-        </div>
-        <h3 class="skills-group-title">Also use</h3>
-        <div class="skills-grid skills-grid-secondary">
-          <div class="skill-item" data-skill="Redux Toolkit" data-description="I use Redux Toolkit for state in larger React apps. Predictable updates, async flows, and a clear split between UI and data logic.">
-            <i class="devicon-redux-original colored"></i>
-            <span>Redux Toolkit</span>
-          </div>
-          <div class="skill-item" data-skill="MongoDB" data-description="I use MongoDB for flexible, document-based data storage when schema flexibility is needed. I work with Mongoose ODM, design efficient document structures, and optimize queries for performance in NoSQL environments.">
-            <i class="devicon-mongodb-plain colored"></i>
-            <span>MongoDB</span>
-          </div>
-          <div class="skill-item" data-skill="AWS" data-description="I deploy on AWS (EC2, S3, RDS, Lambda) for production apps. Networking, storage, and managed services as the project needs.">
-            <i class="devicon-amazonwebservices-original colored"></i>
-            <span>AWS</span>
-          </div>
-          <div class="skill-item" data-skill="SQL Server" data-description="I work with Microsoft SQL Server for enterprise database solutions. I design schemas, write T-SQL queries, optimize performance, and manage database operations in Windows-based environments.">
-            <i class="devicon-microsoftsqlserver-plain colored"></i>
-            <span>SQL Server</span>
-          </div>
-          <div class="skill-item" data-skill="C#" data-description="I write C# for .NET backends and APIs. Strong typing, OOP, and familiar patterns for business logic and data access.">
-            <i class="devicon-csharp-plain colored"></i>
-            <span>C#</span>
-          </div>
-          <div class="skill-item" data-skill=".NET Core" data-description="I build .NET Core APIs and services with DI, middleware, and cross-platform deployment when the stack calls for it.">
-            <i class="devicon-dotnetcore-plain colored"></i>
-            <span>.NET Core</span>
-          </div>
-          <div class="skill-item" data-skill="Azure" data-description="I deploy on Azure (App Service, Azure SQL, Functions) for hosting, data, and serverless jobs.">
-            <i class="devicon-azure-plain colored"></i>
-            <span>Azure</span>
-          </div>
-        </div>
-        
-        <!-- Skill Description Modal -->
-        <div id="skillModal" class="skill-modal">
-          <div class="skill-modal-content">
-            <span class="skill-modal-close">&times;</span>
-            <div class="skill-modal-header">
-              <i id="skillModalIcon" class="skill-modal-icon"></i>
-              <h3 id="skillModalTitle" class="skill-modal-title"></h3>
-            </div>
-            <p id="skillModalDescription" class="skill-modal-description"></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- GitHub Stats Section -->
-    <section id="github-stats" class="section">
-      <div class="section-container">
-        <h2 class="section-title">GitHub Activity</h2>
-        <p class="github-subtitle">Check out my coding activity, contributions, and open-source work</p>
-        
-        <div class="github-stats-grid">
-          <!-- Stats Cards -->
-          <div class="github-stat-card">
-            <div class="github-stat-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" fill="currentColor"/>
-              </svg>
-            </div>
-            <div class="github-stat-content">
-              <h3 class="github-stat-number" data-stat="repos" data-target="0">0</h3>
-              <p class="github-stat-label">Repositories</p>
-            </div>
-          </div>
-
-          <div class="github-stat-card">
-            <div class="github-stat-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
-              </svg>
-            </div>
-            <div class="github-stat-content">
-              <h3 class="github-stat-number" data-stat="stars" data-target="0">0</h3>
-              <p class="github-stat-label">Stars Earned</p>
-            </div>
-          </div>
-
-          <div class="github-stat-card">
-            <div class="github-stat-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
-              </svg>
-            </div>
-            <div class="github-stat-content">
-              <h3 class="github-stat-number" data-stat="contributions" data-target="0">0</h3>
-              <p class="github-stat-label">Contributions</p>
-            </div>
-          </div>
-
-          <div class="github-stat-card">
-            <div class="github-stat-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 11.24V7.5a2.5 2.5 0 015 0v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z" fill="currentColor"/>
-              </svg>
-            </div>
-            <div class="github-stat-content">
-              <h3 class="github-stat-number" data-stat="commits" data-target="0">0</h3>
-              <p class="github-stat-label">Commits</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Top Languages -->
-        <div class="github-languages">
-          <h3 class="github-languages-title">Top Languages</h3>
-          <div class="languages-list">
-            <div class="language-item">
-              <span class="language-name">Python</span>
-              <div class="language-bar">
-                <div class="language-fill" style="width: 45%; background: #3776ab;"></div>
-              </div>
-              <span class="language-percent">45%</span>
-            </div>
-            <div class="language-item">
-              <span class="language-name">JavaScript</span>
-              <div class="language-bar">
-                <div class="language-fill" style="width: 30%; background: #f7df1e;"></div>
-              </div>
-              <span class="language-percent">30%</span>
-            </div>
-            <div class="language-item">
-              <span class="language-name">TypeScript</span>
-              <div class="language-bar">
-                <div class="language-fill" style="width: 15%; background: #3178c6;"></div>
-              </div>
-              <span class="language-percent">15%</span>
-            </div>
-            <div class="language-item">
-              <span class="language-name">HTML/CSS</span>
-              <div class="language-bar">
-                <div class="language-fill" style="width: 10%; background: #e34c26;"></div>
-              </div>
-              <span class="language-percent">10%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Featured repositories -->
-        <div class="github-pinned-section">
-          <h3 class="github-languages-title">Featured repositories</h3>
-          <div class="github-pinned-grid" id="githubPinnedRepos">
-            <a href="https://github.com/Kane7th/Phase-5-Project-SokoCredit" target="_blank" rel="noopener noreferrer" class="pinned-repo-card">
-              <span class="pinned-repo-name">Phase-5-Project-SokoCredit</span>
-              <span class="pinned-repo-desc">Loan management app: Flask API, React, M-Pesa, Twilio SMS, RBAC.</span>
-            </a>
-            <a href="https://github.com/Kane7th" target="_blank" rel="noopener noreferrer" class="pinned-repo-card pinned-repo-placeholder" data-repo-fallback>
-              <span class="pinned-repo-name">Loading repos?</span>
-              <span class="pinned-repo-desc">Fetched from GitHub when you scroll here.</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- GitHub Profile Link -->
-        <div class="github-profile-link">
-          <a href="https://github.com/Kane7th" target="_blank" class="btn btn-github">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
-            </svg>
-            View My GitHub Profile
-          </a>
-        </div>
-      </div>
-    </section>
+    </div>
 
     <!-- Projects Section -->
     <section id="projects" class="section">
@@ -468,15 +167,15 @@
         <h2 class="section-title">Highlighted Projects</h2>
         <div class="projects-tree">
           <!-- Flagship -->
-          <div class="project-node" data-project="mysmartrental2">
+          <div class="project-node active" data-project="mysmartrental2">
             <div class="project-node-line"></div>
             <div class="project-node-dot"></div>
             <div class="project-card">
-              <div class="project-card-header">
+              <div class="project-card-header" role="button" tabindex="0" aria-expanded="true" aria-controls="mysmartrental2-content">
                 <h3>MySmartRental 2.0</h3>
                 <span class="project-year">2026</span>
               </div>
-              <div class="project-card-content">
+              <div class="project-card-content" id="mysmartrental2-content">
                 <div class="project-preview">
                   <img src="assets/mysmartrental-dashboard.png" alt="MySmartRental landlord dashboard showing portfolio overview, income trend, and occupancy" width="1200" height="675" loading="lazy" />
                 </div>
@@ -486,44 +185,20 @@
                   <li><strong>Payments in product</strong>: M-Pesa STK, cards, bank, reconciliation</li>
                   <li><strong>Multi-currency</strong> KES, USD, GBP, EUR</li>
                 </ul>
-                <p>
-                  <strong>Flagship product:</strong> property management software for landlords, tenants, and
-                  property managers worldwide. One platform for rent collection, maintenance, messaging, and portfolio reporting.
-                  Live on staging at
-                  <a href="https://staging.mysmartrental.com/" target="_blank" rel="noopener noreferrer">staging.mysmartrental.com</a>
-                  (usable today). Replaces spreadsheets and WhatsApp rent chasing with a single dashboard plus native
-                  <strong>iOS</strong> and <strong>Android</strong> apps for both sides.
+                <p class="project-staging-status" id="projectHealthStatus" hidden>
+                  <span class="status-dot status-pending" id="healthStatusDot" aria-hidden="true"></span>
+                  <span id="healthStatusText"></span>
                 </p>
                 <p>
-                  <strong>Stack:</strong> <strong>Next.js</strong> (App Router, <strong>TypeScript</strong>, React) for the
-                  marketing site, landlord portal, tenant flows, and <strong>API routes</strong>
-                  (<code>/api/health</code>, <code>/api/v1</code>). <strong>PostgreSQL</strong> for data
-                  (health check reports DB reachable). Hosted on <strong>nginx</strong> / <strong>Ubuntu</strong>.
-                  Multi-locale support and multi-currency UI. Built with modern React patterns,
-                  toast notifications, cookie consent, and analytics hooks.
+                  <strong>Flagship product:</strong> property management for landlords and tenants worldwide.
+                  One platform for rent, maintenance, messaging, and reporting. Live on
+                  <a href="https://staging.mysmartrental.com/" target="_blank" rel="noopener noreferrer">staging.mysmartrental.com</a>.
+                  Native <strong>iOS</strong> and <strong>Android</strong> apps.
                 </p>
                 <p>
-                  <strong>Landlord & tenant features:</strong> Sites and units with occupancy tracking; recurring
-                  invoices; <strong>M-Pesa STK push</strong> (Paybill / Till) with SMS receipts; offline payment recording;
-                  maintenance tickets with photos and contractor assignment; in-app messaging and broadcast announcements;
-                  document storage; finances and reporting; team approvals; multi-currency display
-                  (<strong>KES</strong>, <strong>USD</strong>, <strong>GBP</strong>, <strong>EUR</strong>).
-                  Public <strong>demo</strong> and sign-up funnels without forcing card details for trial units.
-                </p>
-                <p>
-                  <strong>What I built:</strong> End-to-end product engineering: data model for portfolios and leases,
-                  payment reconciliation against units, real-time activity feeds across web and mobile, verified tenant
-                  onboarding, and landlord dashboards (properties, tenants, leases, invoices, maintenance, contractors,
-                  messages, reports, settings). Payment flows with <strong>M-Pesa</strong> where operators use it,
-                  plus card and bank options, instant payout routing, and arrears visibility. Security-minded defaults
-                  (strict transport, frame controls, encrypted sensitive
-                  payout fields in UI copy).
-                </p>
-                <p>
-                  <strong>Status:</strong> Active development on staging; production marketing site at
-                  <a href="https://mysmartrental.com" target="_blank" rel="noopener noreferrer">mysmartrental.com</a>.
-                  Earlier Flask/React version kept in the timeline below as <em>MySmartRental.com (2025)</em>.
-                </p>
+                  <strong>Stack:</strong> <strong>Next.js</strong> (App Router, <strong>TypeScript</strong>),
+                  <strong>PostgreSQL</strong>, <strong>nginx</strong> on <strong>Ubuntu</strong>, M-Pesa and card payments.
+                  Full detail in the case study.</p>
                 <a href="https://staging.mysmartrental.com/" target="_blank" rel="noopener noreferrer" class="btn btn-small">Try staging</a>
                 <a href="https://staging.mysmartrental.com/demo?from=portfolio" target="_blank" rel="noopener noreferrer" class="btn btn-small">Live demo</a>
                 <a href="mysmartrental-case-study.html" class="btn btn-small btn-ghost">Read case study</a>
@@ -570,7 +245,8 @@
               </div>
             </div>
           </div>
-
+        <button type="button" class="projects-more-toggle" id="projectsMoreToggle" aria-expanded="false">Show more projects</button>
+        <div class="projects-more" id="projectsMore" hidden>
           <div class="project-node" data-project="sevenscripts">
             <div class="project-node-line"></div>
             <div class="project-node-dot"></div>
@@ -718,33 +394,139 @@
             </div>
           </div>
         </div>
+        </div>
+      </div>
+    </section>
+<!-- About Section -->
+    <section id="about" class="section">
+      <div class="section-container">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+          <div class="about-card about-intro">
+            <div class="card-icon card-icon-svg" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h3>Who I Am</h3>
+            <p>
+              I'm <strong>Kane Kabena</strong>, a full-stack developer in London. I ship production software:
+              <strong>Next.js</strong> and <strong>TypeScript</strong> for product UIs, <strong>Python</strong> / <strong>Flask</strong>
+              for APIs, and <strong>PostgreSQL</strong> for data that has to stay correct under load.
+            </p>
+          </div>
+
+          <div class="about-card about-projects">
+            <div class="card-icon card-icon-svg" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <h3>What I Build</h3>
+            <p>
+              My flagship is <strong>MySmartRental 2.0</strong> (staging live today). I have also shipped
+              <strong>e-commerce</strong> (Uptwn Ldn), <strong>SokoCredit</strong> (M-Pesa, Twilio, RBAC), and
+              property SaaS v1. I own the stack from schema design to deployed nginx.
+            </p>
+          </div>
+
+          <div class="about-card about-unique">
+            <div class="card-icon card-icon-svg" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m8-3v2"/></svg>
+            </div>
+            <h3>Beyond Web Dev</h3>
+            <p>
+              I also build for <strong>FiveM</strong> and <strong>RedM</strong>: custom <strong>Lua</strong>
+              scripts, economy tuning, and server tooling. Running a roleplay server and selling scripts on
+              <strong>Tebex</strong> taught me how web backends, databases, and in-game logic fit together.
+            </p>
+          </div>
+
+          <div class="about-card about-philosophy">
+            <div class="card-icon card-icon-svg" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+            </div>
+            <h3>My Approach</h3>
+            <p>
+              I keep learning as tools change. On each project I aim for clear <strong>REST APIs</strong>,
+              sensible database queries, and docs or tests where they help the next person. I solve payments,
+              full-stack delivery, real-time features, and e-commerce integrations end to end.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Problems I solve -->
-    <section id="expertise" class="section section-dark">
+    <!-- Skills Section -->
+    <section id="skills" class="section section-dark">
       <div class="section-container">
-        <h2 class="section-title">Problems I Solve</h2>
-        <p class="section-lead">What hiring managers and clients usually need from a product-minded full-stack developer.</p>
-        <div class="expertise-grid">
-          <div class="expertise-card">
-            <h3>Payments and reconciliation</h3>
-            <p>M-Pesa STK, cards, bank transfers, invoices tied to units, arrears visibility, and payout routing without spreadsheet chaos.</p>
+        <h2 class="section-title">Technical Skills</h2>
+                <p class="skills-intro">What I ship with most often.</p>
+        <div class="skills-chips">
+          <span class="skill-chip"><i class="devicon-nextjs-original"></i> Next.js</span>
+          <span class="skill-chip"><i class="devicon-typescript-plain colored"></i> TypeScript</span>
+          <span class="skill-chip"><i class="devicon-react-original colored"></i> React</span>
+          <span class="skill-chip"><i class="devicon-python-plain colored"></i> Python</span>
+          <span class="skill-chip"><i class="devicon-flask-original colored"></i> Flask</span>
+          <span class="skill-chip"><i class="devicon-postgresql-plain colored"></i> PostgreSQL</span>
+          <span class="skill-chip"><i class="devicon-nodejs-plain colored"></i> Node.js</span>
+          <span class="skill-chip"><i class="devicon-docker-plain colored"></i> Docker</span>
+          <span class="skill-chip"><i class="devicon-git-plain colored"></i> Git</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- GitHub Stats Section -->
+    <section id="github-stats" class="section">
+      <div class="section-container">
+        <h2 class="section-title">GitHub Activity</h2>
+        <p class="github-subtitle">Open source and selected repositories</p>
+        
+        <div class="github-stats-grid">
+          <div class="github-stat-card">
+            <div class="github-stat-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="github-stat-content">
+              <h3 class="github-stat-number" data-stat="repos" data-target="0">0</h3>
+              <p class="github-stat-label">Repositories</p>
+            </div>
           </div>
-          <div class="expertise-card">
-            <h3>Full-stack product delivery</h3>
-            <p>Schema design, APIs, React or Next.js UIs, nginx deploys, and staging environments that behave like production.</p>
-          </div>
-          <div class="expertise-card">
-            <h3>Real-time and mobile</h3>
-            <p>WebSockets, activity feeds, and web plus native apps sharing one PostgreSQL data model with role-scoped access.</p>
-          </div>
-          <div class="expertise-card">
-            <h3>E-commerce and integrations</h3>
-            <p>Storefronts, admin tools, carts, third-party SMS and payment providers, and ops-friendly admin dashboards.</p>
+          <div class="github-stat-card">
+            <div class="github-stat-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="github-stat-content">
+              <h3 class="github-stat-number" data-stat="stars" data-target="0">0</h3>
+              <p class="github-stat-label">Stars Earned</p>
+            </div>
           </div>
         </div>
-        <p class="performance-note">This portfolio is static HTML/CSS/JS on GitHub Pages, tuned for fast load and accessible navigation.</p>
+
+        <!-- Featured repositories -->
+        <div class="github-pinned-section">
+          <h3 class="github-languages-title">Featured repositories</h3>
+          <div class="github-pinned-grid" id="githubPinnedRepos">
+            <a href="https://github.com/Kane7th/Phase-5-Project-SokoCredit" target="_blank" rel="noopener noreferrer" class="pinned-repo-card">
+              <span class="pinned-repo-name">Phase-5-Project-SokoCredit</span>
+              <span class="pinned-repo-desc">Loan management app: Flask API, React, M-Pesa, Twilio SMS, RBAC.</span>
+            </a>
+            <a href="https://github.com/Kane7th" target="_blank" rel="noopener noreferrer" class="pinned-repo-card pinned-repo-placeholder" data-repo-fallback>
+              <span class="pinned-repo-name">Loading repos...</span>
+              <span class="pinned-repo-desc">Fetched from GitHub when you scroll here.</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- GitHub Profile Link -->
+        <div class="github-profile-link">
+          <a href="https://github.com/Kane7th" target="_blank" class="btn btn-github">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+            </svg>
+            View My GitHub Profile
+          </a>
+        </div>
       </div>
     </section>
 

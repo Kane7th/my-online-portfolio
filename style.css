@@ -470,6 +470,148 @@ nav.scrolled {
   margin-top: 100vh;
 }
 
+.workspace-hero-wrap {
+  position: relative;
+  min-height: 100vh;
+}
+
+.hero.hero-overlay {
+  margin-top: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.hero.hero-overlay .hero-container,
+.hero.hero-overlay .hero-left,
+.hero.hero-overlay .hero-cta-row,
+.hero.hero-overlay .hero-secondary-links,
+.hero.hero-overlay .scroll-indicator {
+  pointer-events: auto;
+}
+
+.hero.hero-overlay .hero-left {
+  max-width: 640px;
+  padding: 28px 32px;
+  border-radius: 16px;
+  background: rgba(10, 14, 39, 0.82);
+  border: 1px solid rgba(93, 173, 226, 0.25);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  z-index: 10000;
+  padding: 12px 20px;
+  background: #5dade2;
+  color: #0a0e27;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.skip-link:focus {
+  left: 16px;
+  top: 16px;
+}
+
+.hero-secondary-links {
+  margin-top: 16px;
+  font-size: 0.95rem;
+  color: #c8d6e5;
+}
+
+.hero-secondary-links a {
+  color: #5dade2;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hero-secondary-links a:hover {
+  color: #85c1e9;
+  text-decoration: underline;
+}
+
+.skills-intro {
+  text-align: center;
+  color: #8899aa;
+  margin-bottom: 24px;
+}
+
+.skills-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(17, 24, 51, 0.9);
+  border: 1px solid rgba(93, 173, 226, 0.3);
+  border-radius: 999px;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.skill-chip i {
+  font-size: 1.25rem;
+}
+
+.projects-more-toggle {
+  display: block;
+  margin: 28px auto 0;
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid rgba(93, 173, 226, 0.45);
+  color: #5dade2;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.projects-more-toggle:hover {
+  background: rgba(93, 173, 226, 0.1);
+  border-color: #5dade2;
+}
+
+.projects-more[hidden] {
+  display: none !important;
+}
+
+.project-staging-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #c8d6e5;
+  margin: 12px 0;
+}
+
+.project-outcomes {
+  margin: 16px 0;
+  padding-left: 1.25rem;
+  color: #e0e0e0;
+}
+
+.project-outcomes li {
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+#projects.section {
+  padding-top: 140px;
+}
+
 .workspace-image {
   position: absolute;
   top: 0;

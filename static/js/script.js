@@ -1510,6 +1510,7 @@ toggleLamp();
       const dbOk =
         data.database === "connected" ||
         data.db === "ok" ||
+        data.db === "reachable" ||
         data.status === "ok" ||
         data.ok === true;
       healthStatusDot.className = "status-dot status-ok";

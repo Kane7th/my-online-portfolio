@@ -1,44 +1,28 @@
-MySmartRental staging CORS for portfolio health widget
-====================================================
+MySmartRental 2.0 staging CORS ù quick pointer
+==============================================
+
+FULL INSTRUCTIONS FOR VPS CURSOR AGENT:
+  vps-config/mysmartrental/VPS-AGENT-RUNBOOK.md
+  (discovery, correct app vs v1, nginx/Next steps, verification)
+
+TARGET (only this):
+  https://staging.mysmartrental.com/api/health
+  Next.js MySmartRental 2.0 ù NOT https://mysmartrental.com (Flask v1)
 
 Portfolio origin to allow:
   https://kane7th.github.io
 
-Pick ONE approach (nginx OR Next.js). Using both is fine if headers are not duplicated incorrectly.
+Fast path (nginx) ó DONE on VPS May 2026:
+  1. Edit /etc/nginx/sites-available/staging.mysmartrental.com only
+  2. location = /api/health ? proxy_pass http://127.0.0.1:8080 (Docker staging, NOT :3000 prod)
+  3. sudo nginx -t && sudo systemctl reload nginx
 
---- Option A: nginx only (fastest, no app redeploy) ---
+Staging stack: /opt/mysmartrental (Docker Compose). PM2 projectchateau = production only.
 
-1. SSH into your VPS.
-2. Open your staging site config, e.g.:
-     sudo nano /etc/nginx/sites-available/staging.mysmartrental.com
-3. Paste the contents of nginx-health-cors.conf inside the server { } block.
-4. Set proxy_pass port to match your Next.js process (PM2: pm2 list).
-5. Test and reload:
-     sudo nginx -t && sudo systemctl reload nginx
+Verify:
+  curl -sSI "https://staging.mysmartrental.com/api/health" -H "Origin: https://kane7th.github.io"
+  ? must include: Access-Control-Allow-Origin: https://kane7th.github.io
 
---- Option B: Next.js route (recommended long-term) ---
-
-1. On your dev machine, open the MySmartRental repo.
-2. Copy route.health.ts.example to app/api/health/route.ts (merge DB logic).
-3. Deploy / restart on VPS:
-     cd /path/to/mysmartrental && git pull && npm run build && pm2 restart all
-4. If nginx still strips headers, use Option A as well.
-
---- Verify from your PC ---
-
-  curl.exe -sI "https://staging.mysmartrental.com/api/health" -H "Origin: https://kane7th.github.io"
-
-You should see:
-  Access-Control-Allow-Origin: https://kane7th.github.io
-
-Browser test: open portfolio, expand MySmartRental 2.0 ó card should show
-"Staging: API + DB online" or "Staging: API online" (not hidden).
-
-Portfolio URL after deploy:
+Browser:
   https://kane7th.github.io/my-online-portfolio/
-
---- Troubleshooting ---
-
-- Duplicate CORS headers: use only nginx OR only Next.js headers.
-- 502 on /api/health: wrong proxy_pass port; check pm2 list.
-- Still blocked: Cloudflare or another proxy may need a Page Rule / Transform Rule for CORS.
+  ? MySmartRental 2.0 card shows "Staging: API + DB online" or "Staging: API online"

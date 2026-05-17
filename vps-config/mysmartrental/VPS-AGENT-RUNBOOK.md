@@ -364,9 +364,7 @@ Clone or copy from: `https://github.com/Kane7th/my-online-portfolio`
 
 | File | Purpose |
 |------|---------|
-| `vps-config/mysmartrental/nginx-health-cors.conf` | nginx snippet |
-| `vps-config/mysmartrental/route.health.ts.example` | Next.js route template |
-| `vps-config/mysmartrental/next.config.headers.example.js` | Optional global headers (prefer route or nginx) |
+| `vps-config/mysmartrental/nginx-health-cors.conf` | nginx snippet (`proxy_pass` port 8080 on this VPS) |
 | `vps-config/mysmartrental/APPLY-ON-VPS.txt` | Short checklist |
 
 ---

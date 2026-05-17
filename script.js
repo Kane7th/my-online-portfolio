@@ -1,4 +1,3 @@
-// ===== Music Player (YouTube) - Global Variables =====
 let youtubePlayer = null;
 let youtubeApiLoading = false;
 let youtubeApiReady = false;
@@ -36,7 +35,6 @@ let musicStarted = false;
 let isPlaying = false;
 const YOUTUBE_VIDEO_ID = "AzV77KFsLn4"; // Extract ID from https://www.youtube.com/watch?v=AzV77KFsLn4
 
-// Global references (will be set in DOMContentLoaded)
 let musicToggleBtn = null;
 let volumeSlider = null;
 let volumeValue = null;
@@ -44,20 +42,17 @@ let playIcon = null;
 let pauseIcon = null;
 let muteIcon = null;
 
-// Function to update button icons based on state
 function updateButtonIcons() {
   if (!musicToggleBtn) return;
-  
+
   const volume = volumeSlider ? parseInt(volumeSlider.value) : 30;
-  
-  // Show mute icon only when volume is 0%
+
   if (volume === 0) {
     if (playIcon) playIcon.style.display = "none";
     if (pauseIcon) pauseIcon.style.display = "none";
     if (muteIcon) muteIcon.style.display = "block";
     musicToggleBtn.classList.remove("active");
   } else {
-    // Show play or pause icon based on playing state
     if (muteIcon) muteIcon.style.display = "none";
     if (isPlaying) {
       if (playIcon) playIcon.style.display = "none";
@@ -71,12 +66,10 @@ function updateButtonIcons() {
   }
 }
 
-// Initialize YouTube IFrame Player - Must be global for YouTube API
 function onYouTubeIframeAPIReady() {
   const playerContainer = document.getElementById("youtube-player");
   if (!playerContainer) {
     console.error("YouTube player container not found");
-    // Try again after a short delay
     setTimeout(() => {
       const retryContainer = document.getElementById("youtube-player");
       if (retryContainer) {
@@ -87,7 +80,7 @@ function onYouTubeIframeAPIReady() {
     }, 500);
     return;
   }
-  
+
   initializeYouTubePlayer();
 }
 
@@ -97,11 +90,11 @@ function initializeYouTubePlayer() {
     console.error("Cannot initialize: YouTube player container not found");
     return;
   }
-  
+
   if (youtubePlayer) {
     return;
   }
-  
+
   try {
     youtubePlayer = new YT.Player("youtube-player", {
       height: "0",
@@ -123,7 +116,6 @@ function initializeYouTubePlayer() {
       },
       events: {
         onReady: function(event) {
-          // Set initial volume to 30%
           event.target.setVolume(30);
           if (volumeSlider) {
             volumeSlider.value = 30;
@@ -134,9 +126,6 @@ function initializeYouTubePlayer() {
           updateButtonIcons();
         },
         onStateChange: function(event) {
-          // YT.PlayerState.PLAYING = 1
-          // YT.PlayerState.PAUSED = 2
-          // YT.PlayerState.ENDED = 0
           if (event.data === YT.PlayerState.PLAYING) {
             isPlaying = true;
             musicStarted = true;
@@ -145,14 +134,12 @@ function initializeYouTubePlayer() {
             isPlaying = false;
             updateButtonIcons();
           } else if (event.data === YT.PlayerState.ENDED) {
-            // Video ended, but with loop: 1 it should restart automatically
             isPlaying = true;
             updateButtonIcons();
           }
         },
         onError: function(event) {
           console.error("YouTube player error:", event.data);
-          // Hide music controls if player fails
           if (musicToggleBtn) {
             musicToggleBtn.style.display = "none";
           }
@@ -167,13 +154,11 @@ function initializeYouTubePlayer() {
   }
 }
 
-// Make onYouTubeIframeAPIReady available globally
 window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
 document.addEventListener("DOMContentLoaded", function () {
   const NAV_SCROLL_OFFSET = 120;
 
-  // ===== Music Player (YouTube) - Get DOM References =====
   musicToggleBtn = document.getElementById("musicToggleBtn");
   volumeSlider = document.getElementById("musicVolumeSlider");
   volumeValue = document.getElementById("volumeValue");
@@ -181,28 +166,24 @@ document.addEventListener("DOMContentLoaded", function () {
   pauseIcon = musicToggleBtn?.querySelector(".music-icon-pause");
   muteIcon = musicToggleBtn?.querySelector(".music-icon-muted");
 
-  // Set default volume to 30%
   if (volumeSlider) {
     volumeSlider.value = 30;
   }
   if (volumeValue) {
     volumeValue.textContent = "30%";
   }
-  
-  // Function to update button icons based on state
+
   function updateButtonIcons() {
     if (!musicToggleBtn) return;
-    
+
     const volume = volumeSlider ? parseInt(volumeSlider.value) : 30;
-    
-    // Show mute icon only when volume is 0%
+
     if (volume === 0) {
       if (playIcon) playIcon.style.display = "none";
       if (pauseIcon) pauseIcon.style.display = "none";
       if (muteIcon) muteIcon.style.display = "block";
       musicToggleBtn.classList.remove("active");
     } else {
-      // Show play or pause icon based on playing state
       if (muteIcon) muteIcon.style.display = "none";
       if (isPlaying) {
         if (playIcon) playIcon.style.display = "none";
@@ -216,7 +197,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Update volume when slider changes
   if (volumeSlider) {
     volumeSlider.addEventListener("input", function (e) {
       const volume = parseInt(e.target.value);
@@ -226,11 +206,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (volumeValue) {
         volumeValue.textContent = `${volume}%`;
       }
-      
-      // Update icons based on volume
+
       updateButtonIcons();
-      
-      // If volume is set to 0, pause the music
+
       if (volume === 0 && isPlaying && youtubePlayer) {
         youtubePlayer.pauseVideo();
         isPlaying = false;
@@ -239,7 +217,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Toggle music play/pause
   if (musicToggleBtn) {
     musicToggleBtn.addEventListener("click", async function (e) {
       e.stopPropagation();
@@ -266,11 +243,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Set initial state to paused (play icon visible)
   isPlaying = false;
   updateButtonIcons();
-  
-  // ===== Workspace Images - Get references once =====
+
   const workspaceImage1 = document.querySelector(".workspace-image-1");
   const workspaceImage2 = document.querySelector(".workspace-image-2");
   const workspaceImage3 = document.querySelector(".workspace-image-3");
@@ -318,43 +293,36 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(preloadWorkspaceBackgrounds, 3000);
   }
 
-  // Ensure images are initialized with opacity
   if (workspaceImage1) workspaceImage1.style.opacity = "1";
   if (workspaceImage2) workspaceImage2.style.opacity = "0";
   if (workspaceImage3) workspaceImage3.style.opacity = "0";
   if (workspaceImage4) workspaceImage4.style.opacity = "0";
-  
-  // Track person zone (screen) state - cycles: 1 → 4 → 3 → 4 → 3 → 4...
+
   let screenClickState = 0; // 0 = image1, 1 = image4, 2 = image3, then toggles between 3 and 4
   let screenToggleMode = false; // true when toggling between 3 and 4
-  
-  // Track workspace4 zone (chair) state
+
   let chairZoneActive = false;
   let previousImageBeforeChair = 1; // Track which image (1 or 2) was showing before chair click
-  
-  // ===== Lamp references (needed for deactivation) =====
+
   const lampRight = document.getElementById("lampRight");
   const lampHintRight = document.getElementById("lampHintRight");
   let lampRightLit = false;
-  
-  // ===== Person Zone Click (Screen) - Cycles: 1 → 4 → 3 → 1 =====
+
   const personZone = document.getElementById("personZone");
-  
+
   if (personZone) {
     personZone.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
       if (workspaceImage1 && workspaceImage2 && workspaceImage3 && workspaceImage4) {
-        // Reset all images
         workspaceImage1.style.opacity = "0";
         workspaceImage2.style.opacity = "0";
         workspaceImage3.style.opacity = "0";
         workspaceImage4.style.opacity = "0";
-        
+
         if (!screenToggleMode) {
-          // Initial sequence: 1 → 4 → 3, then switch to toggle mode
           screenClickState = screenClickState + 1;
-          
+
           if (screenClickState === 1) {
             ensureWorkspaceBg(4, () => {
               workspaceImage4.style.opacity = "1";
@@ -383,8 +351,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           }
         }
-        
-        // Deactivate other zones
+
         chairZoneActive = false;
         if (lampRight) {
           lampRightLit = false;
@@ -394,31 +361,28 @@ document.addEventListener("DOMContentLoaded", function () {
         if (workspaceOverlay) workspaceOverlay.classList.remove("lit");
       }
     });
-    
-    // Add visual feedback
+
     personZone.addEventListener("mousedown", function() {
       this.style.transform = "scale(0.95)";
     });
-    
+
     personZone.addEventListener("mouseup", function() {
       this.style.transform = "scale(1.05)";
     });
   }
 
-  // ===== Workspace4 Zone Click (Chair) - Toggle workspace-3.jpg =====
   const workspace4Zone = document.getElementById("workspace4Zone");
-  
+
   if (workspace4Zone) {
     workspace4Zone.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
       if (workspaceImage1 && workspaceImage2 && workspaceImage3 && workspaceImage4) {
-        // Check which image is currently showing
         const image1Visible = workspaceImage1.style.opacity === "1" || getComputedStyle(workspaceImage1).opacity === "1";
         const image2Visible = workspaceImage2.style.opacity === "1" || getComputedStyle(workspaceImage2).opacity === "1";
         const image3Visible = workspaceImage3.style.opacity === "1" || getComputedStyle(workspaceImage3).opacity === "1";
         const image4Visible = workspaceImage4.style.opacity === "1" || getComputedStyle(workspaceImage4).opacity === "1";
-        
+
         if (image3Visible) {
           workspaceImage1.style.opacity = "0";
           workspaceImage2.style.opacity = "0";
@@ -460,8 +424,7 @@ document.addEventListener("DOMContentLoaded", function () {
             playSitDownSound();
           });
         }
-        
-        // Deactivate other zones
+
         screenClickState = 0; // Reset screen state
         screenToggleMode = false; // Reset toggle mode
         if (lampRight) {
@@ -472,25 +435,19 @@ document.addEventListener("DOMContentLoaded", function () {
         if (workspaceOverlay) workspaceOverlay.classList.remove("lit");
       }
     });
-    
-    // Add visual feedback
+
     workspace4Zone.addEventListener("mousedown", function() {
       this.style.transform = "scale(0.95)";
     });
-    
+
     workspace4Zone.addEventListener("mouseup", function() {
       this.style.transform = "scale(1.05)";
     });
   }
 
-  // ===== Screen Background Click - Removed (now handled by person zone) =====
-  // The screen click functionality is now handled by the person zone button
-
-  // ===== Lamp Interaction =====
-  // Function to handle lamp toggle
   function toggleLamp() {
     lampRightLit = !lampRightLit;
-    
+
     if (lampRightLit) {
       lampRight.classList.add("lit");
       if (lampHintRight) lampHintRight.classList.add("hidden");
@@ -502,8 +459,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     updateWorkspaceLighting();
   }
-  
-  // Right Lamp - Zone click
+
   if (lampRight) {
     lampRight.addEventListener("click", function (e) {
       e.preventDefault();
@@ -511,16 +467,14 @@ document.addEventListener("DOMContentLoaded", function () {
 toggleLamp();
     });
   }
-  
-  // Lamp Hint Text - Also clickable
+
   if (lampHintRight) {
     lampHintRight.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
 toggleLamp();
     });
-    
-    // Make hint arrow clickable too
+
     const hintArrow = lampHintRight.querySelector(".hint-arrow");
     if (hintArrow) {
       hintArrow.addEventListener("click", function (e) {
@@ -531,11 +485,9 @@ toggleLamp();
     }
   }
 
-  // Update overall workspace lighting and image
   function updateWorkspaceLighting() {
     const anyLampLit = lampRightLit;
-    
-    // Update overlay brightness
+
     if (workspaceOverlay) {
       if (anyLampLit) {
         workspaceOverlay.classList.add("lit");
@@ -543,16 +495,13 @@ toggleLamp();
         workspaceOverlay.classList.remove("lit");
       }
     }
-    
-    // Switch workspace image based on lamp state
-    // Lamp: image 1 ↔ image 2 (always alternates between these two)
+
     if (workspaceImage1 && workspaceImage2 && workspaceImage3 && workspaceImage4) {
-      // Reset all images first
       workspaceImage1.style.opacity = "0";
       workspaceImage2.style.opacity = "0";
       workspaceImage3.style.opacity = "0";
       workspaceImage4.style.opacity = "0";
-      
+
       if (anyLampLit) {
         ensureWorkspaceBg(2, () => {
           workspaceImage2.style.opacity = "1";
@@ -560,45 +509,35 @@ toggleLamp();
       } else {
         workspaceImage1.style.opacity = "1";
       }
-      
-      // Deactivate other zones
+
       chairZoneActive = false;
       screenClickState = 0; // Reset screen state
       screenToggleMode = false; // Reset toggle mode
     }
   }
 
-  // Lamp switch sound effect - using custom audio file
   let lampClickAudio = null;
-  
-  // Screen switch sound effects - using custom audio files
+
   let screenSwitchOnAudio = null;
   let screenSwitchOffAudio = null;
-  
-  // Chair (sit down/up) sound effects - using custom audio files
+
   let sitDownAudio = null;
   let sitUpAudio = null;
-  
-  // Get sound file path helper
+
   function getSoundPath(filename) {
-    // Script is in root, so sounds are at static/sounds/
     let staticUrl = 'static/sounds/';
     if (window.location.pathname.includes('/my-online-portfolio')) {
       staticUrl = '/my-online-portfolio/static/sounds/';
     }
     return `${staticUrl}${filename}`;
   }
-  
-  // Preload the audio file (simplified - just try to load)
+
   function preloadLampSound() {
-    // Skip preloading - load on demand instead
-    // This avoids browser blocking and path issues
   }
-  
+
   function playLampSwitchSound() {
     try {
       if (lampClickAudio && lampClickAudio.readyState >= 2) {
-        // Reset to beginning and play
         lampClickAudio.currentTime = 0;
         const playPromise = lampClickAudio.play();
         if (playPromise !== undefined) {
@@ -607,16 +546,14 @@ toggleLamp();
           });
         }
       } else {
-        // Load on demand - create new audio instance
         const audioPath = getSoundPath('lamp-click.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
-        
-        // Store for reuse
+
         if (!lampClickAudio) {
           lampClickAudio = audio;
         }
-        
+
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
@@ -629,17 +566,14 @@ toggleLamp();
       console.error("Lamp audio playback error:", e);
     }
   }
-  
-  // Preload sound on page load
+
   preloadLampSound();
   preloadScreenSounds();
   preloadChairSounds();
-  
-  // Preload screen switch sounds (simplified - load on demand)
+
   function preloadScreenSounds() {
-    // Skip preloading - load on demand instead
   }
-  
+
   function playScreenSwitchOnSound() {
     try {
       if (screenSwitchOnAudio && screenSwitchOnAudio.readyState >= 2) {
@@ -651,16 +585,14 @@ toggleLamp();
           });
         }
       } else {
-        // Load on demand
         const audioPath = getSoundPath('screen-switch-on.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
-        
-        // Store for reuse
+
         if (!screenSwitchOnAudio) {
           screenSwitchOnAudio = audio;
         }
-        
+
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
@@ -673,7 +605,7 @@ toggleLamp();
       console.error("Screen switch-on audio playback error:", e);
     }
   }
-  
+
   function playScreenSwitchOffSound() {
     try {
       if (screenSwitchOffAudio && screenSwitchOffAudio.readyState >= 2) {
@@ -685,16 +617,14 @@ toggleLamp();
           });
         }
       } else {
-        // Load on demand
         const audioPath = getSoundPath('screen-switch-off.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
-        
-        // Store for reuse
+
         if (!screenSwitchOffAudio) {
           screenSwitchOffAudio = audio;
         }
-        
+
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
@@ -707,12 +637,10 @@ toggleLamp();
       console.error("Screen switch-off audio playback error:", e);
     }
   }
-  
-  // Preload chair (sit down/up) sounds (simplified - load on demand)
+
   function preloadChairSounds() {
-    // Skip preloading - load on demand instead
   }
-  
+
   function playSitDownSound() {
     try {
       if (sitDownAudio && sitDownAudio.readyState >= 2) {
@@ -724,16 +652,14 @@ toggleLamp();
           });
         }
       } else {
-        // Load on demand
         const audioPath = getSoundPath('sit-down.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
-        
-        // Store for reuse
+
         if (!sitDownAudio) {
           sitDownAudio = audio;
         }
-        
+
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
@@ -746,7 +672,7 @@ toggleLamp();
       console.error("Sit-down audio playback error:", e);
     }
   }
-  
+
   function playSitUpSound() {
     try {
       if (sitUpAudio && sitUpAudio.readyState >= 2) {
@@ -758,16 +684,14 @@ toggleLamp();
           });
         }
       } else {
-        // Load on demand
         const audioPath = getSoundPath('sit-up.mp3');
         const audio = new Audio(audioPath);
         audio.volume = 0.7;
-        
-        // Store for reuse
+
         if (!sitUpAudio) {
           sitUpAudio = audio;
         }
-        
+
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
@@ -781,14 +705,13 @@ toggleLamp();
     }
   }
 
-    // ===== Smooth Scrolling for Nav Links =====
     const navLinks = document.querySelectorAll(".nav-link");
 
     navLinks.forEach((link) => {
         link.addEventListener("click", function (event) {
             event.preventDefault();
       const targetId = this.getAttribute("href");
-      
+
       if (targetId === "#home") {
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
@@ -799,13 +722,11 @@ toggleLamp();
         }
       }
 
-      // Update active state
             navLinks.forEach((l) => l.classList.remove("active"));
             this.classList.add("active");
         });
     });
 
-    // ===== Active Link on Scroll =====
   const sections = document.querySelectorAll("section[id], header[id]");
   const navbar = document.getElementById("navbar");
 
@@ -831,7 +752,6 @@ toggleLamp();
       }
     });
 
-    // Handle home section
     if (window.scrollY < 100) {
       navLinks.forEach((link) => link.classList.remove("active"));
       const homeLink = document.querySelector('.nav-link[href="#home"]');
@@ -841,7 +761,6 @@ toggleLamp();
     }
   }
 
-  // ===== Navbar Style on Scroll =====
     function handleNavbarScroll() {
         if (window.scrollY > 50) {
             navbar.classList.add("scrolled");
@@ -850,7 +769,6 @@ toggleLamp();
         }
     }
 
-    // ===== Throttle scroll updates for performance =====
     let scrollTimeout;
     window.addEventListener("scroll", function () {
         if (!scrollTimeout) {
@@ -862,17 +780,14 @@ toggleLamp();
         }
     });
 
-  // ===== Mobile Menu Toggle =====
   const mobileMenuToggle = document.getElementById("mobileMenuToggle");
   const navList = document.getElementById("navList");
-  // navLinks already declared above, reusing it
 
   function toggleMobileMenu() {
     if (mobileMenuToggle && navList) {
       mobileMenuToggle.classList.toggle("active");
       navList.classList.toggle("active");
-      
-      // Prevent body scroll when menu is open
+
       if (navList.classList.contains("active")) {
         document.body.style.overflow = "hidden";
       } else {
@@ -896,14 +811,12 @@ toggleLamp();
     });
   }
 
-  // Close menu when clicking on a nav link
   navLinks.forEach((link) => {
     link.addEventListener("click", function () {
       closeMobileMenu();
     });
   });
 
-  // Close menu when clicking outside
   document.addEventListener("click", function (e) {
     if (navList && navList.classList.contains("active")) {
       if (!navList.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
@@ -912,21 +825,18 @@ toggleLamp();
     }
   });
 
-  // Close menu on window resize if it becomes desktop size
   window.addEventListener("resize", function () {
     if (window.innerWidth > 768) {
       closeMobileMenu();
     }
   });
 
-  // Close menu with Escape key
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && navList && navList.classList.contains("active")) {
       closeMobileMenu();
     }
   });
 
-  // ===== Scroll Indicator Click =====
   const scrollIndicator = document.querySelector(".scroll-indicator");
   if (scrollIndicator) {
     scrollIndicator.addEventListener("click", function () {
@@ -939,7 +849,6 @@ toggleLamp();
     scrollIndicator.style.cursor = "pointer";
   }
 
-  // ===== Contact Button Smooth Scroll =====
   const contactBtn = document.querySelector(".btn-contact");
   if (contactBtn) {
     contactBtn.addEventListener("click", function (event) {
@@ -952,67 +861,11 @@ toggleLamp();
     });
   }
 
-    // Initial check
     updateActiveLink();
     handleNavbarScroll();
 
-  // ===== Skill Modal Functionality (legacy; chips used on main page) =====
-  const skillModal = document.getElementById("skillModal");
-  const skillItems = document.querySelectorAll(".skill-item");
-  if (skillModal && skillItems.length) {
-  const skillModalTitle = document.getElementById("skillModalTitle");
-  const skillModalDescription = document.getElementById("skillModalDescription");
-  const skillModalIcon = document.getElementById("skillModalIcon");
-  const skillModalClose = document.querySelector(".skill-modal-close");
-
-  skillItems.forEach((item) => {
-    item.addEventListener("click", function () {
-      const skillName = this.getAttribute("data-skill");
-      const skillDescription = this.getAttribute("data-description");
-      const skillIcon = this.querySelector("i");
-
-      if (skillName && skillDescription) {
-        skillModalTitle.textContent = skillName;
-        skillModalDescription.textContent = skillDescription;
-        
-        // Copy icon classes
-        skillModalIcon.className = skillIcon.className;
-        skillModalIcon.classList.add("skill-modal-icon");
-        
-        skillModal.classList.add("show");
-        document.body.style.overflow = "hidden"; // Prevent background scrolling
-      }
-    });
-  });
-
-  // Close modal when close button is clicked
-  if (skillModalClose) {
-    skillModalClose.addEventListener("click", function () {
-      skillModal.classList.remove("show");
-      document.body.style.overflow = ""; // Restore scrolling
-    });
-  }
-
-  // Close modal when clicking outside the modal content
-  skillModal.addEventListener("click", function (e) {
-    if (e.target === skillModal) {
-      skillModal.classList.remove("show");
-      document.body.style.overflow = ""; // Restore scrolling
-    }
-  });
-
-  // Close modal with Escape key
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && skillModal.classList.contains("show")) {
-      skillModal.classList.remove("show");
-      document.body.style.overflow = "";
-    }
-  });
-  }
-
-  // ===== Project Tree Click Functionality =====
   const projectNodes = document.querySelectorAll(".project-node");
-  
+
   projectNodes.forEach((node) => {
     node.addEventListener("click", function (e) {
       if (e.target.tagName === "A" || e.target.closest("a")) return;
@@ -1034,7 +887,6 @@ toggleLamp();
     });
   });
 
-  // ===== Server Offline Error Modal =====
   const joinServerBtn = document.getElementById("joinServerBtn");
   const serverOfflineModal = document.getElementById("serverOfflineModal");
   const errorModalClose = document.querySelector(".error-modal-close");
@@ -1078,14 +930,12 @@ toggleLamp();
     });
   }
 
-  // Close error modal with Escape key
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && serverOfflineModal && serverOfflineModal.classList.contains("show")) {
       hideServerOfflineError();
     }
   });
 
-  // ===== Contact Form Modal =====
   const openContactFormBtn = document.getElementById("openContactForm");
   const contactFormModal = document.getElementById("contactFormModal");
   const contactModalClose = document.querySelector(".contact-modal-close");
@@ -1102,7 +952,6 @@ toggleLamp();
     if (contactFormModal) {
       contactFormModal.classList.remove("show");
       document.body.style.overflow = "";
-      // Reset form
       if (contactForm) {
         contactForm.reset();
       }
@@ -1129,29 +978,24 @@ toggleLamp();
     });
   }
 
-  // Close contact modal with Escape key
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && contactFormModal && contactFormModal.classList.contains("show")) {
       hideContactForm();
     }
   });
 
-  // Initialize EmailJS (replace with your actual keys after setting up EmailJS account)
-  // Get your keys from https://www.emailjs.com/
-  // Note: Make sure to use EmailJS service (not Gmail API) to avoid authentication scope issues
   const EMAILJS_PUBLIC_KEY = "xoNNdlL-8ci3ROcRC"; // Replace with your EmailJS public key (found in Account > General)
   const EMAILJS_SERVICE_ID = "service_iqsg9ne"; // Your EmailJS service ID
-  const EMAILJS_TEMPLATE_ID = "template_l0b5tey"; // Replace with your EmailJS template ID (create template first, see EMAILJS_TEMPLATE.md)
-  
+  const EMAILJS_TEMPLATE_ID = "template_l0b5tey";
+
   if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
     emailjs.init(EMAILJS_PUBLIC_KEY);
   }
 
-  // Handle form submission
   if (contactForm) {
     contactForm.addEventListener("submit", function (e) {
       e.preventDefault();
-      
+
       const name = document.getElementById("contactName").value.trim();
       const email = document.getElementById("contactEmail").value.trim();
       const message = document.getElementById("contactMessage").value.trim();
@@ -1161,13 +1005,11 @@ toggleLamp();
       const errorDiv = document.getElementById("contactFormError");
       const successDiv = document.getElementById("contactFormSuccess");
 
-      // Hide previous errors
       if (errorDiv) {
         errorDiv.style.display = "none";
         errorDiv.textContent = "";
       }
 
-      // Validate form
       if (!name || !email || !message) {
         if (errorDiv) {
           errorDiv.textContent = "Please fill in all required fields.";
@@ -1176,7 +1018,6 @@ toggleLamp();
         return;
       }
 
-      // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         if (errorDiv) {
@@ -1186,12 +1027,10 @@ toggleLamp();
         return;
       }
 
-      // Show loading state
       if (submitBtn) submitBtn.disabled = true;
       if (btnText) btnText.style.display = "none";
       if (btnLoading) btnLoading.style.display = "inline";
 
-      // Prepare email parameters
       const templateParams = {
         from_name: name,
         from_email: email,
@@ -1199,61 +1038,48 @@ toggleLamp();
         to_email: "kanekabena@gmail.com"
       };
 
-      // Check if EmailJS is available and properly configured
-      if (typeof emailjs === 'undefined' || !emailjs.send || 
+      if (typeof emailjs === 'undefined' || !emailjs.send ||
           !EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY" ||
-          !EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID" || 
+          !EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID" ||
           !EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID === "YOUR_TEMPLATE_ID") {
-        // Fallback to mailto if EmailJS is not configured
         const subject = encodeURIComponent(`Portfolio Contact: ${name}`);
         const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
         const mailtoLink = `mailto:kanekabena@gmail.com?subject=${subject}&body=${body}`;
         window.location.href = mailtoLink;
-        
-        // Show success message
+
         if (contactForm) contactForm.style.display = "none";
         if (successDiv) successDiv.style.display = "block";
-        
-        // Close modal after 3 seconds
+
         setTimeout(function() {
           hideContactForm();
         }, 3000);
         return;
       }
 
-      // Send email using EmailJS
-      // Make sure your EmailJS service is set up with a compatible email service (not Gmail API)
-      // Recommended: Use EmailJS's own email service or SMTP service
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
         .then(function(response) {
-          // Show success message
           if (contactForm) contactForm.style.display = "none";
           if (successDiv) successDiv.style.display = "block";
-          
-          // Reset form
+
           contactForm.reset();
-          
-          // Close modal after 3 seconds
+
           setTimeout(function() {
             hideContactForm();
           }, 3000);
         })
         .catch(function(error) {
           console.error("Email sending failed:", error);
-          
-          // Check for Gmail API scope errors
+
           let errorMessage = "Could not send your message. Try again or email kanekabena@gmail.com";
           if (error.text && error.text.includes("Gmail_API") && error.text.includes("insufficient authentication scopes")) {
             errorMessage = "This form is not wired to email correctly. Email kanekabena@gmail.com instead.";
           }
-          
-          // Show error message
+
           if (errorDiv) {
             errorDiv.textContent = errorMessage;
             errorDiv.style.display = "block";
           }
-          
-          // Reset button state
+
           if (submitBtn) submitBtn.disabled = false;
           if (btnText) btnText.style.display = "inline";
           if (btnLoading) btnLoading.style.display = "none";
@@ -1261,27 +1087,25 @@ toggleLamp();
     });
   }
 
-  // Update hideContactForm to reset form state
   function hideContactForm() {
     if (contactFormModal) {
       contactFormModal.classList.remove("show");
       document.body.style.overflow = "";
-      
-      // Reset form and UI
+
       if (contactForm) {
         contactForm.reset();
         contactForm.style.display = "block";
       }
-      
+
       const successDiv = document.getElementById("contactFormSuccess");
       if (successDiv) successDiv.style.display = "none";
-      
+
       const errorDiv = document.getElementById("contactFormError");
       if (errorDiv) {
         errorDiv.style.display = "none";
         errorDiv.textContent = "";
       }
-      
+
       const submitBtn = document.getElementById("contactFormSubmitBtn");
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -1293,7 +1117,6 @@ toggleLamp();
     }
   }
 
-  // ===== Parallax Effect for Background =====
   window.addEventListener("scroll", function () {
     const scrolled = window.pageYOffset;
     const mountains = document.querySelector(".mountains");
@@ -1302,32 +1125,28 @@ toggleLamp();
     }
   });
 
-  // ===== Fade out interactive zones (chair, PC, lamp) when scrolling down =====
   const interactiveZones = document.querySelector(".interactive-zones");
   let lastScrollY = window.scrollY;
-  
+
   window.addEventListener("scroll", function () {
     const currentScrollY = window.scrollY;
     const isMobile = window.innerWidth <= 768;
-    
+
     if (interactiveZones) {
-      // Only fade on desktop (>768px), always visible on mobile/tablet
       if (!isMobile && currentScrollY > 50) {
         interactiveZones.classList.add("fade-out");
       } else {
         interactiveZones.classList.remove("fade-out");
       }
     }
-    
+
     lastScrollY = currentScrollY;
   });
 
-  // Ensure zones are visible on mobile on page load
   if (interactiveZones && window.innerWidth <= 768) {
     interactiveZones.classList.remove("fade-out");
   }
 
-  // ===== Fade in animation on scroll =====
   const observerOptions = {
     threshold: 0.1,
     rootMargin: "0px 0px -50px 0px"
@@ -1342,7 +1161,6 @@ toggleLamp();
     });
   }, observerOptions);
 
-  // Observe all sections
   sections.forEach((section) => {
     section.style.opacity = "0";
     section.style.transform = "translateY(30px)";
@@ -1350,16 +1168,14 @@ toggleLamp();
     observer.observe(section);
   });
 
-  // Hero section should be visible immediately
   const hero = document.querySelector(".hero");
   if (hero) {
     hero.style.opacity = "1";
     hero.style.transform = "translateY(0)";
   }
 
-  // ===== GitHub Stats - Fetch Live Data =====
   const GITHUB_USERNAME = "Kane7th";
-  
+
   async function fetchGitHubStats() {
     try {
       const userResponse = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
@@ -1400,7 +1216,6 @@ toggleLamp();
     }
   }
 
-  // ===== GitHub Stats Animated Counter =====
   function animateCounter(element, target, duration = 2000) {
     const start = 0;
     let startTime = null;
@@ -1425,12 +1240,10 @@ toggleLamp();
     requestAnimationFrame(animate);
   }
 
-  // Intersection Observer for GitHub Stats
   const githubStatsSection = document.getElementById("github-stats");
   if (githubStatsSection) {
-    // Fetch stats when section comes into view
     let statsFetched = false;
-    
+
     const observerOptions = {
       threshold: 0.3,
       rootMargin: "0px"
@@ -1440,11 +1253,9 @@ toggleLamp();
       entries.forEach(async (entry) => {
         if (entry.isIntersecting && !statsFetched) {
           statsFetched = true;
-          
-          // Fetch live GitHub stats
+
           await fetchGitHubStats();
-          
-          // Animate counters with fetched data
+
           const statNumbers = document.querySelectorAll(".github-stat-number");
           statNumbers.forEach((stat) => {
             const target = parseInt(stat.getAttribute("data-target")) || 0;
@@ -1453,7 +1264,7 @@ toggleLamp();
               animateCounter(stat, target);
             }
           });
-          
+
           statsObserver.unobserve(entry.target);
         }
       });
@@ -1462,7 +1273,6 @@ toggleLamp();
     statsObserver.observe(githubStatsSection);
   }
 
-  // ===== Reduce motion toggle =====
   const reduceMotionToggle = document.getElementById("reduceMotionToggle");
   const REDUCE_MOTION_KEY = "portfolioReduceMotion";
 
@@ -1487,8 +1297,6 @@ toggleLamp();
     });
   }
 
-
-  // ===== MySmartRental staging health (project card only) =====
   const healthStatusDot = document.getElementById("healthStatusDot");
   const healthStatusText = document.getElementById("healthStatusText");
   const projectHealthStatus = document.getElementById("projectHealthStatus");
@@ -1523,14 +1331,12 @@ toggleLamp();
 
   checkStagingHealth();
 
-
   function escapeHtml(text) {
     const div = document.createElement("div");
     div.textContent = text == null ? "" : String(text);
     return div.innerHTML;
   }
 
-  // ===== GitHub pinned repositories =====
   const PINNED_REPO_NAMES = [
     "Phase-5-Project-SokoCredit",
     "my-smart-rental",
@@ -1586,7 +1392,6 @@ toggleLamp();
     );
     pinnedObserver.observe(pinnedSection);
   }
-  // ===== Show more projects =====
   const projectsMoreToggle = document.getElementById("projectsMoreToggle");
   const projectsMore = document.getElementById("projectsMore");
   if (projectsMoreToggle && projectsMore) {
@@ -1598,7 +1403,6 @@ toggleLamp();
     });
   }
 
-  // ===== Project card headers (aria + keyboard) =====
   document.querySelectorAll(".project-card-header").forEach((header) => {
     if (!header.hasAttribute("role")) {
       header.setAttribute("role", "button");
@@ -1640,7 +1444,6 @@ toggleLamp();
     });
   });
 
-  // ===== Prefetch staging on hero CTA hover =====
   const stagingCta = document.getElementById("stagingCta");
   if (stagingCta) {
     const prefetchUrl = stagingCta.getAttribute("data-prefetch");
@@ -1654,6 +1457,5 @@ toggleLamp();
       document.head.appendChild(link);
     }, { once: true });
   }
-
 
 });
